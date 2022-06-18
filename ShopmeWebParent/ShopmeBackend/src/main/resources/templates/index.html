@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<!-- for responsive -->
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+
+<title>Home - Shopme Admin</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}">
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div th:replace="navigation :: menu"></div>
+		<div>
+			<h1>Shopme Admin Control Panel</h1>
+			<br>
+			<h3>
+				Welcome <a sec:authentication="principal.username" th:href="@{/account}"></a>&nbsp;
+				<a sec:authentication="principal.authorities" th:href="@{/account}"></a>
+			</h3>
+		</div>
+		<div>
+			<p>Shopme Control Panel - Copyright &copy; Shopme</p>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#logoutLink").on("click", function(e) {
+				e.preventDefault();
+				document.logoutForm.submit();
+			});
+			customizeDropdown();
+		});
+
+		function customizeDropdown() {
+			$(".navbar .dropdown").hover(
+					function() {
+						$(this).find('.dropdown-menu').first().stop(true, true)
+								.delay(250).slideDown();
+					},
+					function() {
+						$(this).find('.dropdown-menu').first().stop(true, true)
+								.delay(100).slideUp();
+					});
+
+			$(".dropdown > a").click(function() {
+				location.href = this.href;
+			});
+		}
+	</script>
+</body>
+</html>
