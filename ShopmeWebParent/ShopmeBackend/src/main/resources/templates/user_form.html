@@ -1,19 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<!-- for responsive -->
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-
 <title>[[${pageTitle}]]</title>
-<link rel="stylesheet" type="text/css"
-	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript"
-	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}">	
 </head>
 <body>
 	<div class="container-fluid">
@@ -99,16 +88,19 @@
 			</div>
 
 		</div>
-		<div class="text-center">
-			<p>Shopme Control Panel - Copyright &copy; Shopme</p>
-		</div>
+		<div th:replace="footer::foot">	</div>
 	</div>
 </body>
+
+<div th:replace="script::script"></div>
+
 <script type="text/javascript">
 	$(document).ready(function() {
+		
 		$("#buttonCancel").on("click", function() {
 			window.location = "[[@{/users}]]";
 		});
+		
 		$("#fileImage").change(function(){
 			  fileSize = this.files[0].size; 
 			  if (fileSize > 1048576) {			    
@@ -117,34 +109,9 @@
 			  } else {
 				  this.setCustomValidity("");
 				  showImageThumbnail(this);
-			  }
-			
+			  }			
 		});
 	});
-	
-	$(document).ready(function() {
-		$("#logoutLink").on("click", function(e) {
-			e.preventDefault();
-			document.logoutForm.submit();
-		});
-		customizeDropdown();
-	});
-
-	function customizeDropdown() {
-		$(".navbar .dropdown").hover(
-				function() {
-					$(this).find('.dropdown-menu').first().stop(true, true)
-							.delay(250).slideDown();
-				},
-				function() {
-					$(this).find('.dropdown-menu').first().stop(true, true)
-							.delay(100).slideUp();
-				});
-
-		$(".dropdown > a").click(function() {
-			location.href = this.href;
-		});
-	}
 	
 	function showImageThumbnail(fileInput){
 		var file=fileInput.files[0];

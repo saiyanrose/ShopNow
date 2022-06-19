@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<body>
+<div th:fragment="script">
+<script type="text/javascript">
+		//logout
+		$(document).ready(function() {
+			$("#logoutLink").on("click", function(e) {
+				e.preventDefault();
+				document.logoutForm.submit();
+			});
+			customizeDropdown();
+		});
+		
+		//logout dropdown
+		function customizeDropdown() {
+			$(".navbar .dropdown").hover(
+					function() {
+						$(this).find('.dropdown-menu').first().stop(true, true)
+								.delay(250).slideDown();
+					},
+					function() {
+						$(this).find('.dropdown-menu').first().stop(true, true)
+								.delay(100).slideUp();
+					});
+
+			$(".dropdown > a").click(function() {
+				location.href = this.href;
+			});
+		}
+		
+		//delete user
+		$(document).ready(
+					function() {
+						$(".link-delete").on(
+								"click",
+								function(e) {
+									e.preventDefault();
+									link = $(this);
+									userId = link.attr("userId");
+									$("#yesButton").attr("href",
+											link.attr("href"));
+									$("#confirmText").text(
+											"Are you sure want to delete id: "
+													+ userId + " ?");
+									$("#confirmModal").modal();
+								});
+					});
+			
+			//clear filter
+			function clearFilter(){
+				window.location="[[@{/users}]]";
+			}			
+			
+	</script>
+</div>
+</body>
+</html>

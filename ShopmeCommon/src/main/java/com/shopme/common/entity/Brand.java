@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "brands")
@@ -29,8 +30,12 @@ public class Brand {
 	@JoinTable(name = "brand_categories", joinColumns = @JoinColumn(name = "brand_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 
+	public Brand() {
+		
+	}
 	public Brand(String name) {		
 		this.name = name;
+		this.logo="default.png";
 	}
 
 	public int getId() {
@@ -63,6 +68,15 @@ public class Brand {
 
 	public void setCategories(Set<Category> categories) {
 		this.categories = categories;
+	}
+	
+	@Transient
+	public String getLogoPath() {
+		if(this.id==0) {
+			return "/images/default-user.png";
+		}else {
+			return "/brand-logos/" + this.id + "/" + this.logo;
+		}
 	}
 
 }

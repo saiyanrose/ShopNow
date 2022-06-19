@@ -1,24 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<!-- for responsive -->
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-
-<title>Login - Shopme Admin</title>
-<link rel="stylesheet" type="text/css"
-	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript"
-	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<title>Login - ShopNow Admin</title>
 </head>
 <body>
 	<div class="container-fluid text-center">
 
 		<div>
-			<img th:src="@{/images/ShopmeAdminSmall.png}" />
+			<img th:src="@{/images/shopnow.png}" width="100px" />
 		</div>
 
 		<form th:action="@{/login}" method="post"
@@ -30,7 +20,7 @@
 			<p class="text-warning">Successfully Logout</p>
 		</div>
 			<div class="border border-secondary rounded p-3">
-				<p>Access to Shopme Control Panel</p>
+				<p>Access to ShopNow Control Panel</p>
 				<p>
 					<input type="email" name="email" placeholder="E-mail" required />
 				</p>
@@ -46,9 +36,7 @@
 				</p>
 			</div>
 		</form>
-		<div>
-			<p>Shopme Control Panel - Copyright &copy; Shopme</p> 
-		</div>
+		<div th:replace="footer::foot">	</div>	
 	</div>
 </body>
 </html>

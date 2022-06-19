@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<title>Categories - Shopme Admin</title>
-<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}">
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<title>Categories - ShopNow Admin</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -16,23 +11,22 @@
 			<h1>Manage Categories</h1>
 			<a th:href="@{categories/new}">Create New Category</a>
 		</div>
-		
+
 		<div th:if="${message != null}"
-			class="alert alert-success text-center">[[${message}]]
-		</div>
-			
+			class="alert alert-success text-center">[[${message}]]</div>
+
 		<div>
-			<form class="form-inline" th:action="@{/categories/1}">				
-				Filter:&nbsp;
-				<input type="hidden" name="sortField" th:value="${sortField}"/>
-				<input type="hidden" name="sortDir" th:value="${sortDir}"/>
-				<input type="search" name="keyword" th:value="${keyword}" class="form-control" required />
-				&nbsp;&nbsp;
-				<input type="submit" value="Search" class="btn btn-primary" required />
-				&nbsp;&nbsp;
-				<input type="button" value="Clear" class="btn btn-secondary" onclick="clearFilter()"/>			
+			<form class="form-inline" th:action="@{/categories/1}">
+				Filter:&nbsp; <input type="hidden" name="sortField"
+					th:value="${sortField}" /> <input type="hidden" name="sortDir"
+					th:value="${sortDir}" /> <input type="search" name="keyword"
+					th:value="${keyword}" class="form-control" required />
+				&nbsp;&nbsp; <input type="submit" value="Search"
+					class="btn btn-primary" required /> &nbsp;&nbsp; <input
+					type="button" value="Clear" class="btn btn-secondary"
+					onclick="clearFilter()" />
 			</form>
-		</div>	
+		</div>
 
 		<div>
 			<div>
@@ -40,94 +34,74 @@
 					class="table table-bordered table-striped table-hover table-responsive-xl">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">
-							<a  class="text-white">ID</a>						
-							</th>
-							<th scope="col">Photo</th>														
-							<th scope="col">
-							<a class="text-white" th:href="@{'/categories/' +${pageNum}+ '?sortDir='+${reverseSort}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Category Name</a>								 
-							</th>
-							<th scope="col">
-							<a class="text-white">Alias</a>								 
-							</th>
-							<th scope="col">Enabled</th>							
+							<th scope="col"><a class="text-white">ID</a></th>
+							<th scope="col">Photo</th>
+							<th scope="col"><a class="text-white"
+								th:href="@{'/categories/' +${pageNum}+ '?sortDir='+${reverseSort}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Category
+									Name</a></th>
+							<th scope="col"><a class="text-white">Alias</a></th>
+							<th scope="col">Enabled</th>
 							<th scope="col">Operations</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="cat: ${categories}">
 							<th scope="row">[[${cat.id}]]</th>
-							<td><span class=""></span>
-							 <img style="width: 100px" th:src="@{${cat.imagePath}}"/></td>
+							<td><span class=""></span> <img style="width: 100px"
+								th:src="@{${cat.imagePath}}" /></td>
 							<td>[[${cat.name}]]</td>
 							<td>[[${cat.alias}]]</td>
-							<td>
-								<a th:if="${cat.enabled==true}" class="fas fa-check-circle fa-2x" th:href="@{'/category/' + ${cat.id} +'/enabled/false'}" title="Disable this category"></a>
-								<a th:if="${cat.enabled==false}" class="fas fa-times fa-2x" th:href="@{'/category/' + ${cat.id} +'/enabled/true'}" title="Enable this category"></a>
-								
-							</td>	
-													
-							<td>
-							
-								<a th:href="@{'/categories/category/edit/' + ${cat.id}}">Edit</a> ||
-								<a th:href="@{'/categories/category/delete' + ${cat.id}}">Delete</a>
-							
-							</td>								
-							
+							<td><a th:if="${cat.enabled==true}"
+								class="fas fa-check-circle fa-2x"
+								th:href="@{'/category/' + ${cat.id} +'/enabled/false'}"
+								title="Disable this category"></a> <a
+								th:if="${cat.enabled==false}" class="fas fa-times fa-2x"
+								th:href="@{'/category/' + ${cat.id} +'/enabled/true'}"
+								title="Enable this category"></a></td>
+
+							<td><a th:href="@{'/categories/category/edit/' + ${cat.id}}">Edit</a>
+								|| <a th:href="@{'/categories/category/delete' + ${cat.id}}" class="link-delete">Delete</a>
+
+							</td>
+
 						</tr>
 					</tbody>
 				</table>
-			</div>				
+			</div>
 			<div class="text-center m-1" th:if="${totalElements<0}">
 				<span>No Categories Found</span>
 			</div>
 			<div th:if="${totalPage > 1}">
-			<nav aria-label="Page navigation example">
-				<ul class="pagination justify-content-center">
-					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/categories/1?sortField=' + ${sortField} + '&sortDir=' + ${reverseSort}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">First</a></li>
-					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/categories/' +${pageNum-1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Previous</a></li>
-					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}"
-					 th:each="i:${#numbers.sequence(1,totalPage)}">
-					<a class="page-link" th:href="@{'/categories/' +${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
-					</li>					
-				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/categories/' +${pageNum+1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Next</a></li>
-					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/categories/' +${totalPage}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Last</a></li>
-				</ul>
-			</nav>
+				<nav aria-label="Page navigation example">
+					<ul class="pagination justify-content-center">
+						<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a
+							class="page-link"
+							th:href="@{'/categories/1?sortField=' + ${sortField} + '&sortDir=' + ${reverseSort}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">First</a></li>
+						<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a
+							class="page-link"
+							th:href="@{'/categories/' +${pageNum-1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Previous</a></li>
+						<li th:class="${pageNum != i ? 'page-item' :'page-item active'}"
+							th:each="i:${#numbers.sequence(1,totalPage)}"><a
+							class="page-link"
+							th:href="@{'/categories/' +${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+						</li>
+						<li
+							th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a
+							class="page-link"
+							th:href="@{'/categories/' +${pageNum+1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Next</a></li>
+						<li
+							th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a
+							class="page-link"
+							th:href="@{'/categories/' +${totalPage}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Last</a></li>
+					</ul>
+				</nav>
 			</div>
-			
-			<div>
-			
-			</div>
-			
-			<div class="text-center">
-				<p>Shopme Control Panel - Copyright &copy; Shopme</p>
-			</div>
-		</div>	
-		<script>
-		$(document).ready(function() {
-			$("#logoutLink").on("click", function(e) {
-				e.preventDefault();
-				document.logoutForm.submit();
-			});
-			customizeDropdown();
-		});
 
-		function customizeDropdown() {
-			$(".navbar .dropdown").hover(
-					function() {
-						$(this).find('.dropdown-menu').first().stop(true, true)
-								.delay(250).slideDown();
-					},
-					function() {
-						$(this).find('.dropdown-menu').first().stop(true, true)
-								.delay(100).slideUp();
-					});
+			<div></div>
 
-			$(".dropdown > a").click(function() {
-				location.href = this.href;
-			});
-		}
-		</script>
+			<div th:replace="footer::foot"></div>
+		</div>
+	</div>
+	<div th:replace="script::script"></div>
 </body>
 </html>
