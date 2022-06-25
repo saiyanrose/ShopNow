@@ -56,4 +56,17 @@ public class BrandService {
 		}
 		return brandsRepository.findAll(pageable);
 	}
+
+	public String checkUnique(Integer id, String name) {
+		boolean isCreatingNew=(id==null || id==0);
+		Brand findBrand=brandsRepository.findByName(name);
+		if(isCreatingNew) {
+			if(findBrand!=null)return "Duplicate";
+		}else {
+			if(findBrand!=null && findBrand.getId()!=id) {
+				return "Duplicate";
+			}
+		}
+		return "OK";
+	}
 }
