@@ -59,7 +59,7 @@ public class CategoryController {
 		return "redirect:/categories";		
 	}
 	
-	@GetMapping("/categories/new")
+	@GetMapping("/new")
 	public String newCategory(Model model) {
 		List<Category>formCategory=categoryService.allCategoryForForm();
 		model.addAttribute("category",new Category());

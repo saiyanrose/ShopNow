@@ -9,7 +9,7 @@
 		<div th:replace="navigation :: menu"></div>
 		<div>
 			<h1>Manage Categories</h1>
-			<a th:href="@{categories/new}">Create New Category</a>
+			<a th:href="@{/new}">Create New Category</a>
 		</div>
 
 		<div th:if="${message != null}"
@@ -59,8 +59,8 @@
 								th:href="@{'/category/' + ${cat.id} +'/enabled/true'}"
 								title="Enable this category"></a></td>
 
-							<td><a th:href="@{'/categories/category/edit/' + ${cat.id}}">Edit</a>
-								|| <a th:href="@{'/categories/category/delete' + ${cat.id}}" class="link-delete">Delete</a>
+							<td><a class="fas fa-edit fa-2x" th:href="@{'/categories/category/edit/' + ${cat.id}}"></a>
+								<a th:href="@{'/categories/category/delete' + ${cat.id}}" class="fas fa-user-times fa-2x link-delete"></a>
 
 							</td>
 
@@ -103,5 +103,12 @@
 		</div>
 	</div>
 	<div th:replace="script::script"></div>
+	<script type="text/javascript">
+	
+	function clearFilter(){
+		window.location="[[@{/categories}]]";
+	}	
+	
+	</script>
 </body>
 </html>

@@ -1,26 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
+<head th:replace="header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!-- for responsive -->
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<title>Brands - Shopme Admin</title>
-<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}">
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<title>Brands - ShopNow Admin</title>
+
 </head>
 
 <body>
 	<div class="container-fluid">
 		<div th:replace="navigation :: menu"></div>
 		<div>
-			<h1>Manage Users</h1>
+			<h1>Manage Brands</h1>
 			<a th:href="@{/brands/new}">Create New User</a>
 		</div>
 		<div th:if="${message != null}"
 			class="alert alert-success text-center">[[${message}]]</div>
+		
+		<div th:if="${message1 != null}"
+			class="alert alert-danger text-center">[[${message1}]]
+		</div>	
 			
 		<div>
 			<form th:action="@{/brands/page/1}" class="form-inline">
@@ -56,32 +55,24 @@
 							</th>
 							<th scope="col">Photo</th>
 							<th scope="col">
-							<a th:if="${sortField!='email'}" class="text-white"
-								 th:href="@{'/brands/page/' +${pageNum} + '?sortField=email&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+							<a th:if="${sortField!='name'}" class="text-white"
+								 th:href="@{'/brands/page/' +${pageNum} + '?sortField=name&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
 								 Brand Name
 								 </a>
-								 <a th:if="${sortField=='email'}" class="text-white"
-								 th:href="@{'/brands/page/' +${pageNum} + '?sortField=email&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 <a th:if="${sortField=='name'}" class="text-white"
+								 th:href="@{'/brands/page/' +${pageNum} + '?sortField=name&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
 								 Brand Name
 								 </a>
-								<span th:if="${sortField=='email'}"
+								<span th:if="${sortField=='name'}"
 									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
 								</span>
 							
 							</th>
 							
 							<th scope="col">
-								<a th:if="${sortField!='firstname'}" class="text-white"
-								 th:href="@{'/brands/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								<a class="text-white">
 								 Categories
-								 </a>
-								 <a th:if="${sortField=='firstname'}" class="text-white"
-								 th:href="@{'/brands/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${reverseSort}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 Categories
-								 </a>
-								<span th:if="${sortField=='firstname'}"
-									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>
+								 </a>								 
 							</th>													
 							<th scope="col">Operations</th>
 						</tr>
@@ -91,7 +82,7 @@
 							<th scope="row">[[${brnd.id}]]</th>
 							<td><span th:if="${brnd.logo==null}"
 								class="fas fa-portrait fa-3x"></span> <img
-								th:if="${brnd.logo!=null}"
+								th:if="${brnd.logo!=null}" th:src="@{${brnd.logoPath}}"
 								style="width: 100px" /></td>
 							<td>[[${brnd.name}]]</td>
 							<td>
@@ -100,11 +91,11 @@
 								</th:block>
 								
 							</td>							
-							<td><a class="fas fa-edit fa-2x" href=""
+							<td><a class="fas fa-edit fa-2x"
 								th:href="@{'/brands/edit/' + ${brnd.id}}" title="Edit this brand"></a>
 								&nbsp; <a class="fas fa-user-times fa-2x link-delete"
 								th:href="@{'/brands/delete/' + ${brnd.id}}"
-								title="Delete this brand"></a></td>
+								title="Delete this brand" th:userId="${brnd.id}"></a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -114,19 +105,19 @@
 					[[${totalItems}]]</span>
 			</div>
 			<div class="text-center m-1" th:unless="${totalItems>0}">
-				<span>No User Found</span>
+				<span>No brand Found</span>
 			</div>
 			<div th:if="${totalPage > 1}">
 			<nav aria-label="Page navigation example">
 				<ul class="pagination justify-content-center">
-					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/users/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">First</a></li>
-					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/users/page/' +${pageNum-1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Previous</a></li>
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/brands/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">First</a></li>
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/brands/page/' +${pageNum-1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Previous</a></li>
 					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}"
 					 th:each="i:${#numbers.sequence(1,totalPage)}">
-					<a class="page-link" th:href="@{'/users/page/' +${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">[[${i}]]</a>
+					<a class="page-link" th:href="@{'/brands/page/' +${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">[[${i}]]</a>
 					</li>					
-				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/users/page/' +${pageNum+1} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Next</a></li>
-					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/users/page/' +${totalPage} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Last</a></li>
+				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/brands/page/' +${pageNum+1} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Next</a></li>
+					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/brands/page/' +${totalPage} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Last</a></li>
 				</ul>
 			</nav>
 			</div>
@@ -147,57 +138,16 @@
 					</div>
 				</div>
 			</div>
-			<div class="text-center">
-				<p>Shopme Control Panel - Copyright &copy; Shopme</p>
 			</div>
+			<div th:replace="footer::foot"></div>
 		</div>
+		<div th:replace="script::script"></div>
 		<script type="text/javascript">
-			$(document).ready(
-					function() {
-						$(".link-delete").on(
-								"click",
-								function(e) {
-									e.preventDefault();
-									link = $(this);
-									userId = link.attr("userId");
-									$("#yesButton").attr("href",
-											link.attr("href"));
-									$("#confirmText").text(
-											"Are you sure want to delete id: "
-													+ userId + " ?");
-									$("#confirmModal").modal();
-								});
-					});
-			
-			function clearFilter(){
-				window.location="[[@{/users}]]";
-			}
-			
-			
-			$(document).ready(function() {
-				$("#logoutLink").on("click", function(e) {
-					e.preventDefault();
-					document.logoutForm.submit();
-				});
-				customizeDropdown();
-			});
-
-			function customizeDropdown() {
-				$(".navbar .dropdown").hover(
-						function() {
-							$(this).find('.dropdown-menu').first().stop(true, true)
-									.delay(250).slideDown();
-						},
-						function() {
-							$(this).find('.dropdown-menu').first().stop(true, true)
-									.delay(100).slideUp();
-						});
-
-				$(".dropdown > a").click(function() {
-					location.href = this.href;
-				});
-			}
-		</script>
-		
+	
+	function clearFilter(){
+		window.location="[[@{/brands}]]";
+	}	
+	
+	</script>
 </body>
 </html>

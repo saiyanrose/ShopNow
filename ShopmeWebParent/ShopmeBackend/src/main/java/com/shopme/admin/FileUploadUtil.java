@@ -1,5 +1,6 @@
 package com.shopme.admin;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -28,8 +29,7 @@ public class FileUploadUtil {
 	//clean the directory
 	public static void cleanDir(String dir) {
 		Path dirPath=Paths.get(dir);
-		System.out.println(dirPath);
-		System.out.println(dir);
+		System.out.println("Directory "+dirPath);		
 		try {
 			Files.list(dirPath).forEach(file->{
 				if(!Files.isDirectory(file)) {
@@ -43,5 +43,13 @@ public class FileUploadUtil {
 		}catch (IOException e) {
 			System.out.println("could not list directory " +dirPath);
 		}
+	}
+
+	public static void removeDir(String brandDir) throws IOException {
+		Path dirPath=Paths.get(brandDir);
+		for(File file: dirPath.toFile().listFiles()) {
+			Files.delete(file.toPath());
+		}
+		Files.deleteIfExists(dirPath);		
 	}
 }

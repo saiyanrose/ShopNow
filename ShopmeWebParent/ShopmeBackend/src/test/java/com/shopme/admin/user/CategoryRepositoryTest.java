@@ -34,7 +34,7 @@ public class CategoryRepositoryTest {
 	@Test
 	public void subCategoryTest() {
 		Category category=new Category(2);
-		Category subCategory=new Category("SmartPhones", category);
+		Category subCategory=new Category("headphones", category);
 		//Category components=new Category("Smart Phones", category);
 		//Category saveCategory=repository.save(subCategory);
 		repository.save(subCategory);

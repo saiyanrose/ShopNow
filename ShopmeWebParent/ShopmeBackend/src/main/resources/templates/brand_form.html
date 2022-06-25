@@ -23,7 +23,7 @@
 		<div class="text-center">
 			<h1>Manage Brands | [[${pageTitle}]]</h1>
 		</div>
-		<form th:action="@{/users/save}" method="post" style="max-width: 700px; margin: 0 auto" th:object="${brand}"
+		<form th:action="@{/brands/save}" method="post" style="max-width: 700px; margin: 0 auto" th:object="${brand}"
 			onsubmit="return checkEmailUnique(this);" enctype="multipart/form-data">
 			
 			<input type="hidden" th:field="*{id}">
@@ -39,7 +39,7 @@
 				 <input type="file"	id="fileImage" name="image" accept="image/png,image/jpeg" />
 				 
 				<div class="mt-2">
-					<img id="thumbnail" alt="Image Preview" th:src="@{${brand.logoPath}}"/>
+					<img id="thumbnail" alt="Image Preview" th:src="@{${brand.logoPath}}" width="100px"/>
 				</div> 				 
 			</div>
 			

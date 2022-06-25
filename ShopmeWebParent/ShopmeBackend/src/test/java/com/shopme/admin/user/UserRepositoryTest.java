@@ -33,7 +33,7 @@ public class UserRepositoryTest {
 	@Test
 	public void testCreateUser() {
 		Role adminRole=entityManager.find(Role.class,5);
-		User user=new User("sunil@gmail.com","sonu","sunil","sikiligar");
+		User user=new User("sonu@gmail.com","piyush","sonu","chaudhary");
 		user.addRole(adminRole);
 		user.setEnabled(true);
 		User saveUser=repository.save(user);
