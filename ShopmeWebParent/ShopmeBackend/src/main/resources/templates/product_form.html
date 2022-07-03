@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/richtext/jquery.richtext.min.js}"></script>
+<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}">
+<link rel="stylesheet" type="text/css"	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}">
+<title>[[${pageTitle}]]</title>
+</head>
+<body>
+	<div class="container-fluid">
+		<div>
+			<div th:replace="navigation :: menu"></div>
+		</div>
+
+		<div class="text-center">
+			<h1>Manage Products | [[${pageTitle}]]</h1>
+		</div>
+
+		<div th:if="${message != null}"
+			class="alert alert-success text-center">[[${message}]]</div>
+
+		<form th:action="@{/products/save}" method="post" th:object="${product}" onsubmit="return checkProduct(this);">
+		<input type="hidden" th:field="*{id}">
+			<div>
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" data-toggle="tab"
+						href="#overview" type="button" role="tab">Overview</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" data-toggle="tab"
+						href="#description" type="button" role="tab">Description</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" data-toggle="tab"
+						href="#image" type="button" role="tab">Image</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" data-toggle="tab"
+						href="#details" type="button" role="tab">Details</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" data-toggle="tab"
+						href="#shipping" type="button" role="tab">Shipping</button>
+				</li>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane active p-3" id="overview" role="tabpanel">
+						<div th:replace="product_overview :: product_overview"></div>					
+					</div>
+					<div class="tab-pane" id="description" role="tabpanel">
+						<div th:replace="product_description :: product_des"></div>
+					</div>
+					<div class="tab-pane" id="image" role="tabpanel">Image</div>
+					<div class="tab-pane" id="details" role="tabpanel">Details</div>
+					<div class="tab-pane p-3" id="shipping" role="tabpanel">
+						<div th:replace="product_shipping :: product_shipping"></div>
+					</div>
+				</div>
+
+				<div class="text-center">
+					<input type="submit" value="Save" class="btn btn-primary">
+					<input type="submit" value="Cancel" class="btn btn-secondary"
+						id="buttonCancel">
+				</div>
+
+			</div>
+		</form>
+
+		<div class="modal" tabindex="-1" role="dialog" id="modalDialogue">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalTitle">Warning</h5>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<span id="modalbody"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:replace="footer::foot"></div>
+	</div>
+</body>
+<div th:replace="script::script"></div>
+<script type="text/javascript">
+	dropdownBrands=$("#brand");
+	dropdowCategories=$("#category");
+	moduleUrl="[[@{/brands}]]";
+	
+	$(document).ready(function(){
+		$("#buttonCancel").on("click", function() {
+			window.location = "[[@{/products}]]";
+		});		
+		$("#shortDescription").richText();
+		$("#fullDescription").richText();		
+		dropdownBrands.change(function(){
+			dropdowCategories.empty();
+			getCategories();
+		});
+		getCategories();
+	});
+	
+	function getCategories(){
+		brandId=dropdownBrands.val();		
+		url=moduleUrl+ "/" + brandId + "/categories";
+		//alert(url);
+		$.get(url,function(responseJson){
+			$.each(responseJson,function(index,category){
+				//alert(category.name);
+				$("<option>").val(category.id).text(category.name).appendTo(dropdowCategories);
+			});
+		});
+	}
+	
+	function checkProduct(form) {
+		pId = $("#id").val();		
+		pName = $("#name").val();		
+		csrfValue = $("input[name='_csrf']").val();
+		url = "[[@{/products/check_unique}]]";
+		params = {
+			id : pId,
+			name : pName,			
+			_csrf : csrfValue
+		};
+		$.post(url, params, function(response) {
+			if (response == "OK") {
+				form.submit();
+			} else if (response == "Duplicate") {
+				showModalDialogue("Warning",
+						"This product name is already present in database: "
+								+ pName);
+			}else{
+				showModalDialogue("Warning","Unknown server error");
+			} 
+		});
+		return false;
+	}
+	
+	function showModalDialogue(title, message) {
+		$("#modalTitle").text(title);
+		$("#modalbody").text(message);
+		$("#modalDialogue").modal();
+	}	
+</script>
+</html>

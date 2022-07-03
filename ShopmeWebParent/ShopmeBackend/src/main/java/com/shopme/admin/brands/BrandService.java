@@ -69,4 +69,12 @@ public class BrandService {
 		}
 		return "OK";
 	}
+
+	public List<Brand> findAll() {		
+		return brandsRepository.findAll();
+	}
+	
+	public Brand getById(Integer id) {
+		return brandsRepository.findById(id).get();
+	}
 }

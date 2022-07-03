@@ -1,5 +1,7 @@
 package com.shopme.admin.brands;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +19,7 @@ public interface BrandsRepository extends PagingAndSortingRepository<Brand,Integ
 	public Page<Brand>findAll(String keyword,Pageable pageable);
 	
 	public Brand findByName(String name);
+	
+	@Query("SELECT NEW Brand(b.id,b.name) FROM Brand b ORDER BY b.name ASC")
+	public List<Brand> findAll();
 }

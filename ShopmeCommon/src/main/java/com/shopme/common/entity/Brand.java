@@ -31,11 +31,18 @@ public class Brand {
 	private Set<Category> categories = new HashSet<>();
 
 	public Brand() {
-		
+
 	}
-	public Brand(String name) {		
+
+	public Brand(String name) {
 		this.name = name;
-		this.logo="default.png";
+		this.logo = "default.png";
+	}
+
+	public Brand(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
 	}
 
 	public int getId() {
@@ -69,12 +76,12 @@ public class Brand {
 	public void setCategories(Set<Category> categories) {
 		this.categories = categories;
 	}
-	
+
 	@Transient
 	public String getLogoPath() {
-		if(this.id==0 || this.logo==null) {
+		if (this.id == 0 || this.logo == null) {
 			return "/images/default-user.png";
-		}else {
+		} else {
 			return "/brand-logos/" + this.id + "/" + this.logo;
 		}
 	}
