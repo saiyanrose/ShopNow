@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shopme.admin.user.UserNotFoundException;
 import com.shopme.common.entity.Product;
 
 @Service
@@ -45,5 +46,18 @@ public class ProductService {
 			if(productByName!=null && productByName.getId()!=id) return "Duplicate";
 		}
 		return "OK";
+	}
+
+	public void checkEnabledStatus(Integer id, boolean status) {
+		
+		productRepository.updateEnabledStatus(id, status);
+	}
+
+	public void deleteProduct(Integer id) throws ProductNotFoundException {
+		Long countById=productRepository.countById(id);
+		if(countById==null || countById==0) {
+			throw new ProductNotFoundException("No Such Product is present.");
+		}
+		productRepository.deleteById(id);		
 	}
 }
