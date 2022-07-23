@@ -46,8 +46,7 @@
 					<tbody>
 						<tr th:each="cat: ${products}">
 							<th scope="row">[[${cat.id}]]</th>
-							<td><span class=""></span> <img style="width: 100px"
-								 /></td>
+							<td><img th:src="@{${cat.mainImagePath}}" style="width:120px" class="img-fluid"/></td>
 							<td>[[${cat.name}]]</td>
 							<td>[[${cat.brand.name}]]</td>
 							<td>[[${cat.category.name}]]</td>
@@ -106,12 +105,55 @@
 
 			<div th:replace="footer::foot"></div>
 		</div>
-	</div>
-	<div th:replace="script::script"></div>
+	</div>	
 	<script type="text/javascript">
 		function clearFilter() {
 			window.location = "[[@{/categories}]]";
 		}
+		
+		//logout
+		$(document).ready(function() {
+			$("#logoutLink").on("click", function(e) {
+				e.preventDefault();
+				document.logoutForm.submit();
+			});
+			customizeDropdown();
+		});
+		
+		//logout dropdown
+		function customizeDropdown() {
+			$(".navbar .dropdown").hover(
+					function() {
+						$(this).find('.dropdown-menu').first().stop(true, true)
+								.delay(250).slideDown();
+					},
+					function() {
+						$(this).find('.dropdown-menu').first().stop(true, true)
+								.delay(100).slideUp();
+					});
+
+			$(".dropdown > a").click(function() {
+				location.href = this.href;
+			});
+		}
+		
+		//delete product
+		$(document).ready(
+					function() {
+						$(".link-delete").on(
+								"click",
+								function(e) {
+									e.preventDefault();
+									link = $(this);
+									userId = link.attr("userId");
+									$("#yesButton").attr("href",
+											link.attr("href"));
+									$("#confirmText").text(
+											"Are you sure want to delete id: "
+													+ userId + " ?");
+									$("#confirmModal").modal();
+								});
+					});	
 	</script>
 </body>
 </html>

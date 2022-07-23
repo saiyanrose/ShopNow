@@ -24,7 +24,7 @@
 		<div th:if="${message != null}"
 			class="alert alert-success text-center">[[${message}]]</div>
 
-		<form th:action="@{/products/save}" method="post" th:object="${product}" onsubmit="return checkProduct(this);">
+		<form th:action="@{/products/save}" method="post" th:object="${product}" onsubmit="return checkProduct(this);" enctype="multipart/form-data">
 		<input type="hidden" th:field="*{id}">
 			<div>
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -58,7 +58,9 @@
 					<div class="tab-pane" id="description" role="tabpanel">
 						<div th:replace="product_description :: product_des"></div>
 					</div>
-					<div class="tab-pane" id="image" role="tabpanel">Image</div>
+					<div class="tab-pane" id="image" role="tabpanel">
+						<div th:replace="product_images :: product_images"></div>
+					</div>
 					<div class="tab-pane" id="details" role="tabpanel">Details</div>
 					<div class="tab-pane p-3" id="shipping" role="tabpanel">
 						<div th:replace="product_shipping :: product_shipping"></div>
@@ -98,11 +100,43 @@
 	dropdownBrands=$("#brand");
 	dropdowCategories=$("#category");
 	moduleUrl="[[@{/brands}]]";
+	var extraImageCount=0;
 	
-	$(document).ready(function(){
+	$(document).ready(function(){		
+		$("input[name='extraImage']").each(function(index){
+			//alert(index);
+			$(this).change(function(){
+				extraImageCount++;
+				showImageThumbnailExtra(this,index);
+			});		
+									
+		});			
+		
+		$("#fileImage").change(function() {
+			fileSize = this.files[0].size;
+			if (fileSize > 102400) {
+				this.setCustomValidity("You must choose file less than 100KB");
+				this.reportValidity();
+			} else {
+				this.setCustomValidity("");
+				showImageThumbnail(this);
+			}
+
+		});
+		
+		function showImageThumbnail(fileInput) {
+			var file = fileInput.files[0];
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#thumbnail").attr("src", e.target.result);
+			};
+			reader.readAsDataURL(file);
+		}		
+		
 		$("#buttonCancel").on("click", function() {
 			window.location = "[[@{/products}]]";
-		});		
+		});	
+		
 		$("#shortDescription").richText();
 		$("#fullDescription").richText();		
 		dropdownBrands.change(function(){
@@ -111,6 +145,41 @@
 		});
 		getCategories();
 	});
+	
+	function showImageThumbnailExtra(fileInput,index) {
+		var file = fileInput.files[0];
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			$("#extraThumbnail" + index).attr("src", e.target.result);
+		};
+		reader.readAsDataURL(file);
+		if(index>=extraImageCount - 1){
+			addExtraImageSection(index + 1);
+		}
+		
+	}
+	
+	function addExtraImageSection(index){
+		html=`<div class="col border m-3 p-2" id="extraImageDiv${index}">
+			<div id="extraImageHeader${index}"><label>Extra Image #${index + 1}:</label></div>			
+			<div class="m-2">					
+				 <img id="extraThumbnail${index}" class="img-fluid" th:src="@{/images/image-thumbnail.png}" />						
+			</div>
+			<div>
+				<input type="file" name="extraImage" onchange="showImageThumbnailExtra(this,${index})" 
+					 accept="image/png, image/jpeg">
+			</div>
+		</div>`;
+		
+		htmlLinkRemove=`<a class="btn fas fa-times-circle fa-2x float-right" href="javascript:removeExtraImage(${index -1})" title="Remove this image"></a>`;
+		
+		$("#divProductImages").append(html);
+		$("#extraImageHeader" + (index - 1)).append(htmlLinkRemove);
+	}
+	
+	function removeExtraImage(index){
+		$("#extraImageDiv" + index).remove();
+	}
 	
 	function getCategories(){
 		brandId=dropdownBrands.val();		
@@ -153,5 +222,7 @@
 		$("#modalbody").text(message);
 		$("#modalDialogue").modal();
 	}	
+	
+	
 </script>
 </html>

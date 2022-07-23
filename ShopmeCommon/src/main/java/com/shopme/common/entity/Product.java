@@ -1,7 +1,10 @@
 package com.shopme.common.entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="products")
@@ -51,6 +56,28 @@ public class Product {
 	private float width;
 	private float heigth;
 	private float weight;
+	
+	@Column(name="main_image",nullable = false)
+	private String mainImage;
+	
+	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL)	
+	private Set<ProductImages>images=new HashSet<>();
+
+	public Set<ProductImages> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<ProductImages> images) {
+		this.images = images;
+	}
+
+	public String getMainImage() {
+		return mainImage;
+	}
+
+	public void setMainImage(String mainImage) {
+		this.mainImage = mainImage;
+	}
 
 	@ManyToOne
 	@JoinColumn(name="category_id")
@@ -204,4 +231,13 @@ public class Product {
 		this.brand = brand;
 	}
 
+	public void addExtraImage(String imageName) {
+		this.images.add(new ProductImages(imageName, this));
+	}
+	
+	@Transient
+	public String getMainImagePath() {
+		if(id==null || mainImage==null) return "/images/image-thumbnail.png";
+		return "/product-images/" +this.id + "/" +this.mainImage;
+	}
 }
