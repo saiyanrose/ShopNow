@@ -60,7 +60,7 @@
 								title="Enable this category"></a></td>
 
 							<td><a class="fas fa-edit fa-2x" th:href="@{'/categories/category/edit/' + ${cat.id}}"></a>
-								<a th:href="@{'/categories/category/delete' + ${cat.id}}" class="fas fa-user-times fa-2x link-delete"></a>
+								<a th:href="@{'/categories/category/delete/' + ${cat.id}}" class="fas fa-user-times fa-2x link-delete" th:catId="${cat.id}" title="Delete this category"></a>
 
 							</td>
 
@@ -96,8 +96,23 @@
 					</ul>
 				</nav>
 			</div>
-
-			<div></div>
+			<div class="modal" tabindex="-1" role="dialog" id="confirmModal1">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Delete Confirmation</h5>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+							<span id="confirmText"></span>
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-success" href="" id="yesButton">Yes</a>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<div th:replace="footer::foot"></div>
 		</div>

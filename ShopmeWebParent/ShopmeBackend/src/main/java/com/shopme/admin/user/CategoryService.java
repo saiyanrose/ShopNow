@@ -177,4 +177,13 @@ public class CategoryService {
 		return sortedSet;
 
 	}
+
+	public void deleteCategory(int id) throws CategoryNotFoundException {
+		Long countById=categoryRepository.countById(id);
+		if(countById==null || countById==0) {
+			throw new CategoryNotFoundException("No Such category is present.");
+		}
+		categoryRepository.deleteById(id);
+		
+	}
 }

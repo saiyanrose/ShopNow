@@ -95,7 +95,7 @@
 								th:href="@{'/brands/edit/' + ${brnd.id}}" title="Edit this brand"></a>
 								&nbsp; <a class="fas fa-user-times fa-2x link-delete"
 								th:href="@{'/brands/delete/' + ${brnd.id}}"
-								title="Delete this brand" th:userId="${brnd.id}"></a></td>
+								title="Delete this brand" th:brandId="${brnd.id}"></a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -121,7 +121,7 @@
 				</ul>
 			</nav>
 			</div>
-			<div class="modal" tabindex="-1" role="dialog" id="confirmModal">
+			<div class="modal" tabindex="-1" role="dialog" id="confirmModal2">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
