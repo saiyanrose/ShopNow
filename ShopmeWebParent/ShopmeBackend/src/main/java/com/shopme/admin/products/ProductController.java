@@ -1,6 +1,7 @@
 package com.shopme.admin.products;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,14 +50,30 @@ public class ProductController {
 
 	@PostMapping("/products/save")
 	public String saveProducts(Product product, RedirectAttributes redirectAttributes,
-			@RequestParam("fileImage") MultipartFile file, @RequestParam("extraImage") MultipartFile[] img)
+			@RequestParam("fileImage") MultipartFile file, @RequestParam("extraImage") MultipartFile[] img,
+			@RequestParam(name="detailName",required = false) String[] detailName,@RequestParam(name="detailValue",required = false)String[] detailValue)
 			throws IOException {
 		saveMainImage(file, product);
 		setExtraImage(img, product);
+		setProductDetails(detailName,detailValue,product);
 		Product saveProduct = productService.save(product);
 		saveUplodedImage(file, img, product);
 		redirectAttributes.addFlashAttribute("message", "Product save successfully!");
 		return "redirect:/products";
+	}
+
+	private void setProductDetails(String[] detailName, String[] detailValue, Product product) {
+		if(detailName==null || detailName.length==0)return;
+		for (int count=0;count<detailName.length;count++) {
+			String name=detailName[count];
+			String value=detailValue[count];
+			
+			if(!name.isEmpty() && !value.isEmpty()) {
+				product.addDetail(name,value);
+			}
+			
+		}
+		
 	}
 
 	private void saveUplodedImage(MultipartFile file, MultipartFile[] img, Product saveProduct) throws IOException {

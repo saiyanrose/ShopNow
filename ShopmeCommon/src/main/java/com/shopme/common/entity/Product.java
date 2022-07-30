@@ -1,7 +1,9 @@
 package com.shopme.common.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -86,6 +88,9 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name="brand_id")
 	private Brand brand;
+	
+	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+	private List<ProductDetails>details=new ArrayList<>();
 
 	public Integer getId() {
 		return id;
@@ -240,4 +245,17 @@ public class Product {
 		if(id==null || mainImage==null) return "/images/image-thumbnail.png";
 		return "/product-images/" +this.id + "/" +this.mainImage;
 	}
+
+	public List<ProductDetails> getProduct_details() {
+		return details;
+	}
+
+	public void setProduct_details(List<ProductDetails> product_details) {
+		this.details = product_details;
+	}
+
+	public void addDetail(String name, String value) {
+		this.details.add(new ProductDetails(name, value,this));		
+	}
+	
 }

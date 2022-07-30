@@ -61,7 +61,12 @@
 					<div class="tab-pane" id="image" role="tabpanel">
 						<div th:replace="product_images :: product_images"></div>
 					</div>
-					<div class="tab-pane" id="details" role="tabpanel">Details</div>
+					<div class="tab-pane" id="details" role="tabpanel">
+						<div th:replace="product_details :: product_details"></div>
+						<div>
+							<input type="button" class="btn btn-secondary" value="Add More Details" onclick="addNextDetailSection()"/>
+						</div>
+					</div>
 					<div class="tab-pane p-3" id="shipping" role="tabpanel">
 						<div th:replace="product_shipping :: product_shipping"></div>
 					</div>
@@ -223,6 +228,6 @@
 		$("#modalDialogue").modal();
 	}	
 	
-	
 </script>
+<script th:src="@{/js/product_details.js}"></script>
 </html>
