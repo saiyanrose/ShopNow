@@ -3,6 +3,7 @@ package com.shopme.common.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -62,7 +63,7 @@ public class Product {
 	@Column(name = "main_image", nullable = false)
 	private String mainImage;
 
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
 	private Set<ProductImages> images = new HashSet<>();
 
 	public Set<ProductImages> getImages() {
@@ -89,7 +90,7 @@ public class Product {
 	@JoinColumn(name = "brand_id")
 	private Brand brand;
 
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<ProductDetails> details = new ArrayList<>();
 
 	public Integer getId() {
@@ -257,6 +258,21 @@ public class Product {
 
 	public void addDetail(String name, String value) {
 		this.details.add(new ProductDetails(name, value, this));
+	}
+	
+	public void addDetail(Integer id, String name, String value) {
+		this.details.add(new ProductDetails(id,name, value, this));
+	}
+
+	public boolean containsImageName(String filename) {
+		Iterator<ProductImages>product_images=images.iterator();
+		while(product_images.hasNext()) {
+			ProductImages img=product_images.next();
+			if(img.getName().equals(filename)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

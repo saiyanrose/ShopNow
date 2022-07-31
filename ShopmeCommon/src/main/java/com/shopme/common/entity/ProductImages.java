@@ -10,24 +10,30 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="product_images")
+@Table(name = "product_images")
 public class ProductImages {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(nullable = false)
 	private String name;
-	
+
 	@ManyToOne
-	@JoinColumn(name="product_id")
+	@JoinColumn(name = "product_id")
 	private Product product;
-	
+
 	public ProductImages() {
-		
+
 	}
 
-	public ProductImages(String name, Product product) {		
+	public ProductImages(String name, Product product) {
+		this.name = name;
+		this.product = product;
+	}
+
+	public ProductImages(Integer id, String name, Product product) {
+		this.id = id;
 		this.name = name;
 		this.product = product;
 	}
@@ -55,10 +61,11 @@ public class ProductImages {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	
+
 	public String getImagePath() {
-		if(id==null && id==0)return "/images/image-thumbnail.png";
-		return "/product-images/" +product.getId()+ "/extras/" +this.name;
+		if (id == null && id == 0)
+			return "/images/image-thumbnail.png";
+		return "/product-images/" + product.getId() + "/extras/" + this.name;
 	}
-	
+
 }

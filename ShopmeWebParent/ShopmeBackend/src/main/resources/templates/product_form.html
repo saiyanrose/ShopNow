@@ -169,6 +169,11 @@
 	
 	function showImageThumbnailExtra(fileInput,index) {
 		var file = fileInput.files[0];
+		filename=file.name;
+		imageHiddenField=$("#imageName" +index);
+		if(imageHiddenField.length){
+			imageHiddenField.val(filename);
+		}
 		var reader = new FileReader();
 		reader.onload = function(e) {
 			$("#extraThumbnail" + index).attr("src", e.target.result);
