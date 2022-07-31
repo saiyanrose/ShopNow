@@ -26,6 +26,7 @@
 
 		<form th:action="@{/products/save}" method="post" th:object="${product}" onsubmit="return checkProduct(this);" enctype="multipart/form-data">
 		<input type="hidden" th:field="*{id}">
+		<input th:if="${product.category!=null}" type="hidden" id="categoryId" th:field="${product.category.id}">
 			<div>
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item" role="presentation">
@@ -113,7 +114,13 @@
 			$(this).change(function(){
 				extraImageCount++;
 				showImageThumbnailExtra(this,index);
-			});		
+			});	
+			
+			$("a[name='link-remove-extra']").each(function(index){
+				$(this).click(function(){
+					removeExtraImage(index);
+				});
+			});
 									
 		});			
 		
@@ -148,8 +155,17 @@
 			dropdowCategories.empty();
 			getCategories();
 		});
-		getCategories();
+		getCategoriesForNew();
 	});
+	
+	function getCategoriesForNew(){
+		catField=$("#categoryId");
+		editMode=false;
+		if(catField.length){
+			editMode=true;
+		}
+		if(!editMode) return getCategories();
+	}
 	
 	function showImageThumbnailExtra(fileInput,index) {
 		var file = fileInput.files[0];

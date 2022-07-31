@@ -19,38 +19,38 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="products")
+@Table(name = "products")
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(unique = true,length = 256,nullable = false)
+
+	@Column(unique = true, length = 256, nullable = false)
 	private String name;
-	
-	@Column(unique = true,length = 256,nullable = false)
+
+	@Column(unique = true, length = 256, nullable = false)
 	private String alias;
-	
-	@Column(length = 512,nullable = false)
+
+	@Column(length = 512, nullable = false)
 	private String shortDescription;
-	
-	@Column(length = 4000,nullable = false)
+
+	@Column(length = 4000, nullable = false)
 	private String fullDescription;
 
 	@Column(name = "created_time")
 	private Date createdTime;
-	
+
 	@Column(name = "updated_time")
 	private Date updatedTime;
 
 	private boolean enabled;
-	
+
 	@Column(name = "in_stock")
 	private boolean inStock;
 
 	private float cost;
 	private float price;
-	
+
 	@Column(name = "discount_percent")
 	private float discountPrice;
 
@@ -58,12 +58,12 @@ public class Product {
 	private float width;
 	private float heigth;
 	private float weight;
-	
-	@Column(name="main_image",nullable = false)
+
+	@Column(name = "main_image", nullable = false)
 	private String mainImage;
-	
-	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL)	
-	private Set<ProductImages>images=new HashSet<>();
+
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private Set<ProductImages> images = new HashSet<>();
 
 	public Set<ProductImages> getImages() {
 		return images;
@@ -82,15 +82,15 @@ public class Product {
 	}
 
 	@ManyToOne
-	@JoinColumn(name="category_id")
+	@JoinColumn(name = "category_id")
 	private Category category;
 
 	@ManyToOne
-	@JoinColumn(name="brand_id")
+	@JoinColumn(name = "brand_id")
 	private Brand brand;
-	
-	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
-	private List<ProductDetails>details=new ArrayList<>();
+
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private List<ProductDetails> details = new ArrayList<>();
 
 	public Integer getId() {
 		return id;
@@ -239,23 +239,24 @@ public class Product {
 	public void addExtraImage(String imageName) {
 		this.images.add(new ProductImages(imageName, this));
 	}
-	
+
 	@Transient
 	public String getMainImagePath() {
-		if(id==null || mainImage==null) return "/images/image-thumbnail.png";
-		return "/product-images/" +this.id + "/" +this.mainImage;
+		if (id == null || mainImage == null)
+			return "/images/image-thumbnail.png";
+		return "/product-images/" + this.id + "/" + this.mainImage;
 	}
 
-	public List<ProductDetails> getProduct_details() {
+	public List<ProductDetails> getDetails() {
 		return details;
 	}
 
-	public void setProduct_details(List<ProductDetails> product_details) {
-		this.details = product_details;
+	public void setDetails(List<ProductDetails> details) {
+		this.details = details;
 	}
 
 	public void addDetail(String name, String value) {
-		this.details.add(new ProductDetails(name, value,this));		
+		this.details.add(new ProductDetails(name, value, this));
 	}
-	
+
 }

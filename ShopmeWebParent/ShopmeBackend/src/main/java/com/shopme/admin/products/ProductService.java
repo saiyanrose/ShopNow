@@ -2,6 +2,7 @@ package com.shopme.admin.products;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
@@ -59,5 +60,13 @@ public class ProductService {
 			throw new ProductNotFoundException("No Such Product is present.");
 		}
 		productRepository.deleteById(id);		
+	}
+	
+	public Product getById(Integer id) throws ProductNotFoundException {
+		try {
+			return productRepository.findById(id).get();
+		}catch(NoSuchElementException e) {
+			throw new ProductNotFoundException("No Product found with Id "+id);
+		}
 	}
 }

@@ -56,5 +56,9 @@ public class ProductImages {
 		this.product = product;
 	}
 	
+	public String getImagePath() {
+		if(id==null && id==0)return "/images/image-thumbnail.png";
+		return "/product-images/" +product.getId()+ "/extras/" +this.name;
+	}
 	
 }
