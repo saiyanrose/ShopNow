@@ -15,7 +15,7 @@
 		<div th:if="${message != null}"
 			class="alert alert-success text-center">[[${message}]]</div>
 
-		
+
 		<div>
 			<div>
 				<table
@@ -53,7 +53,8 @@
 								class="fas fa-edit fa-2x"
 								th:href="@{'/products/edit/' + ${cat.id}}"></a>&nbsp; <a
 								th:href="@{'/products/delete/' + ${cat.id}}"
-								class="fas fa-user-times fa-2x link-delete" title="Delete this product" th:productId="${cat.id}"></a></td>
+								class="fas fa-user-times fa-2x link-delete"
+								title="Delete this product" th:productId="${cat.id}"></a></td>
 
 						</tr>
 					</tbody>
@@ -91,15 +92,15 @@
 		}
 
 		//logout
-		$(document).ready(				
+		$(document).ready(
 				function() {
-					jQuery.noConflict();
+					//jQuery.noConflict();
 					$("#logoutLink").on("click", function(e) {
 						e.preventDefault();
 						document.logoutForm.submit();
 					});
 					customizeDropdown();
-					 $('#example2').DataTable();
+					$('#example2').DataTable();
 
 					$(".link-detail").on(
 							"click",
@@ -148,12 +149,10 @@
 									});
 				});
 	</script>
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	
 	<script
 		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 	<script
 		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
-	
-
 </body>
 </html>
