@@ -15,23 +15,12 @@
 		<div th:if="${message != null}"
 			class="alert alert-success text-center">[[${message}]]</div>
 
-		<div>
-			<form class="form-inline" th:action="@{/products/1}">
-				Filter:&nbsp; <input type="hidden" name="sortField"
-					th:value="${sortField}" /> <input type="hidden" name="sortDir"
-					th:value="${sortDir}" /> <input type="search" name="keyword"
-					th:value="${keyword}" class="form-control" required />
-				&nbsp;&nbsp; <input type="submit" value="Search"
-					class="btn btn-primary" required /> &nbsp;&nbsp; <input
-					type="button" value="Clear" class="btn btn-secondary"
-					onclick="clearFilter()" />
-			</form>
-		</div>
-
+		
 		<div>
 			<div>
 				<table
-					class="table table-bordered table-striped table-hover table-responsive-xl">
+					class="table table-bordered table-striped table-hover table-responsive-xl"
+					id="example2">
 					<thead class="thead-dark">
 						<tr>
 							<th scope="col"><a class="text-white">ID</a></th>
@@ -46,96 +35,65 @@
 					<tbody>
 						<tr th:each="cat: ${products}">
 							<th scope="row">[[${cat.id}]]</th>
-							<td><img th:src="@{${cat.mainImagePath}}" style="width:120px" class="img-fluid"/></td>
+							<td><img th:src="@{${cat.mainImagePath}}"
+								style="width: 120px" class="img-fluid" /></td>
 							<td>[[${cat.name}]]</td>
 							<td>[[${cat.brand.name}]]</td>
 							<td>[[${cat.category.name}]]</td>
 							<td><a th:if="${cat.enabled==true}"
 								class="fas fa-check-circle fa-2x"
 								th:href="@{'/products/' + ${cat.id} +'/enabled/false'}"
-								title="Disable this category"></a>
-								
-								<a	th:if="${cat.enabled==false}" class="fas fa-times fa-2x"
+								title="Disable this category"></a> <a
+								th:if="${cat.enabled==false}" class="fas fa-times fa-2x"
 								th:href="@{'/products/' + ${cat.id} +'/enabled/true'}"
-								title="Enable this category"></a>
-							</td>
-							
-							<td>
-							
-								<a class="fas fa-file-alt fa-2x icon-green link-detail " th:href="@{'/products/detail/'+ ${cat.id}}"></a>&nbsp;							
-								<a class="fas fa-edit fa-2x" th:href="@{'/products/edit/' + ${cat.id}}"></a>&nbsp;
-								<a th:href="@{'/products/delete' + ${cat.id}}" class="fas fa-user-times fa-2x link-delete"></a>
+								title="Enable this category"></a></td>
 
-							</td>
-							
+							<td><a class="fas fa-file-alt fa-2x icon-green link-detail "
+								th:href="@{'/products/detail/'+ ${cat.id}}"></a>&nbsp; <a
+								class="fas fa-edit fa-2x"
+								th:href="@{'/products/edit/' + ${cat.id}}"></a>&nbsp; <a
+								th:href="@{'/products/delete/' + ${cat.id}}"
+								class="fas fa-user-times fa-2x link-delete"></a></td>
+
 						</tr>
 					</tbody>
 				</table>
 			</div>
-			
+
 			<div class="modal fade" id="detailModal">
 				<div class="modal-dialog modal-xl" id="detailModal">
-					<div class="modal-content">
-						
-					</div>
+					<div class="modal-content"></div>
 				</div>
 			</div>
-			
-			<div class="text-center m-1" th:if="${totalElements<0}">
-				<span>No Products Found</span>
-			</div>
-			<div th:if="${totalPage > 1}">
-				<nav aria-label="Page navigation example">
-					<ul class="pagination justify-content-center">
-						<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a
-							class="page-link"
-							th:href="@{'/categories/1?sortField=' + ${sortField} + '&sortDir=' + ${reverseSort}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">First</a></li>
-						<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a
-							class="page-link"
-							th:href="@{'/categories/' +${pageNum-1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Previous</a></li>
-						<li th:class="${pageNum != i ? 'page-item' :'page-item active'}"
-							th:each="i:${#numbers.sequence(1,totalPage)}"><a
-							class="page-link"
-							th:href="@{'/categories/' +${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
-						</li>
-						<li
-							th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a
-							class="page-link"
-							th:href="@{'/categories/' +${pageNum+1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Next</a></li>
-						<li
-							th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a
-							class="page-link"
-							th:href="@{'/categories/' +${totalPage}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Last</a></li>
-					</ul>
-				</nav>
-			</div>
-
-			<div></div>
-
 			<div th:replace="footer::foot"></div>
 		</div>
-	</div>	
+	</div>
 	<script type="text/javascript">
 		function clearFilter() {
 			window.location = "[[@{/products}]]";
 		}
-		
+
 		//logout
-		$(document).ready(function() {
-			$("#logoutLink").on("click", function(e) {
-				e.preventDefault();
-				document.logoutForm.submit();
-			});
-			customizeDropdown();
-			
-			$(".link-detail").on("click",function(e){
-				e.preventDefault();
-				linkDetailUrl=$(this).attr("href");
-				//alert(linkDetailUrl);
-				$("#detailModal").modal("show").find(".modal-content").load(linkDetailUrl);
-			});
-		});
-		
+		$(document).ready(
+				function() {
+					$("#logoutLink").on("click", function(e) {
+						e.preventDefault();
+						document.logoutForm.submit();
+					});
+					customizeDropdown();
+					 $('#example2').DataTable();
+
+					$(".link-detail").on(
+							"click",
+							function(e) {
+								e.preventDefault();
+								linkDetailUrl = $(this).attr("href");
+								//alert(linkDetailUrl);
+								$("#detailModal").modal("show").find(
+										".modal-content").load(linkDetailUrl);
+							});
+				});
+
 		//logout dropdown
 		function customizeDropdown() {
 			$(".navbar .dropdown").hover(
@@ -152,24 +110,32 @@
 				location.href = this.href;
 			});
 		}
-		
+
 		//delete product
 		$(document).ready(
-					function() {
-						$(".link-delete").on(
-								"click",
-								function(e) {
-									e.preventDefault();
-									link = $(this);
-									userId = link.attr("userId");
-									$("#yesButton").attr("href",
-											link.attr("href"));
-									$("#confirmText").text(
-											"Are you sure want to delete id: "
-													+ userId + " ?");
-									$("#confirmModal").modal();
-								});
-					});	
+				function() {
+					$(".link-delete")
+							.on(
+									"click",
+									function(e) {
+										e.preventDefault();
+										link = $(this);
+										userId = link.attr("userId");
+										$("#yesButton").attr("href",
+												link.attr("href"));
+										$("#confirmText").text(
+												"Are you sure want to delete id: "
+														+ userId + " ?");
+										$("#confirmModal").modal();
+									});
+				});
 	</script>
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+	
+
 </body>
 </html>
