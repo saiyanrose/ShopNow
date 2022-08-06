@@ -53,7 +53,7 @@
 								class="fas fa-edit fa-2x"
 								th:href="@{'/products/edit/' + ${cat.id}}"></a>&nbsp; <a
 								th:href="@{'/products/delete/' + ${cat.id}}"
-								class="fas fa-user-times fa-2x link-delete"></a></td>
+								class="fas fa-user-times fa-2x link-delete" title="Delete this product" th:productId="${cat.id}"></a></td>
 
 						</tr>
 					</tbody>
@@ -65,6 +65,23 @@
 					<div class="modal-content"></div>
 				</div>
 			</div>
+			<div class="modal" tabindex="-1" role="dialog" id="confirmModal">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Delete Confirmation</h5>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+							<span id="confirmText"></span>
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-success" href="" id="yesButton">Yes</a>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div th:replace="footer::foot"></div>
 		</div>
 	</div>
@@ -74,8 +91,9 @@
 		}
 
 		//logout
-		$(document).ready(
+		$(document).ready(				
 				function() {
+					jQuery.noConflict();
 					$("#logoutLink").on("click", function(e) {
 						e.preventDefault();
 						document.logoutForm.submit();
@@ -120,12 +138,12 @@
 									function(e) {
 										e.preventDefault();
 										link = $(this);
-										userId = link.attr("userId");
+										productId = link.attr("productId");
 										$("#yesButton").attr("href",
 												link.attr("href"));
 										$("#confirmText").text(
 												"Are you sure want to delete id: "
-														+ userId + " ?");
+														+ productId + " ?");
 										$("#confirmModal").modal();
 									});
 				});
