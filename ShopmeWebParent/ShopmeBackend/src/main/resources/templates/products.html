@@ -62,7 +62,7 @@
 							
 							<td>
 							
-								<a class="fas fa-file-alt fa-2x icon-green" th:href="@{'/products/detail/'+ ${cat.id}}"></a>&nbsp;							
+								<a class="fas fa-file-alt fa-2x icon-green link-detail " th:href="@{'/products/detail/'+ ${cat.id}}"></a>&nbsp;							
 								<a class="fas fa-edit fa-2x" th:href="@{'/products/edit/' + ${cat.id}}"></a>&nbsp;
 								<a th:href="@{'/products/delete' + ${cat.id}}" class="fas fa-user-times fa-2x link-delete"></a>
 
@@ -72,6 +72,15 @@
 					</tbody>
 				</table>
 			</div>
+			
+			<div class="modal fade" id="detailModal">
+				<div class="modal-dialog modal-xl" id="detailModal">
+					<div class="modal-content">
+						
+					</div>
+				</div>
+			</div>
+			
 			<div class="text-center m-1" th:if="${totalElements<0}">
 				<span>No Products Found</span>
 			</div>
@@ -108,7 +117,7 @@
 	</div>	
 	<script type="text/javascript">
 		function clearFilter() {
-			window.location = "[[@{/categories}]]";
+			window.location = "[[@{/products}]]";
 		}
 		
 		//logout
@@ -118,6 +127,13 @@
 				document.logoutForm.submit();
 			});
 			customizeDropdown();
+			
+			$(".link-detail").on("click",function(e){
+				e.preventDefault();
+				linkDetailUrl=$(this).attr("href");
+				//alert(linkDetailUrl);
+				$("#detailModal").modal("show").find(".modal-content").load(linkDetailUrl);
+			});
 		});
 		
 		//logout dropdown
