@@ -48,9 +48,11 @@ public class ProductController {
 	public String newProduct(Model model) {
 		List<Brand> listBrands = brandService.findAll();
 		Product product = new Product();
+		Integer numberOfExistingExtraImages=product.getImages().size();
 		product.setEnabled(true);
 		product.setInStock(true);
 		model.addAttribute("product", product);
+		model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
 		model.addAttribute("listBrands", listBrands);
 		model.addAttribute("pageTitle", "Create New Product");
 		return "product_form";
