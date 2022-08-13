@@ -20,4 +20,12 @@ public class ProductService {
 		Pageable pageable=PageRequest.of(pageNum - 1,Product_per_page);		
 		return productRepository.listByCategory(categoryId, pageable);
 	}
+	
+	public Product getProduct(String alias) throws ProductNotFoundException {
+		Product product=productRepository.findByAlias(alias);
+		if(product==null) {
+			throw new  ProductNotFoundException("No Product Available with name" +alias);
+		}
+		return product;
+	}
 }

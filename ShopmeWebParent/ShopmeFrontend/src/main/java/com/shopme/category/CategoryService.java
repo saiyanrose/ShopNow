@@ -28,8 +28,12 @@ public class CategoryService {
 		return listNoChildCategory;
 	}
 	
-	public Category getCategory(String alias) {
-		return categoryRepository.findByAliasEnabled(alias);
+	public Category getCategory(String alias) throws CategoryNotFoundExeption {
+		Category category= categoryRepository.findByAliasEnabled(alias);
+		if(category==null) {
+			throw new CategoryNotFoundExeption("No Category Available of name "+alias);
+		}
+		return category;
 	}
 	
 	public List<Category> getParent(Category child){
