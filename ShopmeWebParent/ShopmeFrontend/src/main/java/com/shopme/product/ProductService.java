@@ -12,6 +12,7 @@ import com.shopme.common.entity.Product;
 public class ProductService {
 
 	public static final int Product_per_page=10;
+	public static final int ProductSearch_per_page=10;
 	
 	@Autowired
 	private ProductRepository productRepository;
@@ -27,5 +28,10 @@ public class ProductService {
 			throw new  ProductNotFoundException("No Product Available with name" +alias);
 		}
 		return product;
+	}
+	
+	public Page<Product>search(String keyword,int pageNum){		
+		Pageable pageable=PageRequest.of(pageNum-1,ProductSearch_per_page);
+		return productRepository.search(keyword, pageable);
 	}
 }

@@ -1,9 +1,11 @@
 package com.shopme.controller;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,5 +84,33 @@ public class ProductController {
 		}catch(ProductNotFoundException e) {
 			return "error/404";
 		}
+	}
+	
+	@GetMapping("/search")
+	public String searchByPage(@Param("keyword")String keyword,Model model) {
+		return search(keyword, model, 1);
+	}
+	
+	@GetMapping("/search/page/{pageNum}")
+	public String search(@Param("keyword")String keyword,Model model,@PathVariable("pageNum")int pageNum) {
+		Page<Product>pageProducts=productService.search(keyword,pageNum);
+		List<Product>listProducts=pageProducts.getContent();
+		
+		long startCount = (pageNum - 1) * ProductService.Product_per_page + 1;
+
+		long endCount = startCount + ProductService.Product_per_page + 1;
+
+		if (endCount > pageProducts.getTotalElements()) {
+			endCount = pageProducts.getTotalElements();
+		}
+		model.addAttribute("startCount", startCount);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("endCount", endCount);
+		model.addAttribute("totalItems", pageProducts.getTotalElements());
+		model.addAttribute("totalPage", pageProducts.getTotalPages());
+		model.addAttribute("keyword",keyword);
+		model.addAttribute("pageTitle",keyword + "- Search Result");
+		model.addAttribute("listProducts",listProducts);
+		return "product_search";
 	}
 }

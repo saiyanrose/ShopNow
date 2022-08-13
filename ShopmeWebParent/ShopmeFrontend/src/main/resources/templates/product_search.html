@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header::head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<title>[[${pageTitle}]]</title>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div th:replace="navigation::menu"></div>
+		<div th:replace="navigation::search_menu"></div>
+		<div th:if="${totalItems>0}">
+			<h2>Search Result for '[[${keyword}]]'</h2>
+		</div>	
+		<div th:unless="${totalItems>0}">
+			<h2>No match found for '[[${keyword}]]'</h2>
+		</div>		
+	</div>	
+		
+	<div class="row">
+		<th:block th:each="product: ${listProducts}">
+			<div class="col m-3">
+				<div>
+					<a th:href="@{'/p/' +${product.alias}}">
+						<img th:src="@{${product.mainImagePath}}" width="150"/> <br>
+						<b>[[${product.name}]]</b>
+					</a>	
+				</div>
+				<div th:if="${product.discountPrice<=0}">
+					<span>$ [[${product.price}]]</span>
+				</div>
+				<div th:if="${product.discountPrice>0}">
+					<span style="font-size: larger; color: darkred">$ [[${product.discountPrize}]]</span>
+					<del><span>$ [[${product.price}]]</span></del>
+				</div>	
+			</div>			
+		</th:block>
+	</div>
+	
+	<div class="text-center m-1" th:if="${totalItems>0}">
+				<span>Showing products # [[${startCount}]] to [[${endCount}]] of
+					[[${totalItems}]]</span>
+	</div>
+	
+	<div class="text-center m-1" th:unless="${totalItems>0}">
+				<span>No Product Found</span>
+	</div>
+	
+	<div th:if="${totalPage > 1}">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/1'}">First</a></li>
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/' +${pageNum-1}}">Previous</a></li>
+					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}"
+					 th:each="i:${#numbers.sequence(1,totalPage)}">
+					<a class="page-link" th:href="@{'/search/page/' +${i}}">[[${i}]]</a>
+					</li>					
+				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/' +${pageNum+1}}">Next</a></li>
+					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/' +${totalPage}}">Last</a></li>
+				</ul>
+			</nav>
+	</div>
+	
+	<div th:replace="navigation::footer_menu"></div>
+</body>
+</html>
