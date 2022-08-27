@@ -40,4 +40,10 @@ public class SettingReposiotryTest {
 		Setting thousandPointType=new Setting("THOUSAND_POINT_TYPE","COMMA",SettingCategory.CURRENCY);
 		settingRepository.saveAll(List.of(currencyId,symbol,symbolPosition,decimalDigit,decimalPointType,thousandPointType));
 	}
+	
+	@Test
+	public void testListSettingByCategory() {
+		List<Setting>listSetting=settingRepository.findBySettingCategory(SettingCategory.GENERAL); 
+		listSetting.forEach(System.out::println);
+	}
 }

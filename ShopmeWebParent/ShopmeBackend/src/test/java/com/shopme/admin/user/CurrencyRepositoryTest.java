@@ -1,5 +1,7 @@
 package com.shopme.admin.user;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,5 +34,12 @@ public class CurrencyRepositoryTest {
 		);
 		
 		currencyRepository.saveAll(listCurrencies);
+	}
+	
+	@Test
+	public void testCurrencyList() {
+		List<Currency>currencies=currencyRepository.findAllByOrderByNameAsc();
+		currencies.forEach(System.out::println);
+		assertThat(currencies.size()).isGreaterThan(0);
 	}
 }

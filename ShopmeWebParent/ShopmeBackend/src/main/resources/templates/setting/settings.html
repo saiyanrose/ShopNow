@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/richtext/jquery.richtext.min.js}"></script>
+<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}">
+<title>Settings- Shopnow Admin</title>
+</head>
+<body>
+	<div class="container-fluid">
+		<div>
+			<div th:replace="navigation :: menu"></div>
+		</div>
+
+		<div class="text-center">
+			<h1>Site Setting</h1>
+		</div>
+
+		<div th:if="${message != null}"
+			class="alert alert-success text-center">[[${message}]]</div>
+
+
+		<div>
+			<ul class="nav nav-tabs" id="settingTab" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" data-toggle="tab" href="#general"
+						type="button" role="tab">General</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" data-toggle="tab" href="#countries"
+						type="button" role="tab">Countries</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" data-toggle="tab" href="#states"
+						type="button" role="tab">States</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" data-toggle="tab" href="#mailserver"
+						type="button" role="tab">Mail Server</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" data-toggle="tab" href="#mailtemplates"
+						type="button" role="tab">Mail Templates</button>
+				</li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div class="tab-pane active p-3" id="general" role="tabpanel">
+					<div th:replace="setting/general :: content"></div>
+				</div>
+				<div class="tab-pane" id="countries" role="tabpanel"></div>
+				<div class="tab-pane" id="states" role="tabpanel"></div>
+				<div class="tab-pane" id="mailServer" role="tabpanel"></div>
+				<div class="tab-pane p-3" id="mailTemplates" role="tabpanel">
+
+				</div>
+			</div>
+
+
+
+		</div>
+
+
+
+		<div th:replace="footer::foot"></div>
+	</div>
+</body>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#logoutLink").on("click", function(e) {
+			e.preventDefault();
+			document.logoutForm.submit();
+		});
+		customizeDropdown();
+	});
+
+	function customizeDropdown() {
+		$(".navbar .dropdown").hover(
+				function() {
+					$(this).find('.dropdown-menu').first().stop(true, true)
+							.delay(250).slideDown();
+				},
+				function() {
+					$(this).find('.dropdown-menu').first().stop(true, true)
+							.delay(100).slideUp();
+				});
+
+		$(".dropdown > a").click(function() {
+			location.href = this.href;
+		});
+	}
+	
+	$("#fileImage").change(function() {
+		fileSize = this.files[0].size;
+		if (fileSize > 1048576) {
+			this.setCustomValidity("You must choose file less than 1mb");
+			this.reportValidity();
+		} else {
+			this.setCustomValidity("");
+			showImageThumbnail(this);
+		}
+
+	});
+	
+	function showImageThumbnail(fileInput) {
+		var file = fileInput.files[0];
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			$("#thumbnail").attr("src", e.target.result);
+		};
+		reader.readAsDataURL(file);
+	}
+</script>
+
+</html>
