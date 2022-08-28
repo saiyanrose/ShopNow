@@ -77,6 +77,8 @@ public class Setting {
 		Setting other = (Setting) obj;
 		return Objects.equals(key, other.key);
 	}
+
+	
 	
 	
 
