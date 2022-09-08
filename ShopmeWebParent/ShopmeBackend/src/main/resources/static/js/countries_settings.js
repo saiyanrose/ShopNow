@@ -31,8 +31,53 @@ $(document).ready(function(){
 		}else{
 			changeFormStateNew();
 		}		
+	});
+	
+	buttonUpdateCountry.on("click",function(){
+		updateCountry();
+	});
+	
+	buttonDeleteCountry.on("click",function(){
+		deleteCountry();
 	})
 });
+
+function deleteCountry(){
+	optionValue=dropdownCountries.val();
+	countryId=optionValue.split("-")[0];
+	url=contextPath+ "countries/delete/"+countryId;		
+	$.get(url,function(){		
+	
+	}).done(function(){
+		toastmessage("Country has been deleted!");
+		
+	}).fail(function(){
+		toastmessage("ERROR: could connect to the server or server encountered an error");
+	});
+}
+
+function updateCountry(){
+	url =contextPath+ "countries/save";
+	countryName=fieldCountryName.val();
+	countryCode=fieldCountryCode.val();
+	countryId=dropdownCountries.val().split("-")[0];
+	jsonData={id:countryId,name:countryName,code:countryCode};
+	
+	$.ajax({
+		type:'POST',
+		url:url,
+		beforeSend:function(xhr){
+			xhr.setRequestHeader(csrfHeaderName,csrfValue);
+		},
+		data:JSON.stringify(jsonData),
+		contentType:'application/json'
+	}).done(function(){
+		toastmessage("Country has been update successfully");
+		
+	}).fail(function(){
+		toastmessage("ERROR: could connect to the server or server encountered an error");
+	});
+}
 
 function addCountry(){
 	url =contextPath+ "countries/save";
@@ -48,8 +93,11 @@ function addCountry(){
 		},
 		data:JSON.stringify(jsonData),
 		contentType:'application/json'
-	}).done(function(countryId){
-		toastmessage("Country has been saved successfully: "+countryName);
+	}).done(function(){
+		toastmessage("Country has been saved successfully");
+		
+	}).fail(function(){
+		toastmessage("ERROR: could connect to the server or server encountered an error");
 	});
 }
 
