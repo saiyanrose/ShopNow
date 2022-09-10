@@ -11,25 +11,25 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="countries")
+@Table(name = "countries")
 public class Country {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(nullable = false,length = 45)
+	@Column(nullable = false, length = 45)
 	private String name;
-	@Column(nullable = false,length = 45)
+	@Column(nullable = false, length = 45)
 	private String code;
-	
+
 	@OneToMany(mappedBy = "country")
-	private Set<States>states;
-	
+	private Set<States> states;
+
 	public Country() {
-		
+
 	}
 
-	public Country(String name, String code) {		
+	public Country(String name, String code) {
 		this.name = name;
 		this.code = code;
 	}
@@ -58,7 +58,4 @@ public class Country {
 		this.code = code;
 	}
 
-	
-	
-	
 }

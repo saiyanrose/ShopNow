@@ -61,7 +61,9 @@
 				<div class="tab-pane" id="countries" role="tabpanel">
 					<div th:replace="setting/countries :: content"></div>
 				</div>
-				<div class="tab-pane" id="states" role="tabpanel"></div>
+				<div class="tab-pane" id="states" role="tabpanel">
+					<div th:replace="setting/states :: content"></div>
+				</div>
 				<div class="tab-pane" id="mailServer" role="tabpanel"></div>
 				<div class="tab-pane p-3" id="mailTemplates" role="tabpanel">
 
@@ -80,6 +82,7 @@
 	</div>
 </body>
 <script th:src="@{/js/countries_settings.js}"></script>
+<script th:src="@{/js/states_setting.js}"></script>
 
 <script type="text/javascript">
 	contextPath = "[[@{/}]]";
