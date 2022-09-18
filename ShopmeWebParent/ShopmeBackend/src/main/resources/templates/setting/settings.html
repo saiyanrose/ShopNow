@@ -48,7 +48,7 @@
 						type="button" role="tab">Mail Server</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" data-toggle="tab" href="#mailtemplates"
+					<button class="nav-link" data-toggle="tab" href="#mailTemplates"
 						type="button" role="tab">Mail Templates</button>
 				</li>
 			</ul>
@@ -64,9 +64,11 @@
 				<div class="tab-pane" id="states" role="tabpanel">
 					<div th:replace="setting/states :: content"></div>
 				</div>
-				<div class="tab-pane" id="mailServer" role="tabpanel"></div>
+				<div class="tab-pane" id="mailserver" role="tabpanel">
+					<div th:replace="setting/mailServer :: content"></div>
+				</div>
 				<div class="tab-pane p-3" id="mailTemplates" role="tabpanel">
-
+					<div th:replace="setting/mail_templates/mail_template :: content"></div>
 				</div>
 			</div>
 		</div>
@@ -97,6 +99,8 @@
 			document.logoutForm.submit();
 		});
 		customizeDropdown();
+		
+		$("#customerVerifyContent").richText();
 	});
 
 	function customizeDropdown() {

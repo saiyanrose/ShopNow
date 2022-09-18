@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -84,5 +85,21 @@ public class SettingController {
 			}
 		}		
 		settingService.saveSetting(listSetting);
+	}
+	
+	@PostMapping("/setings/save_mail_server")
+	public String saveMailServerSetting(HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) {
+		List<Setting>mailServerSetting=settingService.mailServerSetting();
+		updateSettingValuesFromForm(request, mailServerSetting);
+		redirectAttributes.addFlashAttribute("message","Settings have been saved.");
+		return "redirect:/settings";
+	}
+	
+	@PostMapping("/setings/save_mailTemplates")
+	public String saveMailTemplatesSetting(HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) {
+		List<Setting>mailTemplateSetting=settingService.mailTemplatesSetting();		
+		updateSettingValuesFromForm(request, mailTemplateSetting);
+		redirectAttributes.addFlashAttribute("message","Settings have been saved.");
+		return "redirect:/settings";
 	}
 }
