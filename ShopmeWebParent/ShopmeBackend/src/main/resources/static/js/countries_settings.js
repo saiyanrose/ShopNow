@@ -81,6 +81,11 @@ function updateCountry(){
 
 function addCountry(){
 	url =contextPath+ "countries/save";
+	formCountry=document.getElementById("formCountry");
+	if(!formCountry.checkValidity()){
+		formCountry.reportValidity();
+		return;
+	}
 	countryName=fieldCountryName.val();
 	countryCode=fieldCountryCode.val();
 	jsonData={name:countryName,code:countryCode};

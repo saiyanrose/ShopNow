@@ -8,6 +8,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -52,7 +53,7 @@ public class CustomerController {
 		
 		JavaMailSenderImpl mailSender=Utility.prepareMailSender(emailSettings);
 		String toAddress=customer.getEmail().replace(" ","").trim();
-		String subject=emailSettings.getVerifySubject().replace(" ","").trim();
+		String subject=emailSettings.getVerifySubject();
 		String content=emailSettings.getVerifyContent();
 		
 		MimeMessage sendMessage=mailSender.createMimeMessage();
@@ -68,5 +69,17 @@ public class CustomerController {
 		
 		mailSender.send(sendMessage);
 		System.out.println("verify url: "+verifyUrl);
+	}
+	
+	@GetMapping("/verify")
+	public String customerVerification(@Param("code")String code,Model model) {
+		boolean verify=customerService.verify(code);
+		if(verify) {
+			model.addAttribute("pageTitle","Verification Succeeded");
+		}else {
+			model.addAttribute("pageTitle","Verification Failed");
+		}
+		
+		return "register/"+(verify ? "verify_success" : "verify_fail");
 	}
 }

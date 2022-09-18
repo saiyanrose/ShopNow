@@ -4,40 +4,48 @@
 
 	<div th:fragment="content" th:remove="tag">
 		<div class="m-2">
-			<p>Use this page to manage states which will be displayed in the customer registration form.
+			<p>Use this page to manage states which will be displayed in the
+				customer registration form.
 		</div>
-		
+
 		<div>
-			<input type="button" value="Load countries list" id="buttonCountriesLoad" class="btn btn-primary m-2">
+			<input type="button" value="Load countries list"
+				id="buttonCountriesLoad" class="btn btn-primary m-2">
 		</div>
-		
+
 		<div>
-			<label class="col-form-label ml-2">Countries:</label>
-			<select class="form-control m-2" id="dropdownCountriesForStates">			
+			<label class="col-form-label ml-2">Countries:</label> <select
+				class="form-control m-2" id="dropdownCountriesForStates">
 			</select>
 		</div>
-		
+
 		<div>
-			<label class="col-form-label ml-2">States:</label>
-			<select class="form-control m-2" style="height:300px" id="dropdownStates" size="3000">
-			
+			<label class="col-form-label ml-2">States:</label> <select
+				class="form-control m-2" style="height: 300px" id="dropdownStates"
+				size="3000">
+
 			</select>
 		</div>
-		
-		<div class="form-group row ml-2">
-			<label class="col-form-label mt-2" id="labelStateName">State Name:</label>			
-			<div class="col-md mt-2">
-				<input type="text" class="form-control" id="fieldStateName">
-			</div>			
-			
-			<div class="col-lg-4 mt-2">
-				<input type="button" id="buttonAddState" value="Add" class="btn btn-secondary mr-2">
-				<input type="button" id="buttonUpdateState" value="Update" class="btn btn-secondary mr-2" disabled="disabled">
-				<input type="button" id="buttonDeleteState" value="Delete" class="btn btn-secondary mr-2" disabled="disabled">
+		<form id="stateForm">
+			<div class="form-group row ml-2">
+				<label class="col-form-label mt-2" id="labelStateName">State
+					Name:</label>
+				<div class="col-md mt-2">
+					<input type="text" class="form-control" id="fieldStateName" required="required">
+				</div>
+
+				<div class="col-lg-4 mt-2">
+					<input type="button" id="buttonAddState" value="Add"
+						class="btn btn-secondary mr-2"> <input type="button"
+						id="buttonUpdateState" value="Update"
+						class="btn btn-secondary mr-2" disabled="disabled"> <input
+						type="button" id="buttonDeleteState" value="Delete"
+						class="btn btn-secondary mr-2" disabled="disabled">
+				</div>
+
 			</div>
-		
-		</div>
-		
+		</form>
+
 	</div>
 
 </body>

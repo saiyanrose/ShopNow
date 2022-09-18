@@ -93,6 +93,11 @@ function loadCountriesForStates() {
 
 function saveState() {
 	url = contextPath + "states/save";
+	stateForm=document.getElementById("stateForm");
+	if(!stateForm.checkValidity()){
+		stateForm.reportValidity();
+		return;
+	}
 	stateName = fieldStateName.val();
 	selectedCountryname = $("#dropdownCountriesForStates option:selected");
 	countryId = selectedCountryname.val();
