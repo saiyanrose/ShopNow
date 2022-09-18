@@ -1,6 +1,8 @@
 package com.shopme.common.entity;
 
-import java.sql.Date;
+
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -181,6 +183,10 @@ public class Customer {
 
 	public void setCountry(Country country) {
 		this.country = country;
+	}
+	
+	public String getFullName() {
+		return firstname+ " " +lastname;
 	}
 
 }
