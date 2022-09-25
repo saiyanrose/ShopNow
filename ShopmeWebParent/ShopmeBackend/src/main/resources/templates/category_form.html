@@ -41,8 +41,8 @@
 			<div class="form-group">
 				<label for="exampleFormControlInput1">Image</label> <input
 					type="hidden" th:field="*{image}" /> <input type="file"
-					id="fileImage" name="file" accept="image/png,image/jpeg" /> <img
-					id="thumbnail" th:src="@{/images/image-thumbnail.png}" />
+					id="fileImage" name="file" accept="image/png,image/jpeg,image/jpg" /> <img
+					id="thumbnail" th:src="@{${category.imagePath}}" style="width:100px;"/>
 			</div>
 			<div class="form-group">
 				<label for="exampleFormControlInput1">Enabled</label> <input

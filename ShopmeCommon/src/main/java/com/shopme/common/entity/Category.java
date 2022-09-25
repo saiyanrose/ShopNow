@@ -145,6 +145,6 @@ public class Category {
 
 	@Transient
 	public String getImagePath() {
-		return "/category-image/" +this.id + "/" + this.getImage();
+		return "/category-image/" +this.id + "/" + this.image;
 	}
 }

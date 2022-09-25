@@ -70,11 +70,20 @@ public class CategoryController {
 	
 	@PostMapping("/categories/save")
 	public String saveCategory(Category category,@RequestParam("file")MultipartFile multipartFile,RedirectAttributes redirectAttributes) throws IOException {
-		String filename=StringUtils.cleanPath(multipartFile.getOriginalFilename()).replace(" ","");;
-		category.setImage(filename);
-		Category savedCategory=categoryService.saveCategory(category);
-		String uploadDir="../category-image/" +savedCategory.getId();
-		FileUploadUtil.main(uploadDir, filename, multipartFile);
+		if(!multipartFile.isEmpty()) {
+			String filename=StringUtils.cleanPath(multipartFile.getOriginalFilename()).replace(" ","");
+			category.setImage(filename);
+			Category savedCategory=categoryService.saveCategory(category);
+			String uploadDir="../category-image/" +savedCategory.getId();
+			FileUploadUtil.cleanDir(uploadDir);
+			FileUploadUtil.main(uploadDir, filename, multipartFile);
+		}else {			
+				if(category.getImage().isEmpty()) {
+					category.setImage(null);	
+					categoryService.saveCategory(category);
+							
+			}
+		}
 		redirectAttributes.addFlashAttribute("message", "Category Saved Successfully.");
 		return "redirect:/categories";
 		
@@ -84,9 +93,9 @@ public class CategoryController {
 	public String editCategory(RedirectAttributes redirectAttributes,Model model,@PathVariable("id")int id) {
 		try {			
 			Category category=categoryService.getCategory(id);
-			System.out.println(category);
+			//System.out.println(category);
 			List<Category>categoryForForm=categoryService.allCategoryForForm();
-			System.out.println(categoryForForm);
+			//System.out.println(categoryForForm);
 			model.addAttribute("formCategory",categoryForForm);
 			model.addAttribute("category",category);
 			model.addAttribute("pageTitle","Edit Category with id "+id);

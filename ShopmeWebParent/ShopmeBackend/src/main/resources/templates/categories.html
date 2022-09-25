@@ -47,8 +47,11 @@
 					<tbody>
 						<tr th:each="cat: ${categories}">
 							<th scope="row">[[${cat.id}]]</th>
-							<td><span class=""></span> <img style="width: 100px"
-								th:src="@{${cat.imagePath}}" /></td>
+							<td><span th:if="${cat.image==null}"
+								class="fas fa-portrait fa-3x"></span> <img
+								th:if="${cat.image!=null}" th:src="@{${cat.imagePath}}"
+								style="width: 100px" />
+							</td>
 							<td>[[${cat.name}]]</td>
 							<td>[[${cat.alias}]]</td>
 							<td><a th:if="${cat.enabled==true}"
