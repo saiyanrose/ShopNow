@@ -11,140 +11,143 @@
 		</div>
 		<div class="text-center">
 			<h1>Manage User | [[${pageTitle}]]</h1>
-		</div>		
-			<form th:action="@{/users/save}" method="post"
-				style="max-width: 700px; margin: 0 auto" th:object="${user}"
-				onsubmit="return checkEmailUnique(this);" enctype="multipart/form-data">
-				<input type="hidden" th:field="*{id}">
-				<div class="form-group">
-					<label for="exampleFormControlInput1">Email address</label> <input
-						type="email" class="form-control" placeholder="name@example.com"
-						th:field="*{email}" required>
-				</div>
-				<div class="form-group">
-					<label for="exampleFormControlInput1">First name</label> <input
-						type="text" class="form-control" id="exampleFormControlInput1"
-						placeholder="Enter Your Name" th:field="*{firstname}" required>
-				</div>
-				<div class="form-group">
-					<label for="exampleFormControlInput1">Last Name</label> <input 
-						type="text" class="form-control" id="exampleFormControlInput1"
-						placeholder="Enter Your surname" th:field="*{lastname}" required>					
-				</div>
-				<div class="form-group">
-					<label for="exampleFormControlInput1">Password</label> <input th:if="${user.id==null}"
-						type="password" class="form-control" id="exampleFormControlInput1"
-						placeholder="your password" th:field="*{password}" required>
-					<label for="exampleFormControlInput1">Password</label> <input th:if="${user.id!=null}"
-						type="password" class="form-control" id="exampleFormControlInput1"
-						placeholder="your password" th:field="*{password}">	
-				</div>
-				<div class="form-group">
-					<label for="exampleFormControlInput1">Roles</label>
-					<div>
-						<th:block th:each="role: ${listRole}">
-							<input type="checkbox" th:field="*{roles}" th:text="${role.name}"
-								th:value="${role.id}" class="m-2" />
-					-<small>[[${role.description}]]</small>
-							<br>
-						</th:block>
-					</div>
-
-				</div>
-				<div class="form-group">
-					<label for="exampleFormControlInput1">Enabled</label> <input
-						type="checkbox" th:field="*{enabled}"/>
-				</div>
-				<div class="form-group">
-					<label for="exampleFormControlInput1">Photo</label>
-					<input type="hidden" th:field="*{photos}" />
-					 <input
-						type="file" id="fileImage" name="image" accept="image/png,image/jpeg"/>
-						<img id="thumbnail" th:src="@{${user.photosImagePath}}" />
-				</div>
+		</div>
+		<form th:action="@{/users/save}" method="post"
+			style="max-width: 700px; margin: 0 auto" th:object="${user}"
+			onsubmit="return checkEmailUnique(this);"
+			enctype="multipart/form-data">
+			<input type="hidden" th:field="*{id}">
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Email address</label> <input
+					type="email" class="form-control" placeholder="name@example.com"
+					th:field="*{email}" required>
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlInput1">First name</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder="Enter Your Name" th:field="*{firstname}" required>
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Last Name</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder="Enter Your surname" th:field="*{lastname}" required>
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Password</label> <input
+					th:if="${user.id==null}" type="password" class="form-control"
+					id="exampleFormControlInput1" placeholder="your password"
+					th:field="*{password}" required> <label
+					for="exampleFormControlInput1">Password</label> <input
+					th:if="${user.id!=null}" type="password" class="form-control"
+					id="exampleFormControlInput1" placeholder="your password"
+					th:field="*{password}">
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Roles</label>
 				<div>
-					<input type="submit" value="Save" class="btn btn-primary">
-					<input type="submit" value="Cancel" class="btn btn-secondary"
-						id="buttonCancel">						
+					<th:block th:each="role: ${listRole}">
+						<input type="checkbox" th:field="*{roles}" th:text="${role.name}"
+							th:value="${role.id}" class="m-2" />
+					-<small>[[${role.description}]]</small>
+						<br>
+					</th:block>
 				</div>
 
-			</form>
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Enabled</label> <input
+					type="checkbox" th:field="*{enabled}" />
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Photo</label> <input
+					type="hidden" th:field="*{photos}" /> <input type="file"
+					id="fileImage" name="image" accept="image/png,image/jpeg" /> <img
+					id="thumbnail" th:src="@{${user.photosImagePath}}" />
+			</div>
+			<div>
+				<input type="submit" value="Save" class="btn btn-primary"> <input
+					type="submit" value="Cancel" class="btn btn-secondary"
+					id="buttonCancel">
+			</div>
 
-			<div class="modal" tabindex="-1" role="dialog" id="modalDialogue">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="modalTitle">Warning</h5>
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						<div class="modal-body">
-							<span id="modalbody"></span>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>							
-						</div>
+		</form>
+
+		<div class="modal" tabindex="-1" role="dialog" id="modalDialogue">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalTitle">Warning</h5>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<span id="modalbody"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
-
 		</div>
-		<div th:replace="footer::foot">	</div>
+		<div th:replace="footer::foot"></div>
 	</div>
+
+	
 </body>
 
 <div th:replace="script::script"></div>
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		
+
 		$("#buttonCancel").on("click", function() {
 			window.location = "[[@{/users}]]";
 		});
-		
-		$("#fileImage").change(function(){
-			  fileSize = this.files[0].size; 
-			  if (fileSize > 1048576) {			    
-			    this.setCustomValidity("You must choose file less than 1mb");
-			    this.reportValidity();
-			  } else {
-				  this.setCustomValidity("");
-				  showImageThumbnail(this);
-			  }			
+
+		$("#fileImage").change(function() {
+			fileSize = this.files[0].size;
+			if (fileSize > 1048576) {
+				this.setCustomValidity("You must choose file less than 1mb");
+				this.reportValidity();
+			} else {
+				this.setCustomValidity("");
+				showImageThumbnail(this);
+			}
 		});
 	});
-	
-	function showImageThumbnail(fileInput){
-		var file=fileInput.files[0];
-		var reader=new FileReader();
-		reader.onload=function(e){
-			$("#thumbnail").attr("src",e.target.result);
+
+	function showImageThumbnail(fileInput) {
+		var file = fileInput.files[0];
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			$("#thumbnail").attr("src", e.target.result);
 		};
-		reader.readAsDataURL(file); 
+		reader.readAsDataURL(file);
 	}
 
 	function checkEmailUnique(form) {
 		url = "[[@{/users/check_email}]]";
 		userEmail = $("#email").val();
 		csrfValue = $("input[name='_csrf']").val();
-		userId=$("#id").val();
+		userId = $("#id").val();
 		params = {
-			id:userId,	
+			id : userId,
 			email : userEmail,
 			_csrf : csrfValue
-		};		
+		};
 		$.post(url, params, function(response) {
 			if (response == "OK") {
 				form.submit();
 			} else if (response == "Duplicate") {
-				showModalDialogue("Warning","Email is already present in database: " + userEmail);
-			}else {
-				showModalDialogue("Error","Unknown response from server");
+				showModalDialogue("Warning",
+						"Email is already present in database: " + userEmail);
+			} else {
+				showModalDialogue("Error", "Unknown response from server");
 			}
 		});
 		return false;
 	}
-	
-	function showModalDialogue(title,message){
+
+	function showModalDialogue(title, message) {
 		$("#modalTitle").text(title);
 		$("#modalbody").text(message);
 		$("#modalDialogue").modal();

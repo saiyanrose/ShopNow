@@ -53,7 +53,7 @@ public class CustomerController {
 		
 		JavaMailSenderImpl mailSender=Utility.prepareMailSender(emailSettings);
 		String toAddress=customer.getEmail().replace(" ","").trim();
-		String subject=emailSettings.getVerifySubject();
+		String subject=emailSettings.getVerifySubject().replace(" ","").trim();
 		String content=emailSettings.getVerifyContent();
 		
 		MimeMessage sendMessage=mailSender.createMimeMessage();

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header::head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>[[${pageTitle}]]</title>
+</head>
+<body>
+	<div class="container-fluid">
+		<div>
+			<div th:replace="navigation :: menu"></div>
+		</div>
+		<div class="text-center">
+			<h1>Manage Customer | [[${pageTitle}]]</h1>
+		</div>
+		<form th:action="@{/customers/save}" method="post"
+			style="max-width: 700px; margin: 0 auto" th:object="${customer}"
+			onsubmit="return checkCustomerUnique(this);">
+
+			<input type="hidden" th:field="*{id}">
+
+			<div class="form-group">
+				<label for="exampleFormControlInput1">First Name</label> <input
+					type="text" class="form-control" th:field="*{firstname}"
+					placeholder="" required>
+			</div>
+
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Last Name</label> <input
+					type="text" class="form-control" th:field="*{lastname}"
+					placeholder="" required>
+			</div>
+
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Email</label> <input
+					type="email" class="form-control" th:field="*{email}"
+					placeholder="" required>
+			</div>
+
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Password</label> <input
+					type="password" class="form-control" th:field="*{password}"
+					placeholder="leave blank if you does not want to change password">
+			</div>
+
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Address Line 1</label> <input
+					type="text" class="form-control" th:field="*{addressLine1}"
+					placeholder="" required>
+			</div>
+
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Address Line 2</label> <input
+					type="text" class="form-control" th:field="*{addressLine2}"
+					placeholder="" required>
+			</div>
+
+			<div class="form-group">
+				<label for="exampleFormControlInput1">City</label> <input
+					type="text" class="form-control" th:field="*{city}" placeholder="" required>
+			</div>
+
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Country</label> <select
+					class="form-control" th:field="*{country}">
+					<th:block th:each="c: ${listCountries}">
+						<option th:value="${c.id}">[[${c.name}]]</option>
+					</th:block>	
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label for="exampleFormControlInput1">State/Province</label> 
+				
+				<div class="col-sm-8">
+					<input	type="text" class="form-control" th:field="*{state}" list="listStates" required>
+					<datalist id="listStates">
+				
+					</datalist>
+				</div>		
+			</div>
+
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Postal Code</label> <input
+					type="text" class="form-control" th:field="*{postalCode}"
+					placeholder="" required>
+			</div>
+			
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Phone Number</label> <input
+					type="text" class="form-control" th:field="*{phoneNumber}"
+					placeholder="" required>
+			</div>
+
+			<div>
+				<input type="submit" value="Save" class="btn btn-primary"> <input
+					type="submit" value="Cancel" class="btn btn-secondary"
+					id="buttonCancel">
+			</div>
+
+		</form>
+
+		<div class="modal" tabindex="-1" role="dialog" id="modalDialogue">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalTitle">Warning</h5>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<span id="modalbody"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div th:replace="footer::foot"></div>
+
+</body>
+
+<script type="text/javascript">
+	contextPath="[[@{/}]]";
+</script>
+
+<script type="text/javascript">
+	var dropdownCountries;
+	var dropdownStates;
+	$(document).ready(function() {
+		dropdownCountries=$("#country");		
+		dropdownStates=$("#listStates");
+		
+		$("#logoutLink").on("click", function(e) {
+			e.preventDefault();
+			document.logoutForm.submit();
+		});
+		
+		$("#buttonCancel").on("click", function() {
+			window.location = "[[@{/customers}]]";
+		});
+
+		customizeDropdown();	
+		
+		dropdownCountries.on("change",function(){
+			changeDropdownStates();
+			$("#state").val("").focus();
+		});		
+		changeDropdownStates();
+				
+	});
+
+	//logout dropdown
+	function customizeDropdown() {
+		$(".navbar .dropdown").hover(
+				function() {
+					$(this).find('.dropdown-menu').first().stop(true, true)
+							.delay(250).slideDown();
+				},
+				function() {
+					$(this).find('.dropdown-menu').first().stop(true, true)
+							.delay(100).slideUp();
+				});
+
+		$(".dropdown > a").click(function() {
+			location.href = this.href;
+		});
+	}	
+	
+
+	function checkCustomerUnique(form) {
+		url = "[[@{/customers/check_email}]]";
+		customerEmail = $("#email").val();		
+		csrfValue = $("input[name='_csrf']").val();
+		customerId = $("#id").val();		
+		params = {
+			id : customerId,
+			email : customerEmail,
+			_csrf : csrfValue
+		};
+		$.post(url, params, function(response) {			
+			if (response == "OK") {
+				form.submit();
+			} else if (response == "Duplicate") {
+				showModalDialogue("Warning",
+						"Email is already present in database: " + customerEmail);
+			} else {
+				showModalDialogue("Error", "Unknown response from server");
+			}
+		});
+		return false;
+	}
+
+	function showModalDialogue(title, message) {
+		$("#modalTitle").text(title);
+		$("#modalbody").text(message);
+		$("#modalDialogue").modal();
+	}
+	
+	function changeDropdownStates() {
+		optionValue = $("#country option:selected");		
+		countryId = optionValue.val();		
+		url = contextPath + "states/" + countryId;
+		$.get(url, function(jsonResponse) {
+			dropdownStates.empty();
+			$.each(jsonResponse, function(index, state) {
+				optionValueForStates = state.name;				
+				$("<option>").val(optionValueForStates).text(state.name).appendTo(dropdownStates);
+			});
+		}).fail(function(){
+			showModalDialogue("Error", "Error on loading State/Province");
+		});;
+	}
+</script>
+</html>
