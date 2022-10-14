@@ -1,7 +1,7 @@
 server:
   port: 90
   servlet:
-    context-path: /Shopme
+    context-path: /Shopnow
 spring:
 
   security:
