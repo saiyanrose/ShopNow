@@ -1,5 +1,6 @@
 package com.shopme.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,6 +15,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {	
+	
+	@Autowired
+	private CustomerOauthUserService customerOauthUserService;
+	
+	@Autowired
+	private OAuth2LoginSuccessHandler auth2LoginSuccessHandler;
+	
+	@Autowired
+	private DatabaseLoginSuccessHandler databaseLoginSuccessHandler;
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -30,8 +40,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.formLogin()
 		.loginPage("/login")
 		.usernameParameter("email")
+		.successHandler(databaseLoginSuccessHandler)
 		.permitAll()
 		.and()
+		.oauth2Login()
+		.loginPage("/login")
+		.userInfoEndpoint()
+		.userService(customerOauthUserService)
+		.and()
+		.successHandler(auth2LoginSuccessHandler)
+		.and()		
 		.logout().permitAll()
 		.and()
 		.rememberMe()

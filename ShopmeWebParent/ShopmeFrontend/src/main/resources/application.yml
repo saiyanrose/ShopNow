@@ -1,0 +1,30 @@
+server:
+  port: 90
+  servlet:
+    context-path: /Shopme
+spring:
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 750719275690-q526747n96nj72k5pvlp87l5kbsh7quk.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+            - email
+            - profile
+          
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    password: root
+    url: 'jdbc:mysql://localhost:3306/shopmenow '
+    username: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
