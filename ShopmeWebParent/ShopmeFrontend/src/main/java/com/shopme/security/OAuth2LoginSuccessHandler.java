@@ -33,13 +33,14 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 		String email=oauthUser.getEmail();
 		String countryCode=request.getLocale().getCountry();
 		
-		System.out.println("OAuth2LoginSuccessHandler: "+name+" "+email+" "+countryCode);
+		//System.out.println("OAuth2LoginSuccessHandler: "+name+" "+email+" "+countryCode);
 		
 		Customer customer=customerService.getCustomerbyEmail(email);
 		
 		if(customer==null) {
 			customerService.addCustomerUponOauthLogin(name,email,countryCode);
 		}else {
+			oauthUser.setFullName(customer.getFullName());
 			customerService.updateAuthenticationType(customer,AuthenticationType.GOOGLE);
 		}
 		super.onAuthenticationSuccess(request, response, authentication);

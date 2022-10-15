@@ -47,11 +47,29 @@ public class CustomerService {
 		customer.setVerificationCode(randomCode);
 		System.out.println("Verification code: "+customer.getVerificationCode());
 		customerRepository.save(customer);
+	}	
+	
+	private void encodePassword(Customer customer) {
+		String encodedPassword=passwordEncoder.encode(customer.getPassword());
+		customer.setPassword(encodedPassword);
 	}
 
-	private void encodePassword(Customer customer) {
-		String encodePassword=passwordEncoder.encode(customer.getPassword());
-		customer.setPassword(encodePassword);		
+	public void update(Customer customer) {
+		Customer customerForSave=customerRepository.findById(customer.getId()).get();
+		if(customerForSave.getAuthenticationType().equals(AuthenticationType.DATABASE)) {
+			if(customer.getPassword().isEmpty()) {
+				customer.setPassword(customerForSave.getPassword());
+			}else {
+				encodePassword(customer);
+			}
+		}else {
+			customer.setPassword(customerForSave.getPassword());
+		}
+		customer.setEnabled(true);
+		customer.setCreatedTime(customerForSave.getCreatedTime());
+		customer.setVerificationCode(customerForSave.getVerificationCode());
+		customer.setAuthenticationType(customerForSave.getAuthenticationType());
+		customerRepository.save(customer);
 	}
 	
 	public boolean verify(String verificationCode) {

@@ -92,6 +92,10 @@ public class CustomerService {
 		}else {
 			encodePassword(customer);
 		}
+		customer.setEnabled(true);
+		customer.setCreatedTime(customerForSave.getCreatedTime());
+		customer.setVerificationCode(customerForSave.getVerificationCode());
+		customer.setAuthenticationType(customerForSave.getAuthenticationType());
 		customerRepository.save(customer);
 	}
 

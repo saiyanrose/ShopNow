@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header::head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+</head>
+
+<body>
+
+	<div class="container-fluid">
+		<div th:replace="navigation::menu"></div>
+		<div class="text-center">
+			<h2>Your Account Details</h2>
+		</div>
+	</div>
+	
+	<div>&nbsp;</div>
+	
+	<div th:if="${message != null}"
+			class="alert alert-success text-center">[[${message}]]
+	</div>
+	
+	<form th:action="@{/update_customer}" method="post"
+		th:object="${customer}" style="max-width: 600px; margin: 0 auto">
+		
+		<input type="hidden" th:field="*{id}">
+		
+		<div class="border border-secondary rounded p-3">
+		
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Authentication Type:</label>
+
+				<div class="col-sm-8">
+					<input type="text" th:field="*{authenticationType}" class="form-control" readonly="readonly"/>
+				</div>
+
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">First Name:</label>
+
+				<div class="col-sm-8">
+					<input type="text" th:field="*{firstname}" class="form-control"
+						required="required" maxlength="45" minlength="2" />
+				</div>
+
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Last Name:</label>
+
+				<div class="col-sm-8">
+					<input type="text" th:field="*{lastname}" class="form-control"
+						required="required" maxlength="45" minlength="2" />
+				</div>
+
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Email:</label>
+
+				<div class="col-sm-8">
+					<input type="text" id="email" th:field="*{email}" class="form-control" readonly="readonly" />
+				</div>
+
+			</div>
+			
+			<th:block th:if="${customer.authenticationType.name()=='DATABASE'}">
+			
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Password:</label>
+
+				<div class="col-sm-8">
+					<input type="password" id="password" th:field="*{password}"
+						class="form-control" maxlength="15"	minlength="6"
+						oninput="checkPasswordMatch(document.getElementById('confirm-password'))" />
+				</div>
+
+			</div>			
+			
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Re-type Password:</label>
+
+				<div class="col-sm-8">
+					<input type="password" id="confirm-password" class="form-control" maxlength="15" minlength="6"
+						oninput="checkPasswordMatch(this)" />
+				</div>
+
+			</div>
+			
+			</th:block>
+
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Phone Number:</label>
+
+				<div class="col-sm-8">
+					<input type="text" th:field="*{phoneNumber}" class="form-control"
+						required="required" maxlength="15" minlength="6" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Address Line 1:</label>
+
+				<div class="col-sm-8">
+					<input type="text" th:field="*{addressLine1}" class="form-control"
+						required="required" maxlength="64" minlength="3" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Address Line 2:</label>
+
+				<div class="col-sm-8">
+					<input type="text" th:field="*{addressLine2}" class="form-control"
+						maxlength="64" minlength="3" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">City:</label>
+
+				<div class="col-sm-8">
+					<input type="text" th:field="*{city}" class="form-control"
+						required="required" maxlength="45" minlength="2" />
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Country:</label>
+				<div class="col-sm-8">
+					<select class="form-control" id="country" th:field="*{country}">
+						<th:block th:each="country :${countries}">
+							<option th:value="${country.id}">[[${country.name}]]</option>
+						</th:block>
+					</select>
+				</div>
+
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">State/Province:</label>
+
+				<div class="col-sm-8">
+					<input type="text" id="state" th:field="*{state}" class="form-control"
+						required="required" maxlength="45" minlength="3" list="listStates"/>
+					<datalist id="listStates"></datalist>	
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-4 col-form-label">Postal Code:</label>
+
+				<div class="col-sm-8">
+					<input type="text" th:field="*{postalCode}" class="form-control"
+						required="required" maxlength="10" minlength="2" />
+				</div>
+			</div>
+
+			<div class="text-center">
+				<input type="submit" value="Update Account" class="btn btn-primary">
+			</div>
+
+		</div>
+
+	</form>
+	
+	<div>&nbsp;</div>
+	
+	<div th:replace="navigation::footer_menu"></div>
+	
+</body>	
+
+<script type="text/javascript">
+var dropdownCountries;
+var dataListState;
+contextPath="[[@{/}]]";
+$(document).ready(function() {
+	dropdownCountries=$("#country");
+	dataListState=$("#listStates");
+	
+	dropdownCountries.on("change",function(){
+		loadStateForCountry();
+		$("#state").val("").focus();
+	});
+});
+
+function loadStateForCountry(){
+	selectedCountry=$("#country option:selected");
+	countryId=selectedCountry.val();
+	url=contextPath+ "setting/states/"+countryId;		
+	$.get(url,function(jsonResponse){
+		dataListState.empty();
+		
+		$.each(jsonResponse,function(index,state){
+			$("<option>").val(state.name).text(state.name).appendTo(dataListState);
+		});
+	});
+}
+
+</script>
+
+</html>
