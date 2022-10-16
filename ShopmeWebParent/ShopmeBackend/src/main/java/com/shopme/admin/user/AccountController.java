@@ -23,6 +23,7 @@ public class AccountController {
 	@Autowired
 	private UserService service;
 	
+	//@AuthenticationPrincipal argument should be resolved to the current user rather than a user that might be edited on a form.
 	@GetMapping("/account")
 	public String viewDetails(@AuthenticationPrincipal ShopmeUserDetails loggedUser,Model model) {
 		String email=loggedUser.getUsername();

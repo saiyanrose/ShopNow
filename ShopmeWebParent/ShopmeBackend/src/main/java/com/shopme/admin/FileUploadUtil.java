@@ -29,7 +29,7 @@ public class FileUploadUtil {
 	//clean the directory
 	public static void cleanDir(String dir) {
 		Path dirPath=Paths.get(dir);
-		System.out.println("Directory "+dirPath);		
+		//System.out.println("Directory "+dirPath);		
 		try {
 			Files.list(dirPath).forEach(file->{
 				if(!Files.isDirectory(file)) {
