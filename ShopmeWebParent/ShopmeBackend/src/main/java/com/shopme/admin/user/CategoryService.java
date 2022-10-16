@@ -33,28 +33,36 @@ public class CategoryService {
 
 	public List<Category> findAllCategory(CategoryPageInfo categoryPageInfo, int pageNum, String sortDir,
 			String keyword) {
+		
 		Sort sort = Sort.by("name");
 		if (sortDir.equals("asc")) {
 			sort = sort.ascending();
 		} else if (sortDir.equals("desc")) {
 			sort = sort.descending();
 		}
+		
 		Pageable pageable = PageRequest.of(pageNum - 1, Category_per_page, sort);
+		
 		Page<Category> rootCategories=null;
+		
 		if (keyword != null && !keyword.isEmpty()) {
 			rootCategories = categoryRepository.search(keyword,pageable);
 		}else {
 			rootCategories = categoryRepository.listRootCategories(pageable);
-		}		
+		}
+		
 		List<Category> pageContent = rootCategories.getContent();
 		categoryPageInfo.setTotalElements(rootCategories.getTotalElements());
 		categoryPageInfo.setTotalPages(rootCategories.getTotalPages());
+		
 		return hierarchialCategories(pageContent, sortDir);	
 		
 	}
 
 	private List<Category> hierarchialCategories(List<Category> rootCategories, String sortDir) {
+		
 		List<Category> hierarchailCategories = new ArrayList<Category>();
+		
 		for (Category c : rootCategories) {
 			hierarchailCategories.add(Category.full(c));// parentcategories
 

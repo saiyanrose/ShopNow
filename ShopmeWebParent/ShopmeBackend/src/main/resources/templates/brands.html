@@ -14,6 +14,9 @@
 			<h1>Manage Brands</h1>
 			<a th:href="@{/brands/new}">Create New Brand</a>
 		</div>
+		
+		<div>&nbsp;</div>
+		
 		<div th:if="${message != null}"
 			class="alert alert-success text-center">[[${message}]]</div>
 		
@@ -33,6 +36,8 @@
 				<input type="button" value="Clear" class="btn btn-secondary" onclick="clearFilter()"/>			
 			</form>
 		</div>	
+
+		<div>&nbsp;</div>
 
 		<div>
 			<div>
