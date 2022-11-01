@@ -123,4 +123,30 @@ public class CustomerService {
 			customer.setLastname(lastname);
 		}
 	}
+
+	public String updateResetPasswordToken(String email) throws CustomerNotFoundException {
+		Customer customer=customerRepository.findByEmail(email);
+		if(customer!=null) {
+			String token=RandomString.make(30);
+			customer.setResetPasswordToken(token);
+			customerRepository.save(customer);
+			return token;
+		}else {
+			throw new CustomerNotFoundException("No user not found with email: "+email);
+		}		
+	}
+	
+	public Customer getByResetPasswordToken(String token) {
+		return customerRepository.findByResetPasswordToken(token);
+	}
+	
+	public void updatePassword(String token,String newPassword) throws CustomerNotFoundException {
+		Customer customer=customerRepository.findByResetPasswordToken(token);
+		if(customer==null) {
+			throw new CustomerNotFoundException("No user Found");
+		}
+		customer.setPassword(newPassword);
+		encodePassword(customer);
+		customerRepository.save(customer);
+	}
 }

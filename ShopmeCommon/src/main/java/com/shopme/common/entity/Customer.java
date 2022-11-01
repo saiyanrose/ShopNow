@@ -65,6 +65,9 @@ public class Customer {
 	@Column(name = "authentication_type")
 	private AuthenticationType authenticationType;
 
+	@Column(name = "reset_password_token")
+	private String resetPasswordToken;
+
 	public Customer() {
 
 	}
@@ -199,6 +202,14 @@ public class Customer {
 
 	public String getFullName() {
 		return firstname + " " + lastname;
+	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
 	}
 
 }

@@ -96,6 +96,7 @@ public class CustomerService {
 		customer.setCreatedTime(customerForSave.getCreatedTime());
 		customer.setVerificationCode(customerForSave.getVerificationCode());
 		customer.setAuthenticationType(customerForSave.getAuthenticationType());
+		customer.setResetPasswordToken(customerForSave.getResetPasswordToken());
 		customerRepository.save(customer);
 	}
 
