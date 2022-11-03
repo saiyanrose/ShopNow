@@ -74,7 +74,7 @@ public class UserController {
 
 	@PostMapping("/users/save")
 	public String saveUser(User user, RedirectAttributes redirectAttributes,@RequestParam("image") MultipartFile multiPartfile) throws IOException {
-		if(!multiPartfile.isEmpty()) {
+		if(!multiPartfile.isEmpty()) {			
 			String filename=StringUtils.cleanPath(multiPartfile.getOriginalFilename()).replace(" ","");
 			//System.out.println(filename);			
 			user.setPhotos(filename);
@@ -82,11 +82,12 @@ public class UserController {
 			String uploadDir="user-photos/" +saveUser.getId();
 			FileUploadUtil.cleanDir(uploadDir);
 			FileUploadUtil.main(uploadDir, filename, multiPartfile);
-		}else {
-			if(user.getPhotos().isEmpty()) {
+		}else {			
+			if(user.getPhotos().isEmpty()) {				
 				user.setPhotos(null);	
 				service.save(user);
-			}			
+			}
+			service.save(user);
 		}
 		redirectAttributes.addFlashAttribute("message", "User Saved Successfully.");
 		return "redirect:/users";
@@ -126,7 +127,7 @@ public class UserController {
 			Model model,@PathVariable(name="status") boolean enabled) {
 		service.checkEnabledStatus(id, enabled);
 		String status=enabled ? "Enabled" : "Disabled";
-		String message="the user id "+id+ "has been "+status;
+		String message="the user id " +id+ " has been "+status;
 		redirectAttributes.addFlashAttribute("message",message);
 		return "redirect:/users";
 	}	

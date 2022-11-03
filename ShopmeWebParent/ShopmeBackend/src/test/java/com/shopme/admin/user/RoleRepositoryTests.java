@@ -21,7 +21,7 @@ public class RoleRepositoryTests {
 	
 	@Test
 	public void testCreateFirstRole() {
-		Role adminRole=new Role("Assistant","manage questions and reviews");
+		Role adminRole=new Role("Admin","manage everything");
 		Role saveRole=repo.save(adminRole);
 		assertThat(saveRole.getId()).isGreaterThan(0);
 	}
