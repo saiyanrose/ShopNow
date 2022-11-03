@@ -80,9 +80,9 @@ public class CategoryController {
 		}else {			
 				if(category.getImage().isEmpty()) {
 					category.setImage(null);	
-					categoryService.saveCategory(category);
-							
+					categoryService.saveCategory(category);							
 			}
+			categoryService.saveCategory(category);	
 		}
 		redirectAttributes.addFlashAttribute("message", "Category Saved Successfully.");
 		return "redirect:/categories";

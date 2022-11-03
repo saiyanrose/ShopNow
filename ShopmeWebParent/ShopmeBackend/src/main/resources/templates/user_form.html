@@ -62,7 +62,7 @@
 				<label for="exampleFormControlInput1">Photo</label> <input
 					type="hidden" th:field="*{photos}" /> <input type="file"
 					id="fileImage" name="image" accept="image/png,image/jpeg" /> <img
-					id="thumbnail" th:src="@{${user.photosImagePath}}" />
+					id="thumbnail" th:src="@{${user.photosImagePath}}" height="150px" />
 			</div>
 			<div>
 				<input type="submit" value="Save" class="btn btn-primary"> <input
