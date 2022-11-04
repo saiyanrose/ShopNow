@@ -74,6 +74,7 @@ public class UserController {
 
 	@PostMapping("/users/save")
 	public String saveUser(User user, RedirectAttributes redirectAttributes,@RequestParam("image") MultipartFile multiPartfile) throws IOException {
+		
 		if(!multiPartfile.isEmpty()) {			
 			String filename=StringUtils.cleanPath(multiPartfile.getOriginalFilename()).replace(" ","");
 			//System.out.println(filename);			
@@ -85,7 +86,7 @@ public class UserController {
 		}else {			
 			if(user.getPhotos().isEmpty()) {				
 				user.setPhotos(null);	
-				service.save(user);
+				//service.save(user);
 			}
 			service.save(user);
 		}

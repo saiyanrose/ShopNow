@@ -33,12 +33,12 @@
 					placeholder="Enter Your surname" th:field="*{lastname}" required>
 			</div>
 			<div class="form-group">
-				<label for="exampleFormControlInput1">Password</label> <input
-					th:if="${user.id==null}" type="password" class="form-control"
+				<label for="exampleFormControlInput1">Password</label>
+				 <input th:if="${user.id==null}" type="password" class="form-control"
 					id="exampleFormControlInput1" placeholder="your password"
-					th:field="*{password}" required> <label
-					for="exampleFormControlInput1">Password</label> <input
-					th:if="${user.id!=null}" type="password" class="form-control"
+					th:field="*{password}" required>			
+				
+				 <input	th:if="${user.id!=null}" type="password" class="form-control"
 					id="exampleFormControlInput1" placeholder="your password"
 					th:field="*{password}">
 			</div>

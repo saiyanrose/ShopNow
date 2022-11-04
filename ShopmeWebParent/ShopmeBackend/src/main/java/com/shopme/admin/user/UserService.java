@@ -50,7 +50,7 @@ public class UserService {
 		return (List<Role>) roleRepository.findAll();
 	}
 
-	public User save(User user) {
+	public User save(User user) {		
 		boolean isUpdating=(user.getId()!=null);
 		if(isUpdating) {
 			User existinguser=repository.findById(user.getId()).get();
