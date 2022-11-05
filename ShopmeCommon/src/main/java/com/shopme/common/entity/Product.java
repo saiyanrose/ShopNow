@@ -63,8 +63,16 @@ public class Product {
 	@Column(name = "main_image", nullable = false)
 	private String mainImage;
 
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ProductImages> images = new HashSet<>();
+	
+	public Product() {
+		
+	}
+
+	public Product(Integer id) {
+		this.id = id;
+	}
 
 	public Set<ProductImages> getImages() {
 		return images;
@@ -90,7 +98,7 @@ public class Product {
 	@JoinColumn(name = "brand_id")
 	private Brand brand;
 
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductDetails> details = new ArrayList<>();
 
 	public Integer getId() {
@@ -259,26 +267,26 @@ public class Product {
 	public void addDetail(String name, String value) {
 		this.details.add(new ProductDetails(name, value, this));
 	}
-	
+
 	public void addDetail(Integer id, String name, String value) {
-		this.details.add(new ProductDetails(id,name, value, this));
+		this.details.add(new ProductDetails(id, name, value, this));
 	}
 
 	public boolean containsImageName(String filename) {
-		Iterator<ProductImages>product_images=images.iterator();
-		while(product_images.hasNext()) {
-			ProductImages img=product_images.next();
-			if(img.getName().equals(filename)) {
+		Iterator<ProductImages> product_images = images.iterator();
+		while (product_images.hasNext()) {
+			ProductImages img = product_images.next();
+			if (img.getName().equals(filename)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	@Transient
 	public float getDiscountPrize() {
-		if(discountPrice>0) {
-			return price *((100-discountPrice)/100);
+		if (discountPrice > 0) {
+			return price * ((100 - discountPrice) / 100);
 		}
 		return this.price;
 	}
