@@ -1,5 +1,7 @@
 package com.shopme.cart;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +39,9 @@ public class CartService {
 		cartRepository.save(cartItem);
 		
 		return updatedQuantity;
+	}
+	
+	public List<CartItem>listItem(Customer customer){
+		return cartRepository.findByCustomer(customer);
 	}
 }
