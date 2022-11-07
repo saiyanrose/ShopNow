@@ -6,15 +6,18 @@
 </head>
 <body>
 	<div class="container-fluid">
+	
 		<div th:replace="navigation :: menu"></div>
+		
 		<div>
 			<h1>Manage Users</h1>
 			<a th:href="@{/users/new}">Create New User</a>
 		</div>
+		
 		<div>&nbsp;</div>
-		<div th:if="${message != null}"
-			class="alert alert-success text-center">[[${message}]]
-		</div>			
+		
+		<div th:if="${message != null}"	class="alert alert-success text-center">[[${message}]]</div>			
+		
 		<div>
 			<form th:action="@{/users/page/1}" class="form-inline">
 				<input type="hidden" name="sortField" th:value="${sortField}"/>
@@ -26,8 +29,11 @@
 				&nbsp;&nbsp;
 				<input type="button" value="Clear" class="btn btn-secondary" onclick="clearFilter()"/>			
 			</form>
+			
 		</div>	
+		
 		<div>&nbsp;</div>
+		
 		<div>
 			<div>
 				<table
@@ -35,29 +41,37 @@
 					<thead class="thead-dark">
 						<tr>
 							<th scope="col">
-							<a th:if="${sortField!='id'}" class="text-white"
-								 th:href="@{'/users/page/' +${pageNum} + '?sortField=id&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 User ID
-								 </a>
-								 <a th:if="${sortField=='id'}" class="text-white"
-								 th:href="@{'/users/page/' +${pageNum} + '?sortField=id&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 User ID
-								 </a>
+							
+								<a th:if="${sortField!='id'}" class="text-white"
+									 th:href="@{'/users/page/' +${pageNum} + '?sortField=id&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 	User ID
+								</a>
+								
+								<a th:if="${sortField=='id'}" class="text-white"
+									 th:href="@{'/users/page/' +${pageNum} + '?sortField=id&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 	User ID
+								</a>
+								
 								<span th:if="${sortField=='id'}"
 									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
 								</span>
 							
 							</th>
+							
 							<th scope="col">Photo</th>
+							
 							<th scope="col">
-							<a th:if="${sortField!='email'}" class="text-white"
-								 th:href="@{'/users/page/' +${pageNum} + '?sortField=email&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 Email
+							
+								<a th:if="${sortField!='email'}" class="text-white"
+									 th:href="@{'/users/page/' +${pageNum} + '?sortField=email&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+									 Email
 								 </a>
+								 
 								 <a th:if="${sortField=='email'}" class="text-white"
-								 th:href="@{'/users/page/' +${pageNum} + '?sortField=email&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 Email
+									 th:href="@{'/users/page/' +${pageNum} + '?sortField=email&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 	 Email
 								 </a>
+								 
 								<span th:if="${sortField=='email'}"
 									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
 								</span>
@@ -66,49 +80,62 @@
 							
 							<th scope="col">
 								<a th:if="${sortField!='firstname'}" class="text-white"
-								 th:href="@{'/users/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 First Name
-								 </a>
-								 <a th:if="${sortField=='firstname'}" class="text-white"
-								 th:href="@{'/users/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${reverseSort}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 First Name
-								 </a>
+								 	th:href="@{'/users/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${sortDir}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">
+									 First Name
+								</a>
+								
+								<a th:if="${sortField=='firstname'}" class="text-white"
+									 th:href="@{'/users/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${reverseSort}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 	First Name
+								</a>
+								
 								<span th:if="${sortField=='firstname'}"
 									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
 								</span>
+								
 							</th>
+							
 							<th scope="col">
-							<a th:if="${sortField!='lastname'}" class="text-white"
-								 th:href="@{'/users/page/' +${pageNum} + '?sortField=lastname&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 Last Name
+								<a th:if="${sortField!='lastname'}" class="text-white"
+									 th:href="@{'/users/page/' +${pageNum} + '?sortField=lastname&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 	Last Name
 								 </a>
+								 
 								 <a th:if="${sortField=='lastname'}" class="text-white"
-								 th:href="@{'/users/page/' +${pageNum} + '?sortField=lastname&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 Last Name
+								 	th:href="@{'/users/page/' +${pageNum} + '?sortField=lastname&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 	Last Name
 								 </a>
+								 
 								<span th:if="${sortField=='lastname'}"
 									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
 								</span>
 							
 							</th>
+							
 							<th scope="col">Roles</th>
+							
 							<th scope="col">
-							<a th:if="${sortField!='enabled'}" class="text-white"
-								 th:href="@{'/users/page/' +${pageNum} + '?sortField=enabled&sortDir=' + ${sortDir}}">
-								 Enabled
+								<a th:if="${sortField!='enabled'}" class="text-white"
+									 th:href="@{'/users/page/' +${pageNum} + '?sortField=enabled&sortDir=' + ${sortDir}}">
+								 	Enabled
 								 </a>
+								 
 								 <a th:if="${sortField=='enabled'}" class="text-white"
-								 th:href="@{'/users/page/' +${pageNum} + '?sortField=enabled&sortDir=' + ${reverseSort}}">
-								 Enabled
+								 	th:href="@{'/users/page/' +${pageNum} + '?sortField=enabled&sortDir=' + ${reverseSort}}">
+								 	Enabled
 								 </a>
+								 
 								<span th:if="${sortField=='enabled'}"
 									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>
-							
+								</span>							
 							</th>
+							
 							<th scope="col">Operations</th>
+							
 						</tr>
+						
 					</thead>
+					
 					<tbody>
 						<tr th:each="user : ${listUsers}">
 							<th scope="row">[[${user.id}]]</th>
@@ -126,23 +153,29 @@
 								title="Disable this user"></a> <a th:if="${user.enabled==false}"
 								class="fas fa-times fa-2x"
 								th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
-								title="Enable this user"></a></td>
+								title="Enable this user"></a>
+							</td>
 							<td><a class="fas fa-edit fa-2x" href=""
 								th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user"></a>
 								&nbsp; <a class="fas fa-user-times fa-2x link-delete-user"
 								th:href="@{'/users/delete/' + ${user.id}}"
-								th:userId="${user.id}" title="Delete this user"></a></td>
+								th:userId="${user.id}" title="Delete this user"></a>
+							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
+			
 			<div class="text-center m-1" th:if="${totalItems>0}">
 				<span>Showing users # [[${startCount}]] to [[${endCount}]] of
-					[[${totalItems}]]</span>
+					[[${totalItems}]]
+				</span>
 			</div>
+			
 			<div class="text-center m-1" th:unless="${totalItems>0}">
 				<span>No User Found</span>
 			</div>
+			
 			<div th:if="${totalPage > 1}">
 			<nav aria-label="Page navigation example">
 				<ul class="pagination justify-content-center">
@@ -157,6 +190,7 @@
 				</ul>
 			</nav>
 			</div>
+			
 			<div class="modal" tabindex="-1" role="dialog" id="confirmModal">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -164,19 +198,28 @@
 							<h5 class="modal-title">Delete Confirmation</h5>
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 						</div>
+						
 						<div class="modal-body">
 							<span id="confirmText"></span>
 						</div>
+						
 						<div class="modal-footer">
 							<a class="btn btn-success" href="" id="yesButton">Yes</a>
 							<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
 						</div>
+						
 					</div>
 				</div>
 			</div>
+			
 			<div th:replace="footer::foot">	</div>
+			
 		</div>
+		
 		</div>
+		
 		<div th:replace="script::script"></div>
+		
 </body>
+
 </html>

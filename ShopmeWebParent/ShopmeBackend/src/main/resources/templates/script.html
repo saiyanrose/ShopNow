@@ -3,6 +3,7 @@
 <body>
 <div th:fragment="script">
 <script type="text/javascript">
+
 		//logout
 		$(document).ready(function() {
 			$("#logoutLink").on("click", function(e) {
@@ -30,64 +31,50 @@
 		}
 		
 		//delete user
-		$(document).ready(
-					function() {
-						$(".link-delete-user").on(
-								"click",
-								function(e) {
-									e.preventDefault();
-									link = $(this);
-									userId = link.attr("userId");
-									$("#yesButton").attr("href",
-											link.attr("href"));
-									$("#confirmText").text(
-											"Are you sure want to delete id: "
-													+ userId + " ?");
-									$("#confirmModal").modal();
-								});
-					});	
+		$(document).ready(function() {
+				$(".link-delete-user").on("click",function(e) {
+					e.preventDefault();
+					link = $(this);
+					userId = link.attr("userId");
+					$("#yesButton").attr("href",link.attr("href"));
+					$("#confirmText").text("Are you sure want to delete id: "+ userId + " ?");
+					$("#confirmModal").modal();
+				});
+		});	
 		
 		//delete category
-		$(document).ready(
-					function() {
-						$(".link-delete").on(
-								"click",
-								function(e) {
-									e.preventDefault();
-									link = $(this);
-									catId = link.attr("catId");
-									$("#yesButton").attr("href",
-											link.attr("href"));
-									$("#confirmText").text(
-											"Are you sure want to delete id: "
-													+ catId + " ?");
-									$("#confirmModal1").modal();
-								});
-					});	
+		$(document).ready(function() {
+				$(".link-delete").on("click",function(e) {
+					e.preventDefault();
+					link = $(this);
+					catId = link.attr("catId");
+					$("#yesButton").attr("href",
+					link.attr("href"));
+					$("#confirmText").text("Are you sure want to delete id: "+ catId + " ?");
+					$("#confirmModal1").modal();
+				});
+		});	
 		
 		//delete brand
-		$(document).ready(
-					function() {
-						$(".link-delete").on(
-								"click",
-								function(e) {
-									e.preventDefault();
-									link = $(this);
-									brandId = link.attr("brandId");
-									$("#yesButton").attr("href",
-											link.attr("href"));
-									$("#confirmText").text(
-											"Are you sure want to delete id: "
-													+ brandId + " ?");
-									$("#confirmModal2").modal();
-								});
-					});	
+		$(document).ready(function() {
+			$(".link-delete").on("click",function(e) {
+				e.preventDefault();
+				link = $(this);
+				brandId = link.attr("brandId");
+				$("#yesButton").attr("href",link.attr("href"));
+				$("#confirmText").text("Are you sure want to delete id: "+ brandId + " ?");
+				$("#confirmModal2").modal();
+			});
+		});	
 			
 	function clearFilter(){
 		document.getElementById("keyword").value = "";	   
 	}	
 	
 	</script>
+	
 </div>
+
 </body>
+
 </html>

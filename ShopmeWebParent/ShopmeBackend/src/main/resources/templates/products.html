@@ -6,21 +6,20 @@
 </head>
 <body>
 	<div class="container-fluid">
+	
 		<div th:replace="navigation :: menu"></div>
+		
 		<div>
 			<h1>Manage Products</h1>
 			<a th:href="@{/products/new}">Create New Products</a>
 		</div>
 
-		<div th:if="${message != null}"
-			class="alert alert-success text-center">[[${message}]]</div>
-
+		<div th:if="${message != null}"	class="alert alert-success text-center">[[${message}]]</div>
 
 		<div>
 			<div>
-				<table
-					class="table table-bordered table-striped table-hover table-responsive-xl"
-					id="example2">
+				<table class="table table-bordered table-striped table-hover table-responsive-xl" id="example2">
+					
 					<thead class="thead-dark">
 						<tr>
 							<th scope="col"><a class="text-white">ID</a></th>
@@ -32,21 +31,23 @@
 							<th scope="col">Operations</th>
 						</tr>
 					</thead>
+					
 					<tbody>
 						<tr th:each="cat: ${products}">
 							<th scope="row">[[${cat.id}]]</th>
-							<td><img th:src="@{${cat.mainImagePath}}"
-								style="width: 120px" class="img-fluid" /></td>
+							<td><img th:src="@{${cat.mainImagePath}}" style="width: 120px" class="img-fluid" /></td>
 							<td>[[${cat.name}]]</td>
 							<td>[[${cat.brand.name}]]</td>
 							<td>[[${cat.category.name}]]</td>
+							
 							<td><a th:if="${cat.enabled==true}"
 								class="fas fa-check-circle fa-2x"
 								th:href="@{'/products/' + ${cat.id} +'/enabled/false'}"
 								title="Disable this category"></a> <a
 								th:if="${cat.enabled==false}" class="fas fa-times fa-2x"
 								th:href="@{'/products/' + ${cat.id} +'/enabled/true'}"
-								title="Enable this category"></a></td>
+								title="Enable this category"></a>
+							</td>
 
 							<td><a class="fas fa-file-alt fa-2x icon-green link-detail "
 								th:href="@{'/products/detail/'+ ${cat.id}}"></a>&nbsp; <a
@@ -54,11 +55,15 @@
 								th:href="@{'/products/edit/' + ${cat.id}}"></a>&nbsp; <a
 								th:href="@{'/products/delete/' + ${cat.id}}"
 								class="fas fa-user-times fa-2x link-delete"
-								title="Delete this product" th:productId="${cat.id}"></a></td>
+								title="Delete this product" th:productId="${cat.id}"></a>
+							</td>
 
 						</tr>
+						
 					</tbody>
+					
 				</table>
+				
 			</div>
 
 			<div class="modal fade" id="detailModal">
@@ -66,93 +71,63 @@
 					<div class="modal-content"></div>
 				</div>
 			</div>
+			
 			<div class="modal" tabindex="-1" role="dialog" id="confirmModal">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
+					
 						<div class="modal-header">
 							<h5 class="modal-title">Delete Confirmation</h5>
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 						</div>
+						
 						<div class="modal-body">
 							<span id="confirmText"></span>
 						</div>
+						
 						<div class="modal-footer">
 							<a class="btn btn-success" href="" id="yesButton">Yes</a>
 							<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
 						</div>
+						
 					</div>
+					
 				</div>
+				
 			</div>
+			
 			<div th:replace="footer::foot"></div>
+			
 		</div>
+		
 	</div>
+	
+	<div th:replace="script::script"></div>
+	
 	<script type="text/javascript">
 		function clearFilter() {
 			window.location = "[[@{/products}]]";
-		}
-
-		//logout
-		$(document).ready(
-				function() {
-					//jQuery.noConflict();
-					$("#logoutLink").on("click", function(e) {
-						e.preventDefault();
-						document.logoutForm.submit();
-					});
-					customizeDropdown();
-					$('#example2').DataTable();
-
-					$(".link-detail").on(
-							"click",
-							function(e) {
-								e.preventDefault();
-								linkDetailUrl = $(this).attr("href");
-								//alert(linkDetailUrl);
-								$("#detailModal").modal("show").find(
-										".modal-content").load(linkDetailUrl);
-							});
-				});
-
-		//logout dropdown
-		function customizeDropdown() {
-			$(".navbar .dropdown").hover(
-					function() {
-						$(this).find('.dropdown-menu').first().stop(true, true)
-								.delay(250).slideDown();
-					},
-					function() {
-						$(this).find('.dropdown-menu').first().stop(true, true)
-								.delay(100).slideUp();
-					});
-
-			$(".dropdown > a").click(function() {
-				location.href = this.href;
-			});
-		}
-
+		}		
+		
 		//delete product
-		$(document).ready(
-				function() {
-					$(".link-delete")
-							.on(
-									"click",
-									function(e) {
-										e.preventDefault();
-										link = $(this);
-										productId = link.attr("productId");
-										$("#yesButton").attr("href",
-												link.attr("href"));
-										$("#confirmText").text(
-												"Are you sure want to delete id: "
-														+ productId + " ?");
-										$("#confirmModal").modal();
-									});
-				});
+		$(document).ready(function() {
+			
+			$('#example2').DataTable();
+			
+			$(".link-delete").on("click",function(e) {
+				e.preventDefault();
+				link = $(this);
+				productId = link.attr("productId");
+				$("#yesButton").attr("href",
+				link.attr("href"));
+				$("#confirmText").text("Are you sure want to delete id: " + productId + " ?");
+				$("#confirmModal").modal();
+			});
+		});
 	</script>
 	
-	<script
-		src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-	<script
-		src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+	<script	src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script	src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
 </body>
+
 </html>
