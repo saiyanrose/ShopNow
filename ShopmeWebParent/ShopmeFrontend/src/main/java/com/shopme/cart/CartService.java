@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.shopme.common.entity.CartItem;
 import com.shopme.common.entity.Customer;
 import com.shopme.common.entity.Product;
+import com.shopme.product.ProductRepository;
 
 @Service
 @Transactional
@@ -17,6 +18,9 @@ public class CartService {
 
 	@Autowired
 	private CartRepository cartRepository;
+	
+	@Autowired
+	private ProductRepository productRepository;
 	
 	public Integer addProduct(Integer productId,Integer quantity,Customer customer) throws ShopnowCartException {
 		Integer updatedQuantity=quantity;
@@ -43,5 +47,12 @@ public class CartService {
 	
 	public List<CartItem>listItem(Customer customer){
 		return cartRepository.findByCustomer(customer);
+	}
+
+	public float updateQuantity(Integer productId,Integer quantity,Customer customer) {
+		cartRepository.updateQuantity(quantity,customer.getId(), productId);
+		Product product=productRepository.findById(productId).get();
+		float subTotal=product.getDiscountPrize() * quantity;
+		return subTotal;
 	}
 }
