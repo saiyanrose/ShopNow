@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{/richtext/jquery.richtext.min.js}"></script>
-<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}">
-<link rel="stylesheet" type="text/css"	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}">
+<head th:replace="header::head">
+
 <title>[[${pageTitle}]]</title>
 </head>
 <body>
 	<div class="container-fluid">
+	
 		<div>
 			<div th:replace="navigation :: menu"></div>
 		</div>
@@ -21,109 +15,136 @@
 			<h1>Manage Products | [[${pageTitle}]]</h1>
 		</div>
 
-		<div th:if="${message != null}"
-			class="alert alert-success text-center">[[${message}]]</div>
+		<div th:if="${message != null}"	class="alert alert-success text-center">[[${message}]]</div>
 
 		<form th:action="@{/products/save}" method="post" th:object="${product}" onsubmit="return checkProduct(this);" enctype="multipart/form-data">
+		
 		<input type="hidden" th:field="*{id}">
+		
 		<input th:if="${product.category!=null}" type="hidden" id="categoryId" th:field="${product.category.id}">
 			<div>
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
+				
 				<li class="nav-item" role="presentation">
 					<button class="nav-link active" data-toggle="tab"
 						href="#overview" type="button" role="tab">Overview</button>
 				</li>
+				
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" data-toggle="tab"
 						href="#description" type="button" role="tab">Description</button>
 				</li>
+				
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" data-toggle="tab"
 						href="#image" type="button" role="tab">Image</button>
 				</li>
+				
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" data-toggle="tab"
 						href="#details" type="button" role="tab">Details</button>
 				</li>
+				
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" data-toggle="tab"
 						href="#shipping" type="button" role="tab">Shipping</button>
 				</li>
+				
 				</ul>
 
 				<!-- Tab panes -->
 				<div class="tab-content">
+				
 					<div class="tab-pane active p-3" id="overview" role="tabpanel">
 						<div th:replace="product_overview :: product_overview"></div>					
 					</div>
+					
 					<div class="tab-pane" id="description" role="tabpanel">
 						<div th:replace="product_description :: product_des"></div>
 					</div>
+					
 					<div class="tab-pane" id="image" role="tabpanel">
 						<div th:replace="product_images :: product_images"></div>
 					</div>
+					
 					<div class="tab-pane" id="details" role="tabpanel">
 						<div th:replace="product_details :: product_details"></div>
 						<div>
 							<input type="button" class="btn btn-secondary" value="Add More Details" onclick="addNextDetailSection()"/>
 						</div>
 					</div>
+					
 					<div class="tab-pane p-3" id="shipping" role="tabpanel">
 						<div th:replace="product_shipping :: product_shipping"></div>
 					</div>
+					
 				</div>
 
 				<div class="text-center">
 					<input type="submit" value="Save" class="btn btn-primary">
-					<input type="submit" value="Cancel" class="btn btn-secondary"
-						id="buttonCancel">
+					<input type="submit" value="Cancel" class="btn btn-secondary" id="buttonCancel">
 				</div>
-
+				
 			</div>
+			
 		</form>
 
 		<div class="modal" tabindex="-1" role="dialog" id="modalDialogue">
+		
 			<div class="modal-dialog" role="document">
+			
 				<div class="modal-content">
+				
 					<div class="modal-header">
 						<h5 class="modal-title" id="modalTitle">Warning</h5>
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
+					
 					<div class="modal-body">
 						<span id="modalbody"></span>
 					</div>
+					
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 					</div>
+					
 				</div>
+				
 			</div>
-		</div>
-		<div th:replace="footer::foot"></div>
-	</div>
-</body>
-<div th:replace="script::script"></div>
-<script type="text/javascript">
-	dropdownBrands=$("#brand");
-	dropdowCategories=$("#category");
-	moduleUrl="[[@{/brands}]]";
-	var extraImageCount=0;
-	
-	$(document).ready(function(){		
-		$("input[name='extraImage']").each(function(index){
-			//alert(index);
-			$(this).change(function(){
-				extraImageCount++;
-				showImageThumbnailExtra(this,index);
-			});	
 			
-			$("a[name='link-remove-extra']").each(function(index){
-				$(this).click(function(){
+		</div>
+		
+		<div th:replace="footer::foot"></div>
+		
+	</div>
+	
+</body>
+
+<div th:replace="script::script"></div>
+
+<script type="text/javascript">
+
+	dropdownBrands = $("#brand");
+	dropdowCategories = $("#category");
+	moduleUrl = "[[@{/brands}]]";
+	var extraImageCount = 0;	
+	
+	$(document).ready(function() {		
+		$("input[name='extraImage']").each(function(index) {			
+			$(this).change(function() {
+				extraImageCount++;
+				showImageThumbnailExtra(this, index);
+			});
+
+			$("a[name='link-remove-extra']").each(function(index) {
+				$(this).click(function() {
 					removeExtraImage(index);
 				});
 			});
-									
-		});			
+		});
 		
+		
+		//file validity
 		$("#fileImage").change(function() {
 			fileSize = this.files[0].size;
 			if (fileSize > 500000) {
@@ -133,9 +154,9 @@
 				this.setCustomValidity("");
 				showImageThumbnail(this);
 			}
-
-		});
+		});		
 		
+		//image thumbnail
 		function showImageThumbnail(fileInput) {
 			var file = fileInput.files[0];
 			var reader = new FileReader();
@@ -143,112 +164,121 @@
 				$("#thumbnail").attr("src", e.target.result);
 			};
 			reader.readAsDataURL(file);
-		}		
+		}
 		
+		//cancel button
 		$("#buttonCancel").on("click", function() {
 			window.location = "[[@{/products}]]";
-		});	
-		
+		});
+
+		//richtext
 		$("#shortDescription").richText();
-		$("#fullDescription").richText();		
-		dropdownBrands.change(function(){
+		$("#fullDescription").richText();
+		
+		
+		//getCategories
+		dropdownBrands.change(function() {
 			dropdowCategories.empty();
 			getCategories();
 		});
 		getCategoriesForNew();
 	});
-	
-	function getCategoriesForNew(){
-		catField=$("#categoryId");
-		editMode=false;
-		if(catField.length){
-			editMode=true;
+
+	function getCategoriesForNew() {
+		catField = $("#categoryId");
+		editMode = false;
+		if (catField.length) {
+			editMode = true;
 		}
-		if(!editMode) return getCategories();
+		if (!editMode) return getCategories();
 	}
-	
-	function showImageThumbnailExtra(fileInput,index) {
+
+	function showImageThumbnailExtra(fileInput, index) {
 		var file = fileInput.files[0];
-		filename=file.name;
-		imageHiddenField=$("#imageName" +index);
-		if(imageHiddenField.length){
+		filename = file.name;
+		imageHiddenField = $("#imageName" + index);
+		
+		if (imageHiddenField.length) {
 			imageHiddenField.val(filename);
 		}
+		
 		var reader = new FileReader();
+		
 		reader.onload = function(e) {
 			$("#extraThumbnail" + index).attr("src", e.target.result);
 		};
+		
 		reader.readAsDataURL(file);
-		if(index>=extraImageCount - 1){
+		
+		if (index >= extraImageCount - 1) {
 			addExtraImageSection(index + 1);
 		}
-		
 	}
-	
-	function addExtraImageSection(index){
-		html=`<div class="col border m-3 p-2" id="extraImageDiv${index}">
-			<div id="extraImageHeader${index}"><label>Extra Image #${index + 1}:</label></div>			
-			<div class="m-2">					
-				 <img id="extraThumbnail${index}" class="img-fluid" th:src="@{/images/image-thumbnail.png}" />						
-			</div>
-			<div>
-				<input type="file" name="extraImage" onchange="showImageThumbnailExtra(this,${index})" 
-					 accept="image/png, image/jpeg">
-			</div>
-		</div>`;
-		
-		htmlLinkRemove=`<a class="btn fas fa-times-circle fa-2x float-right" href="javascript:removeExtraImage(${index -1})" title="Remove this image"></a>`;
-		
+
+	function addExtraImageSection(index) {
+		html = `<div class="col border m-3 p-2" id="extraImageDiv${index}">
+				<div id="extraImageHeader${index}"><label>Extra Image #${index + 1}:</label></div>			
+				<div class="m-2">					
+					 <img id="extraThumbnail${index}" class="img-fluid" th:src="@{/images/image-thumbnail.png}" />						
+				</div>
+				<div>
+					<input type="file" name="extraImage" onchange="showImageThumbnailExtra(this,${index})" 
+						 accept="image/png, image/jpeg">
+				</div>
+			</div>`;
+
+		htmlLinkRemove = `<a class="btn fas fa-times-circle fa-2x float-right" href="javascript:removeExtraImage(${index - 1})" title="Remove this image"></a>`;
+
 		$("#divProductImages").append(html);
 		$("#extraImageHeader" + (index - 1)).append(htmlLinkRemove);
 	}
-	
-	function removeExtraImage(index){
+
+	function removeExtraImage(index) {
 		$("#extraImageDiv" + index).remove();
 	}
-	
-	function getCategories(){
-		brandId=dropdownBrands.val();		
-		url=moduleUrl+ "/" + brandId + "/categories";
-		//alert(url);
-		$.get(url,function(responseJson){
-			$.each(responseJson,function(index,category){
-				//alert(category.name);
+
+	function getCategories() {
+		brandId = dropdownBrands.val();
+		url = moduleUrl + "/" + brandId + "/categories";
+		
+		$.get(url, function(responseJson) {
+			$.each(responseJson, function(index, category) {				
 				$("<option>").val(category.id).text(category.name).appendTo(dropdowCategories);
 			});
 		});
 	}
-	
+
 	function checkProduct(form) {
-		pId = $("#id").val();		
-		pName = $("#name").val();		
+		pId = $("#id").val();
+		pName = $("#name").val();
 		csrfValue = $("input[name='_csrf']").val();
 		url = "[[@{/products/check_unique}]]";
 		params = {
-			id : pId,
-			name : pName,			
-			_csrf : csrfValue
+			id: pId,
+			name: pName,
+			_csrf: csrfValue
 		};
 		$.post(url, params, function(response) {
 			if (response == "OK") {
 				form.submit();
 			} else if (response == "Duplicate") {
 				showModalDialogue("Warning",
-						"This product name is already present in database: "
-								+ pName);
-			}else{
-				showModalDialogue("Warning","Unknown server error");
-			} 
+					"This product name is already present in database: "
+					+ pName);
+			} else {
+				showModalDialogue("Warning", "Unknown server error");
+			}
 		});
 		return false;
 	}
-	
+
 	function showModalDialogue(title, message) {
 		$("#modalTitle").text(title);
 		$("#modalbody").text(message);
 		$("#modalDialogue").modal();
-	}	
+	}
 	
 </script>
+
 <script th:src="@{/js/product_details.js}"></script>
 </html>
