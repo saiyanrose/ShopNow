@@ -37,6 +37,7 @@ public class CartController {
 		}
 		model.addAttribute("estimatedTotal",subTotal);
 		model.addAttribute("cartItems", cartItems);
+		model.addAttribute("pageTitle","Cart");
 		return "cart/shopping_cart";
 	}
 	
