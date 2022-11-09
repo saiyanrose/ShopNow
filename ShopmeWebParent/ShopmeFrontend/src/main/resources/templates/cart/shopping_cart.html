@@ -17,11 +17,11 @@
 	<div class="row m-1">
 		<div class="col-sm-8">
 			<th:block th:each="item,status:${cartItems}">
-				<div class="row border rounded p-1">
+				<div class="row border rounded p-1" th:id="'row' + ${status.count}">
 					<div class="col-1">
-						[[${status.count}]].
+						<div class="divCount">[[${status.count}]].</div>
 						<div>
-							<a class="fas fa-trash" href=""></a>
+							<a class="fas fa-trash link-remove" th:rowNumber="${status.count}" th:href="@{'/cart/remove/' +${item.product.id}}"></a>
 						</div>
 					</div>
 
@@ -81,14 +81,14 @@
 					</div>
 				</div>
 
-				<div>&nbsp;</div>
+				<div th:id="'blankId' + ${status.count}">&nbsp;</div>
 
 			</th:block>
 			<div class="" th:if="${#lists.isEmpty(cartItems)}">
 				<h3>No item in your Cart.</h3>
 			</div>
 		</div>
-		<div class="col-sm-4" th:unless="${#lists.isEmpty(cartItems)}">
+		<div class="col-sm-4" th:unless="${#lists.isEmpty(cartItems)}" id="estimatedTotal">
 			<div>
 				<span class="h3">Estimated Total:</span>
 			</div>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,5 +77,16 @@ public class CartRestController {
 		}catch (CustomerNotFoundException e) {
 			return "You must login to change product in your cart";
 		}		
+	}
+	
+	@DeleteMapping("/cart/remove/{productId}")
+	public String removeFromCart(@PathVariable("productId")Integer productId,HttpServletRequest request) {
+		try {
+			Customer customer=getAuthenticatedCustomer(request);
+			cartService.removeProduct(productId, customer);
+			return "product has been removed from your cart";
+		}catch (CustomerNotFoundException e) {
+			return "You must login to change product in your cart";
+		}
 	}
 }
