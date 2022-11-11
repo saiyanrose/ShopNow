@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header::head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Shipping Rates - ShopNow Admin</title>
+
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div th:replace="navigation :: menu"></div>
+		<div>
+			<h1>Manage Brands</h1>
+			<a th:href="@{/shipping_rates/new}">Create New Shipping Rates</a>
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		<div th:if="${message != null}"	class="alert alert-success text-center">[[${message}]]</div>		
+		
+		<div th:if="${message1 != null}" class="alert alert-success text-center">[[${message1}]]</div>
+			
+		<div>
+			<form th:action="@{/shipping/page/1}" class="form-inline">
+				<input type="hidden" name="sortField" th:value="${sortField}"/>
+				<input type="hidden" name="sortDir" th:value="${sortDir}"/>
+				Filter:&nbsp;
+				<input type="search" id="keyword" name="keyword" th:value="${keyword}" class="form-control" required />
+				&nbsp;&nbsp;
+				<input type="submit" value="Search" class="btn btn-primary" required />
+				&nbsp;&nbsp;
+				<input type="button" value="Clear" class="btn btn-secondary" onclick="clearFilter()"/>			
+			</form>
+		</div>
+
+		<div>&nbsp;</div>
+
+		<div>
+			<div>
+				<table	class="table table-bordered table-striped table-hover table-responsive-xl">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">
+							
+								<a th:if="${sortField!='id'}" class="text-white"
+								 	th:href="@{'/shipping/page/' +${pageNum} + '?sortField=id&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+									 Shipping Rate ID
+								</a>
+							
+								<a th:if="${sortField=='id'}" class="text-white"
+									 th:href="@{'/shipping/page/' +${pageNum} + '?sortField=id&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+									 Shipping Rate ID
+								</a>
+								<span th:if="${sortField=='id'}"
+									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+								</span>
+							
+							</th>							
+							
+							<th scope="col">
+								<a th:if="${sortField!='country'}" class="text-white"
+									 th:href="@{'/shipping/page/' +${pageNum} + '?sortField=country&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+									 Country Name
+								</a>
+								
+								<a th:if="${sortField=='country'}" class="text-white"
+									 th:href="@{'/shipping/page/' +${pageNum} + '?sortField=country&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 	Country Name
+								</a>
+								
+								<span th:if="${sortField=='country'}"
+									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+								</span>
+							
+							</th>
+							
+							<th scope="col">
+								<a th:if="${sortField=='states'}" class="text-white"
+								 	th:href="@{'/shipping/page/' +${pageNum} + '?sortField=states&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 	States
+								</a>
+								
+								<a th:if="${sortField!='states'}" class="text-white"
+								 	th:href="@{'/shipping/page/' +${pageNum} + '?sortField=states&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 	States
+								</a>
+								
+								<span th:if="${sortField=='states'}"
+									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+								</span>								 
+							</th>
+							
+							<th scope="col">
+								<a class="text-white">Rate</a>								 
+							</th>
+							
+							<th scope="col">
+								<a class="text-white">Days</a>								 
+							</th>
+							
+							<th scope="col">
+								<a class="text-white ">COD Supported</a>								 
+							</th>	
+																			
+							<th scope="col">Operations</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="ls : ${listShipping}">
+						
+							<th scope="row">[[${ls.id}]]</th>							
+						
+							<td>[[${ls.country.name}]]</td>
+						
+							<td>[[${ls.states}]]</td>
+														
+							<td>[[${ls.rate}]]</td>
+							
+							<td>[[${ls.days}]]</td>
+							
+							<td>
+								<a th:if="${ls.codSupported==true}"	class="fas fa-hand-holding-dollar fa-2x"
+								   th:href="@{'/shipping/' + ${ls.id} +'/enabled/false'}"
+								   title="Disable this shipping rate">
+								</a>
+								
+								<a	th:if="${ls.codSupported==false}" class="fas fa-times fa-2x"
+									th:href="@{'/shipping/' + ${ls.id} +'/enabled/true'}"
+									title="Enable this shipping rate">
+								</a>
+								
+							</td>
+							
+							<td>
+								<a class="fas fa-edit fa-2x" th:href="@{'/shipping/page/edit/' + ${ls.id}}"></a>
+								<a th:href="@{'/shipping/page/delete/' + ${ls.id}}" class="fas fa-user-times fa-2x link-delete" th:shippingId="${ls.id}" title="Delete this shipping rate"></a>
+
+							</td>
+							
+						</tr>
+						
+					</tbody>
+					
+				</table>				
+			</div>
+			
+			<div class="text-center m-1" th:if="${totalItems>0}">
+				<span>Showing shipping rates [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
+			</div>
+			
+			<div class="text-center m-1" th:unless="${totalItems>0}">
+				<span>No brand Found</span>
+			</div>
+			
+			<div th:if="${totalPage > 1}">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/shipping/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">First</a></li>
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/shipping/page/' +${pageNum-1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Previous</a></li>
+					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}" th:each="i:${#numbers.sequence(1,totalPage)}">
+					
+						<a class="page-link" th:href="@{'/shipping/page/' +${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">[[${i}]]</a>
+					</li>
+										
+				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/shipping/page/' +${pageNum+1} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Next</a></li>
+					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/shipping/page/' +${totalPage} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Last</a></li>
+				</ul>
+			</nav>
+			</div>
+			
+			<div class="modal" tabindex="-1" role="dialog" id="confirmModal2">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Delete Confirmation</h5>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+							<span id="confirmText"></span>
+						</div>
+						<div class="modal-footer">
+							<a class="btn btn-success" href="" id="yesButton">Yes</a>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:replace="footer::foot"></div>
+	</div>
+	<div th:replace="script::script"></div>
+	
+	<script type="text/javascript">
+	
+	
+	
+	</script>
+	
+</body>
+</html>
