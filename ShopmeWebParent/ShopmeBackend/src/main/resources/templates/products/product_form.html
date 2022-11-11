@@ -56,26 +56,26 @@
 				<div class="tab-content">
 				
 					<div class="tab-pane active p-3" id="overview" role="tabpanel">
-						<div th:replace="product_overview :: product_overview"></div>					
+						<div th:replace="products/product_overview :: product_overview"></div>					
 					</div>
 					
 					<div class="tab-pane" id="description" role="tabpanel">
-						<div th:replace="product_description :: product_des"></div>
+						<div th:replace="products/product_description :: product_des"></div>
 					</div>
 					
 					<div class="tab-pane" id="image" role="tabpanel">
-						<div th:replace="product_images :: product_images"></div>
+						<div th:replace="products/product_images :: product_images"></div>
 					</div>
 					
 					<div class="tab-pane" id="details" role="tabpanel">
-						<div th:replace="product_details :: product_details"></div>
+						<div th:replace="products/product_details :: product_details"></div>
 						<div>
 							<input type="button" class="btn btn-secondary" value="Add More Details" onclick="addNextDetailSection()"/>
 						</div>
 					</div>
 					
 					<div class="tab-pane p-3" id="shipping" role="tabpanel">
-						<div th:replace="product_shipping :: product_shipping"></div>
+						<div th:replace="products/product_shipping :: product_shipping"></div>
 					</div>
 					
 				</div>

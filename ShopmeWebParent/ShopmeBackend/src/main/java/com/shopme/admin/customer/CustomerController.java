@@ -54,7 +54,7 @@ public class CustomerController {
 		model.addAttribute("reverseSort",reverseSort);
 		model.addAttribute("keyword",keyword);
 		model.addAttribute("listCustomers",listCustomers);
-		return "customers";
+		return "customers/customers";
 	}
 	
 	@GetMapping("/customers/{id}/enabled/{status}")
@@ -91,7 +91,7 @@ public class CustomerController {
 			model.addAttribute("customer",customer);
 			model.addAttribute("listCountries",listCountries);
 			model.addAttribute("pageTitle","Edit Customer (ID: "+id+")");
-			return "editCustomer";
+			return "customers/editCustomer";
 			
 		}catch(NoCustomerFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
@@ -111,7 +111,7 @@ public class CustomerController {
 		try {
 			Customer customer=customerService.findById(id);
 			model.addAttribute("customer",customer);
-			return "customer_modal";
+			return "customers/customer_modal";
 		}catch (NoCustomerFoundException e) {
 			redirectAttributes.addFlashAttribute("message",e.getMessage());
 			return "redirect:/customers";

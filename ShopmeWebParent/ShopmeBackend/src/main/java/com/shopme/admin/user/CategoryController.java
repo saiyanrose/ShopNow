@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -26,12 +25,20 @@ public class CategoryController {
 	private CategoryService categoryService;
 
 	@GetMapping("/categories")
-	public String category(Model model,@Param("sortDir") String sortDir,@Param("keyword") String keyword) {
+	public String category(Model model,@RequestParam(required=false,name="sortDir") String sortDir,@RequestParam(required=false,name="keyword") String keyword) {
+		if(sortDir==null) {
+			sortDir="asc";
+		}		
 		return listByPage(1, model,sortDir,null);
 	}
 	
 	@GetMapping("/categories/{pageNum}")
-	public String listByPage(@PathVariable("pageNum")int pageNum,Model model,@Param("sortDir") String sortDir,@Param("keyword") String keyword) {
+	public String listByPage(@PathVariable("pageNum")int pageNum,Model model,@RequestParam(required=false,name="sortDir") String sortDir,@RequestParam(required=false,name="keyword") String keyword) {
+		
+		if(sortDir==null) {
+			sortDir="asc";
+		}
+		
 		CategoryPageInfo categoryPageInfo=new CategoryPageInfo();		
 		if(sortDir==null || sortDir.isEmpty()) {
 			sortDir="asc";
@@ -46,7 +53,7 @@ public class CategoryController {
 		model.addAttribute("totalElements",categoryPageInfo.getTotalElements());
 		model.addAttribute("totalPage",categoryPageInfo.getTotalPages());
 		model.addAttribute("reverseSort",reverseSort);
-		return "categories";
+		return "categories/categories";
 	}
 	
 	@GetMapping("/category/{id}/enabled/{status}")
@@ -65,7 +72,7 @@ public class CategoryController {
 		model.addAttribute("category",new Category());
 		model.addAttribute("formCategory",formCategory);
 		model.addAttribute("pageTitle","Create New Category");
-		return "category_form";
+		return "categories/category_form";
 	}
 	
 	@PostMapping("/categories/save")
@@ -99,7 +106,7 @@ public class CategoryController {
 			model.addAttribute("formCategory",categoryForForm);
 			model.addAttribute("category",category);
 			model.addAttribute("pageTitle","Edit Category with id "+id);
-			return "category_form";
+			return "categories/category_form";
 		}catch(Exception e) {
 			redirectAttributes.addFlashAttribute("message",e.getMessage());
 			return "redirect:/categories";
