@@ -10,6 +10,12 @@ $(document).ready(function() {
 		evt.preventDefault();
 		increaseQuantity($(this));
 	});
+	
+	$(".link-remove").on("click", function(evt) {
+		evt.preventDefault();
+		//url=$(this).attr("href");
+		removeFromCart($(this));		
+	});
 
 });
 
@@ -64,12 +70,51 @@ function updateSubTotal(subTotal,productId){
 
 function updateTotal(){
 	total=0.0;
-	
+	productCount=0;
 	$(".subtotal").each(function(index,element){		
-		total+=parseFloat(element.innerHTML.replaceAll(",",""));
-		//alert(total);
+		productCount++;
+		total+=parseFloat(element.innerHTML.replaceAll(",",""));		
 	});
-	
-	fomatTotal=$.number(total,2);
-	$("#total").text(fomatTotal);
+	if(productCount<1){
+		showEmptyShoppingCart();	
+	}else{
+		fomatTotal=$.number(total,2);
+		$("#total").text(fomatTotal);
+	}	
+}
+
+function showEmptyShoppingCart(){
+	$("#estimatedTotal").hide();
+}
+
+function removeFromCart(link){
+	url=link.attr("href");	
+	//alert(url);
+	$.ajax({
+		type:"DELETE",
+		url:url,
+		beforeSend:function(xhr){
+			xhr.setRequestHeader(csrfHeaderName,csrfValue);
+		}
+	}).done(function(response){		
+		rowNumber=link.attr("rowNumber");
+		removeProductCartDiv(rowNumber);
+		updateTotal();
+		updateCountNumber();
+		alert(response);		
+	}).fail(function(response){
+		alert("Error while deleting product from your cart");
+	});
+}
+
+function removeProductCartDiv(rowNumber){
+	$("#row" + rowNumber).remove();
+	$("#blankId" + rowNumber).remove();
+	$("#sectionEmptyCartMessage").removeClass("d-none");	
+}
+
+function updateCountNumber(){
+	$(".divCount").each(function(index,element){
+		element.innerHTML="" + (index+1);
+	});
 }

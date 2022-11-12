@@ -212,8 +212,7 @@
 		
 		$(".link-detail").on("click",function(e) {
 			e.preventDefault();
-			linkDetailUrl = $(this).attr("href");
-			//alert(linkDetailUrl);
+			linkDetailUrl = $(this).attr("href");			
 			$("#customerModal").modal("show").find(
 			".modal-content").load(linkDetailUrl);
 		});

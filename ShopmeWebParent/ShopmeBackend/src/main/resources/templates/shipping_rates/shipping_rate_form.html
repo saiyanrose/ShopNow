@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header::head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>[[${pageTitle}]]</title>
+</head>
+<body>
+	<div class="container-fluid">
+	
+		<div>
+			<div th:replace="navigation :: menu"></div>
+		</div>
+		
+		<div class="text-center">
+			<h1>Manage Categories | [[${pageTitle}]]</h1>
+		</div>
+		
+		<div th:if="${message != null}"	class="alert alert-success text-center">[[${message}]]</div>
+
+
+		<form th:action="@{/shipping/save}" method="post"	style="max-width: 700px; margin: 0 auto" onsubmit="return checkShipping(this)"
+			th:object="${shippingRate}">
+			
+			<input type="hidden" th:field="*{id}">
+			
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Destination Country:</label>
+				<select class="form-control" th:field="*{country}" required>					
+					<th:block th:each="list: ${countries}">
+						<option th:value="${list.id}">[[${list.name}]]</option>
+					</th:block>
+				</select>
+			</div>
+			
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Destination State/Province:</label>
+				<select class="form-control" th:field="*{states}" required>				
+					
+				</select>
+			</div>
+			
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Shipping Rate(per DIM weight):</label>
+				<input type="text" class="form-control" th:field="*{rate}" required>
+			</div>
+			
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Days to deliver</label> 
+				<input type="text" class="form-control" th:field="*{days}" required>
+			</div>
+			
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Cash On Delivery(COD):</label><br>
+				<input type="checkbox" th:field="*{codSupported}" required>
+			</div>
+			
+			<div>
+				<input type="submit" value="Save" class="btn btn-primary"> <input
+					type="submit" value="Cancel" class="btn btn-secondary"
+					id="buttonCancel">
+			</div>
+
+		</form>
+
+		<div class="modal" tabindex="-1" role="dialog" id="modalDialogue">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalTitle">Warning</h5>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<span id="modalbody"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div th:replace="footer::foot"></div>
+		
+	</div>
+	
+</body>
+
+<div th:replace="script::script"></div>
+
+<script type="text/javascript">
+
+	var dropdownStates = $("#states");
+	var dropdownCountry = $("#country");
+	contextPath = "[[@{/}]]";
+	
+	$("#buttonCancel").on("click", function() {
+		window.location = "[[@{/shipping}]]";
+	});
+	
+	$(document).ready(function(){	
+		var country=$("#country").val();		
+		changeDropdownStates(country);		
+		
+		dropdownCountry.on("change", function() {
+			var country=$("#country").val();		
+			changeDropdownStates(country);			
+		});
+	});
+	
+	function changeDropdownStates(country) {		
+		url = contextPath + "states/" + country;
+		$.get(url, function(jsonResponse) {
+			dropdownStates.empty();
+			$.each(jsonResponse, function(index, state) {
+				optionValueForStates = state.name;
+				$("<option>").val(optionValueForStates).text(state.name).appendTo(dropdownStates);
+			});
+		});
+	}
+ 
+	function checkShipping(form) {
+		sId = $("#id").val();
+		sCountry = $("#country").val();
+		sStates = $("#states").val();
+		csrfValue = $("input[name='_csrf']").val();
+		url = "[[@{/shipping/check_unique}]]";		
+		params = {
+			id : sId,
+			country : sCountry,
+			states : sStates,
+			_csrf : csrfValue
+		};
+		$.post(url, params, function(response) {
+			if (response == "OK") {
+				form.submit();
+			} else{
+				showModalDialogue("Warning","This shipping rate is already present in database.");
+			} 
+		});
+		return false;
+	}
+	
+	function showModalDialogue(title, message) {
+		$("#modalTitle").text(title);
+		$("#modalbody").text(message);
+		$("#modalDialogue").modal();
+	}
+	
+</script>
+</html>

@@ -41,7 +41,7 @@ public class ProductController {
 	public String allProducts(Model model) {
 		List<Product> products = productService.findAllProduct();
 		model.addAttribute("products", products);
-		return "products";
+		return "products/products";
 	}
 
 	@GetMapping("/products/new")
@@ -55,7 +55,7 @@ public class ProductController {
 		model.addAttribute("numberOfExistingExtraImages", numberOfExistingExtraImages);
 		model.addAttribute("listBrands", listBrands);
 		model.addAttribute("pageTitle", "Create New Product");
-		return "product_form";
+		return "products/product_form";
 	}
 
 	@PostMapping("/products/save")
@@ -202,7 +202,7 @@ public class ProductController {
 			model.addAttribute("listBrands",brands);
 			model.addAttribute("pageTitle","Edit Product (ID: " +id+")");
 			model.addAttribute("numberOfExistingExtraImages",numberOfExistingExtraImages);
-			return "product_form";
+			return "products/product_form";
 		}catch(ProductNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message",e.getMessage());
 			return "redirect:/products";
@@ -214,7 +214,7 @@ public class ProductController {
 		try {
 			Product product=productService.getById(id);			
 			model.addAttribute("product",product);				
-			return "product_detail_modal";
+			return "products/product_detail_modal";
 		}catch(ProductNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message",e.getMessage());
 			return "redirect:/products";

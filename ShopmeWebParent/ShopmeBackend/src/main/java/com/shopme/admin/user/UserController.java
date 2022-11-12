@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -36,8 +35,16 @@ public class UserController {
 	
 
 	@GetMapping("/users/page/{pageNum}")
-	public String listByPage(@PathVariable(name="pageNum") int pageNum,Model model,@Param("sortField") String sortField
-			,@Param("sortDir") String sortDir,@Param("keyword") String keyword) {
+	public String listByPage(@PathVariable(name="pageNum") int pageNum,Model model,@RequestParam(required=false,name="sortField") String sortField
+			,@RequestParam(required=false,name="sortDir") String sortDir,@RequestParam(required=false,name="keyword") String keyword) {
+		
+		if(sortDir==null) {
+			sortDir="asc";
+		}
+		if(sortField==null) {
+			sortField="id";
+		}
+		
 		Page<User>page=service.listByPage(pageNum,sortField,sortDir,keyword);
 		List<User>listUsers=page.getContent();		
 		long startCount=(pageNum-1)*UserService.User_Per_Page+1;
@@ -58,7 +65,7 @@ public class UserController {
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("reverseSort",reverseSort);
 		model.addAttribute("keyword",keyword);
-		return "users";
+		return "users/users";
 	}
 
 	@GetMapping("/users/new")
@@ -69,7 +76,7 @@ public class UserController {
 		model.addAttribute("user", user);
 		model.addAttribute("listRole", listRole);
 		model.addAttribute("pageTitle", "Create New User");
-		return "user_form";
+		return "users/user_form";
 	}
 
 	@PostMapping("/users/save")
@@ -102,7 +109,7 @@ public class UserController {
 			model.addAttribute("user", user);
 			model.addAttribute("pageTitle", "Edit User (ID: " + id + ")");
 			model.addAttribute("listRole", listRole);
-			return "user_form";
+			return "users/user_form";
 		} catch (UserNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
 			return "redirect:/users";

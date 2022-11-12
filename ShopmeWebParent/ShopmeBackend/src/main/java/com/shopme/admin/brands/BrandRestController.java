@@ -3,6 +3,7 @@ package com.shopme.admin.brands;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -11,7 +12,7 @@ public class BrandRestController {
 	private BrandService brandService;
 
 	@PostMapping("/brands/check_unique")
-	public String brandUnique(@Param("id")int id,@Param("name")String name) {
+	public String brandUnique(@RequestParam("id")int id,@RequestParam("name")String name) {
 		return brandService.checkUnique(id,name);
 	}
 }

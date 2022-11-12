@@ -36,9 +36,15 @@
 						<tr>
 							<th scope="col"><a class="text-white">ID</a></th>
 							<th scope="col">Photo</th>
-							<th scope="col"><a class="text-white"
-								th:href="@{'/categories/' +${pageNum}+ '?sortDir='+${reverseSort}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Category
-									Name</a></th>
+							
+							<th scope="col">
+								<a class="text-white" th:href="@{'/categories/' +${pageNum}+ '?sortDir='+${reverseSort}+ ${keyword!=null ? '&keyword=' +keyword : ''}}">Category
+									Name
+								</a>
+								
+								<span th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+							</th>
+							
 							<th scope="col"><a class="text-white">Alias</a></th>
 							<th scope="col">Enabled</th>
 							<th scope="col">Operations</th>

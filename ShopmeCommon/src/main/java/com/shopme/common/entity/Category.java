@@ -20,7 +20,7 @@ import javax.persistence.Transient;
 public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(length = 128, nullable = false, unique = true)
 	private String name;
 	@Column(length = 64, nullable = false, unique = true)
@@ -52,20 +52,21 @@ public class Category {
 	}
 
 	public static Category formCategory(Category category) {
-		Category cat=new Category();
+		Category cat = new Category();
 		cat.setId(category.getId());
 		cat.setName(category.getName());
 		return cat;
 	}
-	
-	public static Category formCategory(int id,String name) {
-		Category cat=new Category();
+
+	public static Category formCategory(int id, String name) {
+		Category cat = new Category();
 		cat.setId(id);
 		cat.setName(name);
 		return cat;
 	}
+
 	public static Category full(Category category) {
-		Category cat=new Category();
+		Category cat = new Category();
 		cat.setId(category.getId());
 		cat.setName(category.getName());
 		cat.setEnabled(category.isEnabled());
@@ -73,13 +74,12 @@ public class Category {
 		cat.setImage(category.getImage());
 		return cat;
 	}
-	
-	public static Category full(Category category,String name) {
-		Category cat=Category.full(category);		
-		cat.setName(name);		
+
+	public static Category full(Category category, String name) {
+		Category cat = Category.full(category);
+		cat.setName(name);
 		return cat;
 	}
-
 
 	public Category(String name, Category parent) {
 		this(name);
@@ -87,11 +87,11 @@ public class Category {
 
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -145,6 +145,10 @@ public class Category {
 
 	@Transient
 	public String getImagePath() {
-		return "/category-image/" +this.id + "/" + this.image;
+		if (id == null || image == null) {
+			return "/images/default-user.png";
+		} else {
+			return "/category-image/" + this.id + "/" + this.image;
+		}
 	}
 }

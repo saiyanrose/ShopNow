@@ -66,10 +66,22 @@
 				$("#confirmModal2").modal();
 			});
 		});	
+		
+		//delete shipping rate
+		$(document).ready(function() {
+			$(".link-delete").on("click",function(e) {
+				e.preventDefault();
+				link = $(this);
+				shippingId = link.attr("shippingId");
+				$("#yesButton").attr("href",link.attr("href"));
+				$("#confirmText").text("Are you sure want to delete id: "+ shippingId + " ?");
+				$("#confirmModal2").modal();
+			});
+		});	
 			
-	function clearFilter(){
-		document.getElementById("keyword").value = "";	   
-	}	
+		function clearFilter(){
+			document.getElementById("keyword").value = "";	   
+		}	
 	
 	</script>
 	
