@@ -1,37 +1,27 @@
 package com.shopme.common.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "addressess")
+public class Address {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(nullable = false, unique = true, length = 45)
-	private String email;
-
-	@Column(nullable = false, length = 64)
-	private String password;
+	@Column(nullable = false, length = 45)
+	private String firstName;
 
 	@Column(nullable = false, length = 45)
-	private String firstname;
-
-	@Column(nullable = false, length = 45)
-	private String lastname;
+	private String lastName;
 
 	@Column(nullable = false, length = 15)
 	private String phoneNumber;
@@ -39,7 +29,7 @@ public class Customer {
 	@Column(nullable = false, length = 64)
 	private String addressLine1;
 
-	@Column(length = 64)
+	@Column(length = 45)
 	private String addressLine2;
 
 	@Column(nullable = false, length = 45)
@@ -51,25 +41,17 @@ public class Customer {
 	@Column(nullable = false, length = 10)
 	private String postalCode;
 
-	@Column(length = 64)
-	private String verificationCode;
-
-	private boolean enabled;
-
-	private Date createdTime;
-
 	@ManyToOne
 	@JoinColumn(name = "country_id")
 	private Country country;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "authentication_type")
-	private AuthenticationType authenticationType;
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
 
-	@Column(name = "reset_password_token")
-	private String resetPasswordToken;
+	private boolean defaultShipping;
 
-	public Customer() {
+	public Address() {
 
 	}
 
@@ -81,36 +63,20 @@ public class Customer {
 		this.id = id;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getPhoneNumber() {
@@ -161,30 +127,6 @@ public class Customer {
 		this.postalCode = postalCode;
 	}
 
-	public String getVerificationCode() {
-		return verificationCode;
-	}
-
-	public void setVerificationCode(String verificationCode) {
-		this.verificationCode = verificationCode;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public Date getCreatedTime() {
-		return createdTime;
-	}
-
-	public void setCreatedTime(Date createdTime) {
-		this.createdTime = createdTime;
-	}
-
 	public Country getCountry() {
 		return country;
 	}
@@ -193,31 +135,28 @@ public class Customer {
 		this.country = country;
 	}
 
-	public AuthenticationType getAuthenticationType() {
-		return authenticationType;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setAuthenticationType(AuthenticationType authenticationType) {
-		this.authenticationType = authenticationType;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
-	public String getFullName() {
-		return firstname + " " + lastname;
+	public boolean isDefaultShipping() {
+		return defaultShipping;
 	}
 
-	public String getResetPasswordToken() {
-		return resetPasswordToken;
+	public void setDefaultShipping(boolean defaultShipping) {
+		this.defaultShipping = defaultShipping;
 	}
 
-	public void setResetPasswordToken(String resetPasswordToken) {
-		this.resetPasswordToken = resetPasswordToken;
-	}
-	
-	@Transient
-	public String getAddress() {
-		String address=firstname;
-		if(lastname!=null && !lastname.isEmpty()) {
-			address+=" "+lastname;
+	@Override
+	public String toString() {
+		
+		String address=firstName;
+		if(lastName!=null && !lastName.isEmpty()) {
+			address+=" "+lastName;
 		}
 		if(addressLine1!=null && !addressLine1.isEmpty()) {
 			address+=", "+addressLine1;

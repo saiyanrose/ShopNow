@@ -118,9 +118,16 @@ public class CustomerController {
 	@PostMapping("/update_customer")
 	public String updateAccountDetails(Model model,Customer customer,RedirectAttributes redirectAttributes,HttpServletRequest  request) {
 		customerService.update(customer);
-		redirectAttributes.addFlashAttribute("message","Your account details has been updated");
+		redirectAttributes.addFlashAttribute("message","Your account details has been updated"); 
 		updateNameInAccountDetails(request,customer);
-		return "redirect:/customer";
+		
+		String redirectOption=request.getParameter("redirect");
+		String redirectUrl="redirect:/customer";
+		
+		if("address_book".equals(redirectOption)) {
+			redirectUrl="redirect:/address_book";
+		}
+		return redirectUrl;
 	}
 
 	private void updateNameInAccountDetails(HttpServletRequest request, Customer customer) {		
