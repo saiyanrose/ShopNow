@@ -64,7 +64,7 @@ public class ProductController {
 			model.addAttribute("totalPage", listByCategory.getTotalPages());
 			model.addAttribute("listProducts",listProducts);
 			model.addAttribute("category",category);
-			return "product_by_category";
+			return "product/product_by_category";
 			
 		}catch(CategoryNotFoundExeption e) {
 			return "error/404";
@@ -80,7 +80,7 @@ public class ProductController {
 			model.addAttribute("categoryParent",categoryParent);
 			model.addAttribute("product",product);
 			model.addAttribute("pageTitle",product.getName());
-			return "product_detail";
+			return "product/product_detail";
 		}catch(ProductNotFoundException e) {
 			return "error/404";
 		}
@@ -111,6 +111,6 @@ public class ProductController {
 		model.addAttribute("keyword",keyword);
 		model.addAttribute("pageTitle",keyword + "- Search Result");
 		model.addAttribute("listProducts",listProducts);
-		return "product_search";
+		return "product/product_search";
 	}
 }

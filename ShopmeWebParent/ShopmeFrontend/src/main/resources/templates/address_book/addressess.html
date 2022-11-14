@@ -27,6 +27,14 @@
 					<div class="row">
 						<div class="col">
 							<b>Your Primary Address</b>
+							
+							<th:block th:if="${userPrimaryAsDefault}">
+								<span class="text-danger">[Default]</span>
+							</th:block>
+							
+							<th:block th:unless="${userPrimaryAsDefault}">
+								<a th:href="@{'/address/default/0'}">[Set as Default]</a>
+							</th:block>
 						</div>
 						
 						<div class="col">
@@ -56,7 +64,15 @@
 					<div class="row">
 					
 						<div class="col">
-							<b>Address [[${status.count + 1}]]</b>
+							<b>Address #[[${status.count + 1}]]</b>
+							
+							<th:block th:if="${address.defaultShipping}">
+								<span class="text-danger">[Default]</span>
+							</th:block>
+							
+							<th:block th:unless="${address.defaultShipping}">
+								<a th:href="@{'/address/default/'+${address.id}}">[Set as Default]</a>
+							</th:block>
 						</div>
 						
 						<div class="col">

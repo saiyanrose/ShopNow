@@ -118,4 +118,11 @@ public class AddressController {
 		redirectAttributes.addFlashAttribute("message","address deleted successfully.");
 		return "redirect:/address_book";
 	}
+	
+	@GetMapping("/address/default/{id}")
+	public String deleteAddress(@PathVariable("id")Integer id,HttpServletRequest request) {		
+		Customer customer=getAuthenticatedCustomer(request);
+		addressService.setDefaultAddress(id,customer.getId());	
+		return "redirect:/address_book";
+	}
 }
