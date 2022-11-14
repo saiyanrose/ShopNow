@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header::head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Orders - Shopme Admin</title>
+</head>
+<body>
+	<div class="container-fluid">
+	
+		<div th:replace="navigation :: menu"></div>
+		
+		<div>
+			<h1>Manage Orders</h1>			
+		</div>
+		
+		<div>&nbsp;</div>
+		
+		<div th:if="${message != null}"	class="alert alert-success text-center">[[${message}]]</div>			
+		
+		<div>
+			<form th:action="@{/orders/page/1}" class="form-inline">
+				<input type="hidden" name="sortField" th:value="${sortField}"/>
+				<input type="hidden" name="sortDir" th:value="${sortDir}"/>
+				Filter:&nbsp;
+				<input type="search" id="keyword" name="keyword" th:value="${keyword}" class="form-control" required />
+				&nbsp;&nbsp;
+				<input type="submit" value="Search" class="btn btn-primary" required />
+				&nbsp;&nbsp;
+				<input type="button" value="Clear" class="btn btn-secondary" onclick="clearFilter()"/>			
+			</form>
+			
+		</div>	
+		
+		<div>&nbsp;</div>
+		
+		<div>
+			<div>
+				<table
+					class="table table-bordered table-striped table-hover table-responsive-xl">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">
+							
+								<a th:if="${sortField!='id'}" class="text-white"
+									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=id&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 		ID
+								</a>
+								
+								<a th:if="${sortField=='id'}" class="text-white"
+									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=id&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 		ID
+								</a>
+								
+								<span th:if="${sortField=='id'}"
+									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+								</span>
+							
+							</th>							
+							
+							<th scope="col">
+							
+								<a th:if="${sortField!='customer'}" class="text-white"
+									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=customer&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+									 Customer
+								 </a>
+								 
+								 <a th:if="${sortField=='customer'}" class="text-white"
+									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=customer&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+								 	 Customer
+								 </a>
+								 
+								<span th:if="${sortField=='customer'}"
+									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+								</span>
+							
+							</th>
+							
+							<th scope="col">Total</th>
+							
+							<th scope="col">Order Time</th>						
+							
+							
+							<th scope="col">
+								<a th:if="${sortField!=''}" class="text-white"
+									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=&sortDir=' + ${sortDir}}">
+								 	Destination
+								 </a>
+								 
+								 <a th:if="${sortField==''}" class="text-white"
+								 	th:href="@{'/orders/page/' +${pageNum} + '?sortField=&sortDir=' + ${reverseSort}}">
+								 	Destination
+								 </a>
+								 
+								<span th:if="${sortField==''}"
+									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+								</span>							
+							</th>
+							
+							<th scope="col">
+								<a th:if="${sortField!='paymentMethod'}" class="text-white"
+									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=paymentMethod&sortDir=' + ${sortDir}}">
+								 	Payment Method
+								 </a>
+								 
+								 <a th:if="${sortField=='paymentMethod'}" class="text-white"
+								 	th:href="@{'/orders/page/' +${pageNum} + '?sortField=paymentMethod&sortDir=' + ${reverseSort}}">
+								 	Payment Method
+								 </a>
+								 
+								<span th:if="${sortField=='paymentMethod'}"
+									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+								</span>							
+							</th>
+							
+							<th scope="col">
+								<a th:if="${sortField!='orderStatus'}" class="text-white"
+									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=orderStatus&sortDir=' + ${sortDir}}">
+								 	Order Status
+								 </a>
+								 
+								 <a th:if="${sortField=='orderStatus'}" class="text-white"
+								 	th:href="@{'/orders/page/' +${pageNum} + '?sortField=orderStatus&sortDir=' + ${reverseSort}}">
+								 	Order Status
+								 </a>
+								 
+								<span th:if="${sortField=='orderStatus'}"
+									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+								</span>							
+							</th>
+							
+							<th scope="col">Operations</th>
+							
+						</tr>
+						
+					</thead>
+					
+					<tbody>
+						<tr th:each="order : ${listOrders}">
+							<th scope="row">[[${order.id}]]</th>							
+							<td><a class="linkCustomerDetail" th:href="@{'/customers/details/' +${order.customer.id}}">[[${order.customer.email}]]</a></td>
+							<td>							
+								<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+								[[${#numbers.formatDecimal(order.total,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+								<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>																
+							</td>
+							<td>[[${order.orderTime}]]</td>
+							<td>[[${order.destination}]]</td>
+							<td>[[${order.paymentMethod}]]</td>
+							<td>[[${order.orderStatus}]]</td>								
+							<td>
+								<a class="fas fa-file-alt fa-2x icon-green link-detail"
+									 th:href="@{'/orders/detail/'+ ${order.id}}">
+								</a>
+								&nbsp;
+								<a class="fas fa-edit fa-2x" href=""
+									th:href="@{'/orders/edit/' + ${order.id}}" title="Edit this order">
+								</a>
+								&nbsp;
+								<a class="fas fa-user-times fa-2x link-delete"
+									th:href="@{'/orders/delete/' + ${order.id}}"
+									th:orderId="${order.id}" title="Delete this order">
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="text-center m-1" th:if="${totalItems>0}">
+				<span>Showing users # [[${startCount}]] to [[${endCount}]] of
+					[[${totalItems}]]
+				</span>
+			</div>
+			
+			<div class="text-center m-1" th:unless="${totalItems>0}">
+				<span>No Orders Found</span>
+			</div>
+			
+			<div th:if="${totalPage > 1}">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/orders/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">First</a></li>
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/orders/page/' +${pageNum-1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Previous</a></li>
+					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}" th:each="i:${#numbers.sequence(1,totalPage)}">
+						<a class="page-link" th:href="@{'/orders/page/' +${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">[[${i}]]</a>
+					</li>					
+				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/orders/page/' +${pageNum+1} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Next</a></li>
+					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/orders/page/' +${totalPage} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Last</a></li>
+				</ul>
+			</nav>
+			</div>
+			
+			<div class="modal" tabindex="-1" role="dialog" id="confirmModalOrders">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Delete Confirmation</h5>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						
+						<div class="modal-body">
+							<span id="confirmTextOrders"></span>
+						</div>
+						
+						<div class="modal-footer">
+							<a class="btn btn-success" href="" id="yesButtonOrders">Yes</a>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			
+			<div th:replace="footer::foot">	</div>
+			
+		</div>
+		
+		</div>
+		
+		<div th:replace="script::script"></div>
+		
+</body>
+
+</html>

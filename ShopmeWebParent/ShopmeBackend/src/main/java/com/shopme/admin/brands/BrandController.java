@@ -33,7 +33,7 @@ public class BrandController {
 
 	@GetMapping("/brands")
 	public String Brands(Model model) {
-		return brandByPage(1, model, "name","asc", null);		
+		return brandByPage(1, model, "id","asc", null);		
 	}
 	
 	@GetMapping("/brands/new")

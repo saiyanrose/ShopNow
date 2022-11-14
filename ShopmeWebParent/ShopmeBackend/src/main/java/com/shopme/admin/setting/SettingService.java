@@ -40,4 +40,8 @@ public class SettingService {
 	public List<Setting> mailTemplatesSetting(){
 		return settingRepository.findBySettingCategory(SettingCategory.MAIL_TEMPLATES);
 	}
+
+	public List<Setting> getCurrencySettingBag() {
+		return settingRepository.findBySettingCategory(SettingCategory.CURRENCY);
+	}
 }
