@@ -120,9 +120,16 @@ public class AddressController {
 	}
 	
 	@GetMapping("/address/default/{id}")
-	public String deleteAddress(@PathVariable("id")Integer id,HttpServletRequest request) {		
+	public String deleteAddress(@PathVariable("id")Integer id,HttpServletRequest request,Model model) {		
 		Customer customer=getAuthenticatedCustomer(request);
 		addressService.setDefaultAddress(id,customer.getId());	
-		return "redirect:/address_book";
+		
+		String redirectOption=request.getParameter("redirect");
+		String redirectUrl="redirect:/address_book";		
+		
+		if("cart".equals(redirectOption)) {
+			redirectUrl="redirect:/cart";
+		}
+		return redirectUrl;		
 	}
 }

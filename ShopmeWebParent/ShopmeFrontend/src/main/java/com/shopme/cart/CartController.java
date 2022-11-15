@@ -12,11 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.shopme.address.AddressService;
+import com.shopme.common.entity.Address;
 import com.shopme.common.entity.CartItem;
 import com.shopme.common.entity.Customer;
-import com.shopme.customer.CustomerNotFoundException;
+import com.shopme.common.entity.ShippingRate;
 import com.shopme.customer.CustomerService;
 import com.shopme.security.CustomerOauthUser;
+import com.shopme.shippingrate.ShippingrateService;
 
 @Controller
 public class CartController {
@@ -27,6 +30,12 @@ public class CartController {
 	@Autowired
 	private CustomerService customerService;
 	
+	@Autowired
+	private AddressService addressService;
+	
+	@Autowired
+	private ShippingrateService shippingrateService;
+	
 	@GetMapping("/cart")
 	public String viewCart(HttpServletRequest request,Model model) {
 		Customer customer=getAuthenticatedCustomer(request);
@@ -35,6 +44,20 @@ public class CartController {
 		for(CartItem item:cartItems) {
 			subTotal+=item.getSubTotal();
 		}
+		
+		boolean useDefaultAddressAsDefault=false;
+		
+		Address defaultAddress=addressService.getDefaultAddress(customer);
+		ShippingRate rate=null;
+		if(defaultAddress!=null) {
+			rate=shippingrateService.getShippingRateForAddress(defaultAddress);
+		}else {
+			useDefaultAddressAsDefault=true;
+			rate=shippingrateService.getShippingRateForCustomer(customer);
+		}
+		
+		model.addAttribute("useDefaultAddressAsDefault",useDefaultAddressAsDefault);
+		model.addAttribute("shippingSupported", rate!=null);
 		model.addAttribute("estimatedTotal",subTotal);
 		model.addAttribute("cartItems", cartItems);
 		model.addAttribute("pageTitle","Cart");

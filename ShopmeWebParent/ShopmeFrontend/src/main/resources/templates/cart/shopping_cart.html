@@ -100,7 +100,20 @@
 			</div>
 			<div>&nbsp;</div>
 			<div>
-				<button class="btn btn-danger p-3">Check out</button>
+				<div th:if="${shippingSupported}">
+					<button class="btn btn-danger p-3">Check out</button>
+				</div>
+				
+				<div th:unless="${shippingSupported}">
+					<div><span class="h5 text-warning">No shipping available for your location.</span></div>
+					<div th:if="${useDefaultAddressAsDefault}">
+						<a th:href="@{/customer(redirect=cart)}" class="h6">Update your address</a>
+					</div>
+					<div th:unless="${useDefaultAddressAsDefault}">
+						<a th:href="@{/address_book(redirect=cart)}" class="h6">Use another shipping address.</a>
+					</div>					
+				</div>
+				
 			</div>
 		</div>
 	</div>

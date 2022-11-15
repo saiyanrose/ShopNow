@@ -17,7 +17,7 @@
 	
 	<div th:if="${message != null}"
 			class="alert alert-success text-center">[[${message}]]
-	</div>
+	</div>		
 	
 	<div class="row m-1">
 		<div class="col-sm-6 mt-2">
@@ -33,7 +33,7 @@
 							</th:block>
 							
 							<th:block th:unless="${userPrimaryAsDefault}">
-								<a th:href="@{'/address/default/0'}">[Set as Default]</a>
+								<a th:href="@{'/address/default/0'}">[Set as Default]</a>								
 							</th:block>
 						</div>
 						
