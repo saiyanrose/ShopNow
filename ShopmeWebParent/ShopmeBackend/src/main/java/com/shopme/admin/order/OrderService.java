@@ -1,5 +1,7 @@
 package com.shopme.admin.order;
 
+import java.util.NoSuchElementException;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +28,22 @@ public class OrderService {
 			return orderRepository.findAll(keyword,pageable);
 		}
 		return orderRepository.findAll(pageable);		
+	}
+	
+	public Orders get(Integer id) throws OrderNotFoundException {
+		try {
+			return orderRepository.findById(id).get();
+		}catch (NoSuchElementException e) {
+			throw new OrderNotFoundException("order not found with id: "+id);
+		}		
+	}
+	
+	public void deleteOrder(Integer id) throws OrderNotFoundException {
+		Orders orders=get(id);
+		if(orders!=null) {
+			orderRepository.deleteById(id);
+		}else {
+			throw new OrderNotFoundException("order not found with id: "+id);
+		}
 	}
 }

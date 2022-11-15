@@ -190,6 +190,12 @@
 			</nav>
 			</div>
 			
+			<div class="modal fade" id="detailModal">
+				<div class="modal-dialog modal-xl" id="detailModal">
+					<div class="modal-content"></div>
+				</div>
+			</div>
+			
 			<div class="modal" tabindex="-1" role="dialog" id="confirmModalOrders">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -220,5 +226,15 @@
 		<div th:replace="script::script"></div>
 		
 </body>
+
+<script type="text/javascript">
+$(".link-detail").on("click",function(e) {
+	e.preventDefault();
+	linkDetailUrl = $(this).attr("href");			
+	$("#detailModal").modal("show").find(
+	".modal-content").load(linkDetailUrl);
+});
+
+</script>
 
 </html>

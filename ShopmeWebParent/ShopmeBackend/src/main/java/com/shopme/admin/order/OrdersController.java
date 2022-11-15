@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.customer.CustomerService;
 import com.shopme.admin.setting.SettingService;
@@ -75,6 +76,33 @@ public class OrdersController {
 		List<Setting> currencySetting=settingService.getCurrencySettingBag();
 		for(Setting setting:currencySetting) {
 			request.setAttribute(setting.getKey(),setting.getValue());
+		}
+	}
+	
+	@GetMapping("/orders/detail/{id}")
+	public String viewOrderDetails(@PathVariable("id")Integer id,RedirectAttributes redirectAttributes,
+			Model model,HttpServletRequest request) {
+		
+		try {
+			Orders orders=orderService.get(id);
+			loadCurrency(request);
+			model.addAttribute("order",orders);
+			return "orders/orders_detail_modal";
+		}catch (OrderNotFoundException e) {
+			redirectAttributes.addFlashAttribute("message",e.getMessage());
+			return "redirect:/orders";
+		}
+	}
+	
+	@GetMapping("/orders/delete/{id}")
+	public String deleteOrder(@PathVariable("id")Integer id,RedirectAttributes redirectAttributes) {
+		try {
+			orderService.deleteOrder(id);
+			redirectAttributes.addFlashAttribute("message","Order deleted successfully.");
+			return "redirect:/orders";
+		}catch (OrderNotFoundException e) {
+			redirectAttributes.addFlashAttribute("message",e.getMessage());
+			return "redirect:/orders";
 		}
 	}
 	

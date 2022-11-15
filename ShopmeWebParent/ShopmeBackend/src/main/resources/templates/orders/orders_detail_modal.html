@@ -1,0 +1,237 @@
+<div class="modal-header">
+	<h5 class="modal-title">Order Details</h5>
+	<button type="button" class="close" data-dismiss="modal">&times;</button>
+</div>
+
+<div>
+
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item" role="presentation">
+			<button class="nav-link active" data-toggle="tab" href="#overview" type="button" role="tab">Overview</button>
+		</li>
+		
+		<li class="nav-item" role="presentation">
+			<button class="nav-link" data-toggle="tab" href="#product" type="button" role="tab">Product</button>
+		</li>
+		
+		<li class="nav-item" role="presentation">
+			<button class="nav-link" data-toggle="tab" href="#shipping" type="button" role="tab">Shipping</button>
+		</li>		
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div class="tab-pane active p-3" id="overview" role="tabpanel">
+		
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Order ID:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:value="${order.id}" readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Customer:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:value="${order.customer.email}" readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Product Cost:</label>
+				<div class="col-sm-10">
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+					[[${#numbers.formatDecimal(order.productCost,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Subtotal:</label>
+				<div class="col-sm-10">
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+					[[${#numbers.formatDecimal(order.subTotal,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+					
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Shipping Cost:</label>
+				<div class="col-sm-10">
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+					[[${#numbers.formatDecimal(order.shippingCost,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Tax:</label>
+				<div class="col-sm-10">
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+					[[${#numbers.formatDecimal(order.tax,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Total:</label>
+				<div class="col-sm-10">
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+					[[${#numbers.formatDecimal(order.total,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Total:</label>
+				<div class="col-sm-10">
+					TOTAL=Subtotal + Shipping Cost + tax
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Payment Method:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:value="${order.paymentMethod}" readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Order Status:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:value="${order.orderStatus}" readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Order Date:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:value="${order.orderTime}" readonly="readonly">
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="tab-pane p-3" id="product" role="tabpanel">
+			
+			<th:block th:each="detail,status : ${order.orderDetails}">
+				
+				<div class="col-sm-3">
+					<div class="div-count">[[${status.count}]].</div>				
+				</div>
+				
+				<div class="col-sm-3">
+					<img th:src="@{${detail.product.mainImagePath}}" style="width: 120px" class="img-fluid" />				
+				</div>
+			
+				<div class="col-sm-8">
+					<div class="text-wrap"><b>[[${detail.product.name}]]</b></div>	
+				</div>
+				
+				<div class="col-sm-3">Product Cost:
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+					[[${#numbers.formatDecimal(detail.productCost,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+				</div>
+				
+				<div class="col-sm-3">
+					Subtotal: [[${detail.quantity}]] * 
+						<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+							[[${#numbers.formatDecimal(detail.unitPrice,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+						<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+						=
+						<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+							[[${#numbers.formatDecimal(detail.subTotal,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+						<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+				</div>
+				
+			</th:block>			
+			
+		</div>		
+		
+			<div class="tab-pane p-3" id="shipping" role="tabpanel">
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Order Days:</label>
+					<div class="col-sm-10">						
+						<input type="text" class="form-control" th:value="${order.deliverDays}" readonly="readonly">						
+					</div>
+				</div>						
+			
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Expected Delivery Date:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:value="${order.deliverDate}" readonly="readonly">						
+					</div>
+				</div>			
+			
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">First Name:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:value="${order.firstName}" readonly="readonly">						
+					</div>
+				</div>	
+				
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Last Name:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:value="${order.lastName}" readonly="readonly">						
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Phone Number:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:value="${order.phoneNumber}" readonly="readonly">						
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Address Line 1:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:value="${order.addressLine1}" readonly="readonly">						
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Address Line 2:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:value="${order.addressLine2}" readonly="readonly">						
+					</div>
+				</div>	
+				
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">City:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:value="${order.city}" readonly="readonly">						
+					</div>
+				</div>	
+				
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">State:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:value="${order.state}" readonly="readonly">						
+					</div>
+				</div>	
+				
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Country:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:value="${order.country}" readonly="readonly">						
+					</div>
+				</div>	
+				
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label">Postal Code:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:value="${order.postalCode}" readonly="readonly">						
+					</div>
+				</div>
+		
+			</div>
+	
+	</div>
+	
+</div>
+
+<div class="modal-footer"></div>
