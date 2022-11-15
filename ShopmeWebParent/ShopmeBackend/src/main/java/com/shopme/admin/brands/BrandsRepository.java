@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.shopme.common.entity.Brand;
-import com.shopme.common.entity.Category;
-import com.shopme.common.entity.User;
 
 public interface BrandsRepository extends PagingAndSortingRepository<Brand,Integer> {
 	

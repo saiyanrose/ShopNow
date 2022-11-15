@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.shopme.admin.setting.CountryRepository;
-import com.shopme.common.entity.Category;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.ShippingRate;
 

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -18,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.user.CategoryService;
-import com.shopme.admin.user.UserService;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Category;
 
@@ -46,8 +44,16 @@ public class BrandController {
 	}
 	
 	@GetMapping("/brands/page/{pageNum}")
-	public String brandByPage(@PathVariable("pageNum")int pageNum,Model model,@Param("sortField")String sortField,
-			@Param("sortDir")String sortDir,@Param("keyword")String keyword) {
+	public String brandByPage(@PathVariable("pageNum")int pageNum,Model model,@RequestParam(required=false,name="sortField")String sortField,
+			@RequestParam(required=false,name="sortDir")String sortDir,@RequestParam(required=false,name="keyword")String keyword) {
+		
+		if(sortDir==null) {
+			sortDir="asc";
+		}
+		if(sortField==null) {
+			sortField="id";
+		}
+		
 		Page<Brand>listByPage=brandService.listByPage(pageNum,sortField,sortDir,keyword);
 		List<Brand>listBrands=listByPage.getContent();		
 		long startCount=(pageNum-1)*5+1;		

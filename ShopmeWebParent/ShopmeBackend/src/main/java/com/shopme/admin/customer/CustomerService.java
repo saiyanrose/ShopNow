@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.shopme.admin.setting.CountryRepository;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.Customer;
-import com.shopme.common.entity.User;
 
 @Service
 @Transactional

@@ -2,7 +2,6 @@ package com.shopme.admin.user;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -32,9 +31,9 @@ public class CategoryService {
 	private CategoryRepository categoryRepository;
 
 	public List<Category> findAllCategory(CategoryPageInfo categoryPageInfo, int pageNum, String sortDir,
-			String keyword) {
+			String keyword, String sortField) {
 		
-		Sort sort = Sort.by("name");
+		Sort sort = Sort.by(sortField);
 		if (sortDir.equals("asc")) {
 			sort = sort.ascending();
 		} else if (sortDir.equals("desc")) {

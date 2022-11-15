@@ -25,28 +25,26 @@ public class CategoryController {
 	private CategoryService categoryService;
 
 	@GetMapping("/categories")
-	public String category(Model model,@RequestParam(required=false,name="sortDir") String sortDir,@RequestParam(required=false,name="keyword") String keyword) {
-		if(sortDir==null) {
-			sortDir="asc";
-		}		
-		return listByPage(1, model,sortDir,null);
+	public String category(Model model) {
+		
+		return listByPage(1, model,"id","asc",null);
 	}
 	
 	@GetMapping("/categories/{pageNum}")
-	public String listByPage(@PathVariable("pageNum")int pageNum,Model model,@RequestParam(required=false,name="sortDir") String sortDir,@RequestParam(required=false,name="keyword") String keyword) {
-		
-		if(sortDir==null) {
-			sortDir="asc";
+	public String listByPage(@PathVariable("pageNum")int pageNum,Model model,@RequestParam(required=false,name="sortField") String sortField,@RequestParam(required=false,name="sortDir") String sortDir,@RequestParam(required=false,name="keyword") String keyword) {
+			
+		if(sortField==null && sortField.isEmpty()) {
+			sortField="id";
 		}
 		
 		CategoryPageInfo categoryPageInfo=new CategoryPageInfo();		
 		if(sortDir==null || sortDir.isEmpty()) {
 			sortDir="asc";
 		}		
-		List<Category>categories=categoryService.findAllCategory(categoryPageInfo,pageNum,sortDir,keyword);		
+		List<Category>categories=categoryService.findAllCategory(categoryPageInfo,pageNum,sortDir,keyword,sortField);		
 		String reverseSort=sortDir.equals("asc") ? "desc" : "asc";
 		model.addAttribute("categories",categories);
-		model.addAttribute("sortField","name");
+		model.addAttribute("sortField",sortField);
 		model.addAttribute("sortDir",sortDir);
 		model.addAttribute("keyword",keyword);
 		model.addAttribute("pageNum",pageNum);
