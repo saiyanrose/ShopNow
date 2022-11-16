@@ -6,28 +6,38 @@
 		<form th:action="@{/setings/save_mailTemplates}" method="post">
 			<div>
 				<ul class="nav nav-tabs" id="settingTab" role="tablist">
+					
 					<li class="nav-item" role="presentation">
-						<button class="nav-link active" data-toggle="tab"
-							href="#customerVerification" type="button" role="tab">Customer
-							Verification</button>
+						<button class="nav-link active" data-toggle="tab" href="#customerVerification" type="button" role="tab">
+							Customer Verification
+						</button>
 					</li>
+					
 					<li class="nav-item" role="presentation">
-						<button class="nav-link" data-toggle="tab"
-							href="orderConfirmation" type="button" role="tab">Order
-							Confirmation</button>
+						<button class="nav-link" data-toggle="tab"	href="#orderVerification" type="button" role="tab">Order
+							Confirmation
+						</button>
 					</li>
+					
 				</ul>
 
 				<!-- Tab panes -->
 				<div class="tab-content">
-					<div class="tab-pane active p-3" id="customerVerification"
-						role="tabpanel">
+					<div class="tab-pane active p-3" id="customerVerification" role="tabpanel">
+						
 						<div
-							th:replace="setting/mail_templates/customer_verification :: content"></div>
+							th:replace="setting/mail_templates/customer_verification :: content">
+						</div>
+					
 					</div>
-					<div class="tab-pane" id="orderConfirmation" role="tabpanel">
-						<h2>Order Confirmation</h2>
-					</div>
+					
+					<div class="tab-pane p-3" id="orderVerification" role="tabpanel">
+						
+						<div
+							th:replace="setting/mail_templates/order_verification :: content">
+						</div>
+					
+					</div>				
 
 				</div>
 			</div>

@@ -21,7 +21,7 @@ public class EmailSettingBag extends SettingBag{
 	}
 	
 	public String getSmtpAuth() {
-		return super.getValue("MAIL_AUTH");
+		return super.getValue("SMTP_AUTH");
 	}
 	
 	public String getSmtpSecured() {
@@ -48,4 +48,5 @@ public class EmailSettingBag extends SettingBag{
 		return super.getValue("CUSTOMER_VERIFY_CONTENT");
 	}
 
+	
 }

@@ -51,6 +51,10 @@
 					<button class="nav-link" data-toggle="tab" href="#mailTemplates"
 						type="button" role="tab">Mail Templates</button>
 				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" data-toggle="tab" href="#payment"
+						type="button" role="tab">Payment</button>
+				</li>
 			</ul>
 
 			<!-- Tab panes -->
@@ -69,6 +73,9 @@
 				</div>
 				<div class="tab-pane p-3" id="mailTemplates" role="tabpanel">
 					<div th:replace="setting/mail_templates/mail_template :: content"></div>
+				</div>
+				<div class="tab-pane p-3" id="payment" role="tabpanel">
+					<div th:replace="setting/payment :: content"></div>
 				</div>
 			</div>
 		</div>
@@ -101,6 +108,7 @@
 		customizeDropdown();
 		
 		$("#customerVerifyContent").richText();
+		$("#orderVerifyContent").richText();
 	});
 
 	function customizeDropdown() {

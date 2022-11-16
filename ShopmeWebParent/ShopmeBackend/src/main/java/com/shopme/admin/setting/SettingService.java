@@ -44,4 +44,8 @@ public class SettingService {
 	public List<Setting> getCurrencySettingBag() {
 		return settingRepository.findBySettingCategory(SettingCategory.CURRENCY);
 	}
+	
+	public List<Setting> getPaymentSettingBag() {
+		return settingRepository.findBySettingCategory(SettingCategory.PAYMENT);
+	}
 }

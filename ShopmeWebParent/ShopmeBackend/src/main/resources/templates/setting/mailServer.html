@@ -43,8 +43,8 @@
 				<div class="col-sm-8">
 					<select name="SMTP_AUTH" class="form-control">
 
-						<option th:value="true" th:selected="(${SMTP_AUTH}==true)">True</option>
-						<option th:value="false" th:selected="(${SMTP_AUTH}==false)">False</option>
+						<option th:value="true" th:selected="(${SMTP_AUTH}=='true')">True</option>
+						<option th:value="false" th:selected="(${SMTP_AUTH}=='false')">False</option>
 
 					</select>
 				</div>
@@ -55,8 +55,8 @@
 				<div class="col-sm-8">
 					<select name="MAIL_SECURED" class="form-control">
 
-						<option th:value="true" th:selected="(${MAIL_SECURED}==true)">True</option>
-						<option th:value="false" th:selected="(${MAIL_SECURED}==false)">False</option>
+						<option th:value="true" th:selected="(${MAIL_SECURED}=='true')">True</option>
+						<option th:value="false" th:selected="(${MAIL_SECURED}=='false')">False</option>
 
 					</select>
 				</div>
