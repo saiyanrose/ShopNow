@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header::head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<title>[[${pageTitle}]]</title>
+</head>
+
+<body>
+	<div class="container-fluid text-center">
+		<div th:replace="navigation::menu"></div>
+		<div th:replace="navigation::search_menu"></div>
+		<h2>Checkout</h2>
+	</div>
+	
+	<div class="row m-1">
+		<div class="col-sm-8">
+			<div class="card">
+				<div class="card-header"><h5>Shipping Information</h5></div>
+				<div class="card-body">
+					<p>
+						<b>Ship to:</b> [[${shippingAddress}]].
+						<a th:href="@{/address_book}">[Ship to another address]</a>
+					</p>
+					
+					<p>
+						<b>Days to deliver:</b> [[${checkoutInfo.deliveryDays}]] day(s).
+					</p>
+					
+					<p>
+						<b>Expected delivery:</b> [[${#dates.format(checkoutInfo.deliveryDate,'E,dd/MM/YYYY')}]].
+					</p>
+				</div>
+			</div>
+			
+			<div class="card mt-3 mb-3">
+				<div class="card-header"><h5>Payment Method</h5></div>
+				<div class="card-body">
+					<div th:if="${checkoutInfo.codSupported}">
+						<p>
+							<input type="radio"> Cash on Delivery
+							&nbsp;
+							<button class="btn btn-primary">Place Order with COD</button>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-sm-4">
+			<div class="card">
+				<div class="card-header"><h5>Order Summary</h5></div>
+				<div class="card-body">
+					<div>
+						<table>
+							<th:block th:each="item :${cartItems}">
+								<tr>
+								
+									<td>[[${item.quantity}]] X &nbsp; &nbsp;</td>
+								
+									<td width="70%">
+										<a th:href="@{'/p/' +${item.product.alias}}" target="_blank">[[${item.product.name}]]</a>
+										<br>
+										<small>
+											Shipping Cost:										
+											<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+											[[${#numbers.formatDecimal(item.shippingCost,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+											<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>		
+										</small>
+									</td>
+									
+									<td class="ml-2">										
+										<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+										[[${#numbers.formatDecimal(item.subTotal,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+										<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+									</td>						
+									
+								</tr>
+							</th:block>
+							
+							<tr>
+								<td colspan="3">
+									<hr>
+								</td>	
+							</tr>
+							
+						</table>						
+					</div>
+					
+					<div class="row mt-2">
+							<div class="col">Product Total:</div>
+							<div class="col">
+								<div>
+									<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+										[[${#numbers.formatDecimal(checkoutInfo.productTotal,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+										<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+								</div>
+							</div>
+					</div>
+					
+					<div class="row mt-2">
+							<div class="col">Total Shipping Cost:</div>
+							<div class="col">
+								<div>
+									<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+										[[${#numbers.formatDecimal(checkoutInfo.shippingCostTotal,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+										<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+								</div>
+							</div>
+					</div>
+					
+					<div class="row mt-2">
+							<div class="col"><b>Payment Total:</b></div>
+							<div class="col">
+								<div>
+									<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+										[[${#numbers.formatDecimal(checkoutInfo.paymentTotal,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+										<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+								</div>
+							</div>
+					</div>
+				
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="navigation::footer_menu"></div>
+	
+	
+</body>
+</html>

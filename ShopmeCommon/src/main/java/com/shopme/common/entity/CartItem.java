@@ -1,6 +1,5 @@
 package com.shopme.common.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,19 +15,39 @@ public class CartItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@ManyToOne
-	@JoinColumn(name="customer_id")
+	@JoinColumn(name = "customer_id")
 	private Customer customer;
-	
+
 	@ManyToOne
-	@JoinColumn(name="product_id")
+	@JoinColumn(name = "product_id")
 	private Product product;
-	
+
 	private int quantity;
+
+	@Transient
+	private float shippingCost;
 
 	public CartItem() {
 
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Transient
+	public float getShippingCost() {
+		return shippingCost;
+	}
+
+	public void setShippingCost(float shippingCost) {
+		this.shippingCost = shippingCost;
 	}
 
 	public Customer getCustomer() {
@@ -54,7 +73,7 @@ public class CartItem {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
+
 	@Transient
 	public float getSubTotal() {
 		return product.getDiscountPrize() * quantity;
