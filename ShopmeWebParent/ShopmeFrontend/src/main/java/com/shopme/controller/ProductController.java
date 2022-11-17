@@ -108,4 +108,6 @@ public class ProductController {
 		model.addAttribute("listProducts",listProducts);
 		return "product/product_search";
 	}
+	
+	
 }

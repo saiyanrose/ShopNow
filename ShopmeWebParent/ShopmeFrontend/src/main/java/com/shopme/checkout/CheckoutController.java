@@ -1,10 +1,17 @@
 package com.shopme.checkout;
 
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -13,16 +20,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.shopme.Utility;
 import com.shopme.address.AddressService;
 import com.shopme.cart.CartService;
 import com.shopme.common.entity.Address;
 import com.shopme.common.entity.CartItem;
+import com.shopme.common.entity.CurrencySettingBag;
 import com.shopme.common.entity.Customer;
+import com.shopme.common.entity.EmailSettingBag;
+import com.shopme.common.entity.Orders;
 import com.shopme.common.entity.PaymentMethod;
 import com.shopme.common.entity.ShippingRate;
 import com.shopme.customer.CustomerService;
 import com.shopme.order.OrderService;
 import com.shopme.security.CustomerOauthUser;
+import com.shopme.settings.SettingService;
 import com.shopme.shippingrate.ShippingrateService;
 
 @Controller
@@ -45,6 +57,9 @@ public class CheckoutController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private SettingService settingService;
 	
 	@GetMapping("/checkout")
 	public String showCheckoutPage(Model model,HttpServletRequest request) {
@@ -98,7 +113,7 @@ public class CheckoutController {
 	}
 	
 	@PostMapping("/place_order")
-	public String placeOrder(HttpServletRequest request,Model model) {
+	public String placeOrder(HttpServletRequest request,Model model) throws UnsupportedEncodingException, MessagingException {
 		String paymentType=request.getParameter("paymentMethod");
 		PaymentMethod paymentMethod=PaymentMethod.valueOf(paymentType);
 		
@@ -115,12 +130,51 @@ public class CheckoutController {
 		List<CartItem>cartItems=cartService.listItem(customer);	
 		CheckoutInfo checkoutInfo=checkoutService.prepareCheckout(cartItems, rate);
 		
-		orderService.createOrder(customer, defaultAddress, cartItems, paymentMethod, checkoutInfo);
+		Orders order=orderService.createOrder(customer, defaultAddress, cartItems, paymentMethod, checkoutInfo);
 		
 		cartService.DeleteCartByCustomer(customer);
 		
+		sendOrderConfirmationEmail(request,order);
+		
 		model.addAttribute("pageTitle","Order Placed");
 		return "checkout/order_completed";
+	}
+
+	private void sendOrderConfirmationEmail(HttpServletRequest request, Orders order) throws UnsupportedEncodingException, MessagingException {
+		EmailSettingBag emailSettingBag=settingService.getEmailSettings();
+		JavaMailSenderImpl mailSenderImpl= Utility.prepareMailSender(emailSettingBag);
+		mailSenderImpl.setDefaultEncoding("utf-8");
+		
+		String toAddress=order.getCustomer().getEmail();
+		String subject=emailSettingBag.getOrderConfirmationSubject();
+		String content=emailSettingBag.getOrderConfirmationContent();
+		
+		subject=subject.replace("[[orderId]]",String.valueOf(order.getId()));
+		
+		MimeMessage mimeMessage= mailSenderImpl.createMimeMessage();
+		MimeMessageHelper helper=new MimeMessageHelper(mimeMessage);
+		
+		helper.setFrom(emailSettingBag.getFromAddress(),emailSettingBag.getSenderName());
+		helper.setTo(toAddress);
+		helper.setSubject(subject);
+		
+		DateFormat dateFormat=new SimpleDateFormat("HH:mm:ss E, dd MMM yyyy");
+		String orderTime=dateFormat.format(order.getOrderTime());
+		
+		CurrencySettingBag currencySettingBag=settingService.getCurrencySettings();
+		
+		String totalAmount=Utility.formatCurrency(order.getTotal(), currencySettingBag);
+		
+		content=content.replace("[[name]]",order.getCustomer().getFirstname());
+		content=content.replace("[[orderId]]",String.valueOf(order.getId()));
+		content=content.replace("[[orderTime]]",orderTime);
+		content=content.replace("[[shippingAddress]]",order.getShippingAddress());
+		content=content.replace("[[total]]",totalAmount);
+		content=content.replace("[[paymentMethod]]",order.getPaymentMethod().toString());
+		
+		helper.setText(content,true);
+		mailSenderImpl.send(mimeMessage);		
+		
 	}
 	
 }

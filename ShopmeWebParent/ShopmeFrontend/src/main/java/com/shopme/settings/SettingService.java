@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shopme.common.entity.CurrencySettingBag;
 import com.shopme.common.entity.EmailSettingBag;
 import com.shopme.common.entity.Setting;
 import com.shopme.common.entity.SettingCategory;
@@ -26,5 +27,9 @@ public class SettingService {
 		return new EmailSettingBag(mailSettings);
 	}
 	
+	public CurrencySettingBag getCurrencySettings() {
+		List<Setting>settings=settingRepository.findBySettingCategory(SettingCategory.CURRENCY);		
+		return new CurrencySettingBag(settings);
+	}	
 	
 }
