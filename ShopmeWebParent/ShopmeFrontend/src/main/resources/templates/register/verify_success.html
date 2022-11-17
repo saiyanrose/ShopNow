@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-</head>
+<head th:replace="common/header::head"></head>
 
 <body>
 	<div class="container-fluid">
-		<div th:replace="navigation::menu"></div>
+	
+		<div th:replace="common/navigation::menu"></div>
 		<div>&nbsp;</div>
+	
 		<div class="text-center">
 			<h2>Customer Verification</h2>
 			<h4>Congratulation! Your account has been verified.</h4>			
 			<p><a th:href="@{/login}">Login Now</a></p>
 		</div>
 	</div>
+	
 	<div>&nbsp;</div>
-	<div th:replace="navigation::footer_menu"></div>
+	
+	<div th:replace="common/navigation::footer_menu"></div>
 </body>
 </html>

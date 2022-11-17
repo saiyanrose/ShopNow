@@ -2,15 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	
-<head th:replace="header::head">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<title>[[${pageTitle}]]</title>	
-</head>	
+<head th:replace="common/header::head"></head>	
+
 <body>
-	<div class="container-fluid">
-		<div th:replace="navigation :: menu"></div>
+
+	<div class="container-fluid">		
+		<div th:replace="common/navigation :: menu"></div>
 		
 		<div>&nbsp;</div>
 		
@@ -19,12 +16,12 @@
 		</div>
 		
 		<div class="text-center">
-			<div th:replace="navigation :: footer_menu"></div>
+			<div th:replace="common/navigation :: footer_menu"></div>
 		</div>
 		
-		<div>&nbsp;</div>
-		
+		<div>&nbsp;</div>		
 	</div>
 
 </body>
+
 </html>

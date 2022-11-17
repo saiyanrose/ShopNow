@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<head th:replace="common/header::head">
 </head>
 
 <body>
 
 	<div class="container-fluid">
-		<div th:replace="navigation::menu"></div>
+		<div th:replace="common/navigation::menu"></div>
+		
 		<div class="text-center">
 			<h2>Your Account Details</h2>
 		</div>
@@ -17,12 +15,9 @@
 	
 	<div>&nbsp;</div>
 	
-	<div th:if="${message != null}"
-			class="alert alert-success text-center">[[${message}]]
-	</div>
+	<div th:if="${message != null}"	class="alert alert-success text-center">[[${message}]]</div>
 	
-	<form th:action="@{/update_customer}" method="post"
-		th:object="${customer}" style="max-width: 600px; margin: 0 auto">
+	<form th:action="@{/update_customer}" method="post"	th:object="${customer}" style="max-width: 600px; margin: 0 auto">
 		
 		<input type="hidden" th:field="*{id}">
 		<input type="hidden" name="redirect" th:value="${param.redirect}">
@@ -169,37 +164,16 @@
 	
 	<div>&nbsp;</div>
 	
-	<div th:replace="navigation::footer_menu"></div>
+	<div th:replace="common/navigation::footer_menu"></div>
 	
 </body>	
 
+<script type="text/javascript" th:src="@{js/account.js}"></script>
+
 <script type="text/javascript">
-var dropdownCountries;
-var dataListState;
-contextPath="[[@{/}]]";
-$(document).ready(function() {
-	dropdownCountries=$("#country");
-	dataListState=$("#listStates");
-	
-	dropdownCountries.on("change",function(){
-		loadStateForCountry();
-		$("#state").val("").focus();
-	});
-});
-
-function loadStateForCountry(){
-	selectedCountry=$("#country option:selected");
-	countryId=selectedCountry.val();
-	url=contextPath+ "setting/states/"+countryId;		
-	$.get(url,function(jsonResponse){
-		dataListState.empty();
-		
-		$.each(jsonResponse,function(index,state){
-			$("<option>").val(state.name).text(state.name).appendTo(dataListState);
-		});
-	});
-}
-
+	var dropdownCountries;
+	var dataListState;
+	contextPath="[[@{/}]]";
 </script>
 
 </html>

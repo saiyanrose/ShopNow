@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<title>[[${pageTitle}]]</title>
-</head>
+<head th:replace="common/header::head"></head>
 
 <body>
 	<div class="container-fluid text-center">
-		<div th:replace="navigation::menu"></div>
-		<div th:replace="navigation::search_menu"></div>
+		<div th:replace="common/navigation::menu"></div>
+		<div th:replace="common/navigation::search_menu"></div>
 		<h2>Your Address Book</h2>
 		<a th:href="@{/address_book/new}">Add New Address</a>
 	</div>
@@ -93,32 +88,13 @@
 				
 		</div>		
 	</div>
-	</th:block>
+	</th:block>	
 	
-	<div class="modal" tabindex="-1" role="dialog" id="confirmModal">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">Delete Confirmation</h5>
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-						
-						<div class="modal-body">
-							<span id="confirmText"></span>
-						</div>
-						
-						<div class="modal-footer">
-							<a class="btn btn-success" href="" id="yesButton">Yes</a>
-							<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-						</div>
-						
-					</div>
-				</div>
-			</div>
+	<div th:replace="common/modalDialogue::confirmDialogue"></div>
 	
 	<div>&nbsp;</div>
 	
-	<div th:replace="navigation::footer_menu"></div>
+	<div th:replace="common/navigation::footer_menu"></div>
 
 </body>
 

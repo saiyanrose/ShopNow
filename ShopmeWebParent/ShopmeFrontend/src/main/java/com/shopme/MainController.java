@@ -23,16 +23,18 @@ public class MainController {
 	public String viewHomePage(Model model) {
 		List<Category>category=categoryService.listNoChildrenCategory();
 		model.addAttribute("listCategory", category);
-		model.addAttribute("pageTitle","Shopme");
+		model.addAttribute("pageTitle","Shopnow");
 		return "index";
 	}
 	
 	@GetMapping("/login")
-	public String viewLoginPage() {
+	public String viewLoginPage(Model model) {
 		Authentication authentication=SecurityContextHolder.getContext().getAuthentication();		
 		if(authentication==null || authentication instanceof AnonymousAuthenticationToken) {
+			model.addAttribute("pageTitle","Login");
 			return "login";
 		}
+		
 		return "redirect:/";
 	}
 }

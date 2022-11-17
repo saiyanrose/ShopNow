@@ -1,58 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<title>[[${pageTitle}]]</title>
-</head>
+<head th:replace="common/header::head"></head>
 
 <body>
 	<div class="container-fluid">
-		<div th:replace="navigation::menu"></div>
-		<div th:replace="navigation::search_menu"></div>
+		<div th:replace="common/navigation::menu"></div>
+		<div th:replace="common/navigation::search_menu"></div>
 		<h2>Products in Category</h2>
 	</div>
 
 	<div th:if="${categoryParent!=null && !categoryParent.empty}">
 		<div class="row">
 			<div class="col">
-
 				<nav>
 					<ol class="breadcrumb">
-
 						<li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
 						<th:block th:each="cat :${categoryParent}">
-							<li class="breadcrumb-item"><a
-								th:href="@{'/c/' +${cat.alias}}">[[${cat.name}]]</a></li>
-
+							<li class="breadcrumb-item">
+								<a th:href="@{'/c/' +${cat.alias}}">[[${cat.name}]]</a>
+							</li>
 						</th:block>
 
-						<li class="breadcrumb-item" th:if="${product!=null}"><span>[[${product.name}]]</span>
-						</li>
+						<li class="breadcrumb-item" th:if="${product!=null}"><span>[[${product.name}]]</span></li>
 					</ol>
 				</nav>
 			</div>
 		</div>
 	</div>
+	
 	<div class="row">
 		<div class="col-sm">
-
 			<div>
-				<img id="big-image" th:src="@{${product.mainImagePath}}" height="500"
-					index="0"/>
+				<img id="big-image" th:src="@{${product.mainImagePath}}" height="500" index="0"/>
 			</div>
+			
 			<div class="row justify-content-center">
 				<div class="m-2 border border-secondary p-1">
 					<img class="image-thumbnail" th:src="@{${product.mainImagePath}}" height="50" index="0"/>
 				</div>
+				
 				<th:block th:each="img ,status: ${product.images}">
 					<div class="m-2 border border-secondary p-1">
 						<img class="image-thumbnail" th:src="@{${img.imagePath}}" height="50" th:index="${status.count}"/>
 					</div>
 				</th:block>
 			</div>
-
 		</div>
 
 		<div class="col-sm">
@@ -60,36 +52,45 @@
 			<div>
 				<h2>[[${product.name}]]</h2>
 			</div>
+			
 			<div>
 				<span>[[${product.brand.name}]]</span>
 			</div>
+			
 			<div>
 				List Price:
 				<span  th:if="${product.discountPrice<=0}">
-				<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
-				[[${#numbers.formatDecimal(product.price,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
-				<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
-				</span>
-				<del th:if="${product.discountPrice>0}">
-					<span>
 					<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 					[[${#numbers.formatDecimal(product.price,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
 					<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+				</span>
+				
+				<del th:if="${product.discountPrice>0}">
+					<span>
+						<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+						[[${#numbers.formatDecimal(product.price,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+						<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 					</span>
 				</del>
 			</div>
+			
 			<div th:if="${product.discountPrice>0}">
 				Price:
 				<span style="font-size: larger; color: darkred">
-				<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 					[[${#numbers.formatDecimal(product.discountPrize,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
-				<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+					<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 				</span>
+				
 				([[${product.discountPrice}]] % Off)					
 			</div>
+			
 			<div>&nbsp;</div>
+			
 			<div th:utext="${product.shortDescription}"></div>
+			
 		</div>
+		
 		<div class="col-sm-2">
 			<div>
 				<span th:if="${product.inStock}" class="text-success"><b>In Stock<b></b></span>
@@ -114,8 +115,7 @@
 				<h3 class="m-3">Product Description:</h3>
 			</div>
 			<div class="m-3" th:utext="${product.fullDescription}"></div>		
-		</div>
-	
+		</div>	
 	</div>
 	
 	<div class="row">
@@ -131,11 +131,13 @@
 			</th:block>				
 		</div>	
 	</div>
+	
 	<div th:replace="image_corousel :: content"></div>
-	<div th:replace="navigation::footer_menu"></div>
+	<div th:replace="common/navigation::footer_menu"></div>
 	
 <script type="text/javascript" th:src="@{/js/quantity_control.js}"></script>
 <script type="text/javascript" th:src="@{/js/add_to_cart.js}"></script>	
+
 <script type="text/javascript">
 	contextPath="[[@{/}]]";
 	productId="[[${product.id}]]";
@@ -161,5 +163,7 @@
 	});
 
 </script>	
+
 </body>
+
 </html>

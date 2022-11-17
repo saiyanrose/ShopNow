@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<title>[[${pageTitle}]]</title>
-</head>
+<head th:replace="common/header::head"></head>
 
 <body>
 	<div class="container-fluid text-center">
-		<div th:replace="navigation::menu"></div>
-		<div th:replace="navigation::search_menu"></div>
+		<div th:replace="common/navigation::menu"></div>
+		<div th:replace="common/navigation::search_menu"></div>
 		<h2>Checkout</h2>
 	</div>
 	
@@ -38,11 +33,13 @@
 				<div class="card-header"><h5>Payment Method</h5></div>
 				<div class="card-body">
 					<div th:if="${checkoutInfo.codSupported}">
+						<form th:action="@{/place_order}" method="post">
 						<p>
-							<input type="radio"> Cash on Delivery
+							<input type="radio" name="paymentMethod" id="radioCod" value="COD"> Cash on Delivery
 							&nbsp;
-							<button class="btn btn-primary">Place Order with COD</button>
+							<button class="btn btn-primary d-none" id="placeBtn">Place Order with COD</button>
 						</p>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -126,8 +123,20 @@
 		</div>
 	</div>
 
-	<div th:replace="navigation::footer_menu"></div>
-	
+	<div th:replace="common/navigation::footer_menu"></div>	
 	
 </body>
+
+<script type="text/javascript">
+		contextPath = "[[@{/}]]";		
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
+		
+		$(document).ready(function(){
+			$("#radioCod").on("click",function(){
+				$("#placeBtn").removeClass("d-none");
+			});
+		});
+</script>
+
 </html>

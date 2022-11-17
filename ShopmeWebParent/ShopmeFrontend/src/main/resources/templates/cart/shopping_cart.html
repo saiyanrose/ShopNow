@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<title>Shopme</title>
+<head th:replace="common/header::head">
+
 </head>
 
 <body>
 	<div class="container-fluid text-center">
-		<div th:replace="navigation::menu"></div>
-		<div th:replace="navigation::search_menu"></div>
+		<div th:replace="common/navigation::menu"></div>
+		<div th:replace="common/navigation::search_menu"></div>
 		<h2>Your Shopping Cart</h2>
 	</div>
 
@@ -119,7 +116,7 @@
 			</div>
 		</div>
 	</div>
-	<div th:replace="navigation::footer_menu"></div>
+	<div th:replace="common/navigation::footer_menu"></div>
 	
 	<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/shopnow_cart.js}"></script>
@@ -129,5 +126,6 @@
 		var csrfHeaderName = "[[${_csrf.headerName}]]";
 		var csrfValue = "[[${_csrf.token}]]";
 	</script>
+	
 </body>
 </html>

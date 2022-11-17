@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>[[${pageTitle}]]</title>
-</head>
+<head th:replace="common/header::head"></head>
 <body>
 	<div class="container-fluid">
 	
 		<div>
-			<div th:replace="navigation::menu"></div>			
+			<div th:replace="common/navigation::menu"></div>			
 		</div>
 		
 		<div>&nbsp;</div>
@@ -106,42 +103,19 @@
 			</div>
 		</div>
 		
-		<div th:replace="navigation::footer_menu"></div>
+		<div th:replace="common/navigation::footer_menu"></div>
 		
 	</div>
 	
 </body>
+
+<script type="text/javascript" th:src="@{/js/address.js}"></script>
 
 <script type="text/javascript">
 
 var dropdownStates = $("#state");
 var dropdownCountry = $("#country");
 contextPath = "[[@{/}]]";
-
-$("#buttonCancel").on("click", function() {
-	window.location = "[[@{/address_book}]]";
-});
-
-$(document).ready(function(){	
-	var country=$("#country").val();		
-	changeDropdownStates(country);		
-	
-	dropdownCountry.on("change", function() {
-		var country=$("#country").val();		
-		changeDropdownStates(country);			
-	});
-});
-
-function changeDropdownStates(country) {		
-	url = contextPath + "setting/states/" + country;
-	$.get(url, function(jsonResponse) {
-		dropdownStates.empty();
-		$.each(jsonResponse, function(index, state) {
-			optionValueForStates = state.name;
-			$("<option>").val(optionValueForStates).text(state.name).appendTo(dropdownStates);
-		});
-	});
-}
 
 </script>
 

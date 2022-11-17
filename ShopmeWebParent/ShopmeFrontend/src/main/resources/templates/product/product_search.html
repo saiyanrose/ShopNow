@@ -51,14 +51,14 @@
 	<div th:if="${totalPage > 1}">
 			<nav aria-label="Page navigation example">
 				<ul class="pagination justify-content-center">
-					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/1'}">First</a></li>
-					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/' +${pageNum-1}}">Previous</a></li>
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/1' +${keyword!=null ? '?keyword=' +keyword : ''}}">First</a></li>
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/' +${pageNum-1}+ ${keyword!=null ? '?keyword=' +keyword : ''}}">Previous</a></li>
 					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}"
 					 th:each="i:${#numbers.sequence(1,totalPage)}">
-					<a class="page-link" th:href="@{'/search/page/' +${i}}">[[${i}]]</a>
+					<a class="page-link" th:href="@{'/search/page/' +${i}+${keyword!=null ? '?keyword=' +keyword : ''}}">[[${i}]]</a>
 					</li>					
-				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/' +${pageNum+1}}">Next</a></li>
-					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/' +${totalPage}}">Last</a></li>
+				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/' +${pageNum+1}+${keyword!=null ? '?keyword=' +keyword : ''}}">Next</a></li>
+					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/search/page/' +${totalPage}+${keyword!=null ? '?keyword=' +keyword : ''}}">Last</a></li>
 				</ul>
 			</nav>
 	</div>

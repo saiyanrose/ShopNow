@@ -1,6 +1,5 @@
 package com.shopme.controller;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +36,7 @@ public class ProductController {
 			@PathVariable("pageNum") int pageNum) {
 		try {
 			Category category = categoryService.getCategory(alias);		
-			model.addAttribute("pageTitle", category.getName());
-
-			if (category == null) {
-				return "error/404";
-			}
+			model.addAttribute("pageTitle", category.getName());			
 
 			List<Category> categoryParent = categoryService.getParent(category);		
 			model.addAttribute("categoryParent", categoryParent);
