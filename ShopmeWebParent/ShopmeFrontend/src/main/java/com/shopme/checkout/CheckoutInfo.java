@@ -1,7 +1,10 @@
 package com.shopme.checkout;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import javax.persistence.Transient;
 
 public class CheckoutInfo {
 
@@ -79,6 +82,11 @@ public class CheckoutInfo {
 
 	public void setCodSupported(boolean codSupported) {
 		this.codSupported = codSupported;
+	}	
+	
+	public String getPaymentTotalPaypal() {
+		DecimalFormat decimalFormat=new DecimalFormat("###,###.##");
+		return decimalFormat.format(paymentTotal);
 	}
 
 }
