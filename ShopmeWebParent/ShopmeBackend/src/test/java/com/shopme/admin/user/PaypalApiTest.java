@@ -14,8 +14,8 @@ import org.springframework.web.client.RestTemplate;
 public class PaypalApiTest {
 	private static final String BASE_URL="https://api.sandbox.paypal.com";
 	private static final String GET_ORDER_API="/v2/checkout/orders/";
-	private static final String CLIENT_ID="Abv4h3g_0x4lx9MlZSYeyTne7me5zFoiwhF2IjR1uGqhDTPSA0DX-dvYnBXmKXo1m15T173z9dZyNZvv";
-	private static final String CLIENT_SECRET="ECkX_ov5W-NAHEcbugILRJO_l47TmeMpJwzfAMdZuHVAhGEhdsmsB8CKol1yTDreJMBHfiMV2QeDfI5L";
+	private static final String CLIENT_ID="YOUR_CLIENT_ID";
+	private static final String CLIENT_SECRET="YOUR_CLIENT_SECRET";
 
 	@Test
 	public void testGetOrderDetails() {
