@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableWebSecurity
@@ -29,13 +30,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
+	}	
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.authorizeRequests()
-		.antMatchers("/customer","/update_customer","/cart","/address_book/**","/checkout/**","/place_order").authenticated()
+		.antMatchers("/customer","/update_customer","/cart","/address_book/**","/checkout/**","/place_order","/process_paypal_order").authenticated()
 		.anyRequest().permitAll()
 		.and()
 		.formLogin()

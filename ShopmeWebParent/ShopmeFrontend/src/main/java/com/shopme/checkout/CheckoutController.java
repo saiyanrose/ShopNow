@@ -62,6 +62,9 @@ public class CheckoutController {
 	@Autowired
 	private SettingService settingService;
 	
+	@Autowired
+	private PaypalService paypalService;
+	
 	@GetMapping("/checkout")
 	public String showCheckoutPage(Model model,HttpServletRequest request) {
 		Customer customer=getAuthenticatedCustomer(request);			
@@ -184,5 +187,25 @@ public class CheckoutController {
 		mailSenderImpl.send(mimeMessage);		
 		
 	}
+	
+	@PostMapping("/process_paypal_order")
+	public String processPaypalOrder(HttpServletRequest request,Model model)throws UnsupportedEncodingException, MessagingException {
+		String orderId=request.getParameter("orderId");
+		String message=null;
+		String pageTitle="Checkout Failure";
+		try {
+			if(paypalService.validateOrder(orderId)) {
+				return placeOrder(request,model);
+			}else {
+				message="ERROR: Transaction could not be completed";
+			}
+		} catch (PayPalApiException e) {			
+			message="ERROR: Transaction could not be completed: "+e.getMessage();
+		}
+		model.addAttribute("message",message);
+		model.addAttribute("pageTitle",pageTitle);
+		return "message";
+	}
+	
 	
 }
