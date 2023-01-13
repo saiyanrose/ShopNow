@@ -128,30 +128,18 @@
 				
 				<div class="col-sm-8">
 					<div class="text-wrap"><b>[[${detail.product.name}]]</b></div>	
-				</div>
+				</div>	
 				
+				<div class="col-sm-3">
+					<b>Quantity:</b> [[${detail.quantity}]]						
+				</div>			
 				
-				
-			<!-- 	<div class="col-sm-3">Product Cost:
+				<div class="col-sm-3"><b>Product Cost:</b>
 					<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 					[[${#numbers.formatDecimal(detail.productCost,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
 					<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
-				</div>
+				</div>				
 				
-				<div class="col-sm-3">
-					Subtotal: [[${detail.quantity}]] * 
-						<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
-							[[${#numbers.formatDecimal(detail.unitPrice,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
-						<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
-						=
-						<span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
-							[[${#numbers.formatDecimal(detail.subTotal,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
-						<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
-				</div> -->
-				
-				<div class="col-sm-3">
-					Quantity: [[${detail.quantity}]]						
-				</div>
 				<br>
 					
 			</th:block>			

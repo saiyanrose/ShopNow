@@ -33,22 +33,17 @@ public class PaypalService {
 		
 		String clientId = paymentSettingBag.getClientId();
 		String clientSecret = paymentSettingBag.getSecretId();
-		System.out.println("Client ID " +clientId);
-		System.out.println("Client Secret " +clientSecret);
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		headers.add("Accept-Language", "en_US");
-		headers.setBasicAuth(clientId,clientSecret);
-		System.out.println(headers);
+		headers.setBasicAuth(clientId,clientSecret);		
 		
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(headers);		
 		RestTemplate restTemplate = new RestTemplate();
 		
 		ResponseEntity<PyPalOrderResponse> response = restTemplate.exchange(requestedUrl, HttpMethod.GET,request,
-				PyPalOrderResponse.class);		
-		
-		System.out.println(response);
+				PyPalOrderResponse.class);			
 		
 		HttpStatus statusCode = response.getStatusCode();
 

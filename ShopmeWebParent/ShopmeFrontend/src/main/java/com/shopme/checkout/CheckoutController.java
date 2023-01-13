@@ -83,9 +83,8 @@ public class CheckoutController {
 			return "redirect:/cart";
 		}
 		
-		List<CartItem>cartItems=cartService.listItem(customer);	
-		CheckoutInfo checkoutInfo=checkoutService.prepareCheckout(cartItems, rate);
-		
+		List<CartItem>cartItems=cartService.listItem(customer);			
+		CheckoutInfo checkoutInfo=checkoutService.prepareCheckout(cartItems, rate);		
 		String currencyCode=settingService.getCurrencyCode();
 		PaymentSettingBag paymentSettingBag= settingService.getPaymentSettings();
 		String paypalClientId=paymentSettingBag.getClientId();
@@ -139,6 +138,7 @@ public class CheckoutController {
 		}		
 		
 		List<CartItem>cartItems=cartService.listItem(customer);	
+		
 		CheckoutInfo checkoutInfo=checkoutService.prepareCheckout(cartItems, rate);
 		
 		Orders order=orderService.createOrder(customer, defaultAddress, cartItems, paymentMethod, checkoutInfo);
