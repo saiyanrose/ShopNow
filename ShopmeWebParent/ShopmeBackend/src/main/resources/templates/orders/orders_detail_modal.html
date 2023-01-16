@@ -16,6 +16,10 @@
 		
 		<li class="nav-item" role="presentation">
 			<button class="nav-link" data-toggle="tab" href="#shipping" type="button" role="tab">Shipping</button>
+		</li>
+		
+		<li class="nav-item" role="presentation">
+			<button class="nav-link" data-toggle="tab" href="#track" type="button" role="tab">Tracking</button>
 		</li>		
 	</ul>
 
@@ -225,6 +229,45 @@
 				</div>
 		
 			</div>
+			
+			<div class="tab-pane p-3" id="track" role="tabpanel" aria-labelledby="track-tab">
+				
+				<div class="full-details">
+					<table class="table table-striped table-bordered table-hover table-responsive">
+						<thead class="thead-dark">
+							<tr>
+								<th>Time</th>
+								<th>Status</th>
+								<th>Notes</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr th:each="track :${order.orderTracks}">
+								<td>[[${track.updatedTime}]]</td>
+								<td>[[${track.status}]]</td>
+								<td>[[${track.notes}]]</td>
+							</tr>
+						</tbody>					
+					</table>
+				</div>	
+				
+				<div class="less-details">
+					<th:block th:each="track:${order.orderTracks}">
+					
+					<div class="row p-1">
+						<span>[[${track.updatedTime}]]</span>
+					</div>
+					
+					<div class="row p-1 ml-3">
+						<span>&nbsp;&nbsp;<b>[[${track.status}]]</b>: <i>[[${track.notes}]]</i></span>
+					</div>
+					
+					<div class="row">&nbsp;</div>
+					</th:block>	
+				</div>				
+			
+			</div>		
 	
 	</div>
 	

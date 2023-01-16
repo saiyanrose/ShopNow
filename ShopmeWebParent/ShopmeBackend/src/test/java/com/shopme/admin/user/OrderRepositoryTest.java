@@ -1,6 +1,7 @@
 package com.shopme.admin.user;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -11,11 +12,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
 import com.shopme.admin.order.OrderRepository;
 import com.shopme.common.entity.Customer;
 import com.shopme.common.entity.OrderDetails;
 import com.shopme.common.entity.OrderStatus;
+import com.shopme.common.entity.OrderTrack;
 import com.shopme.common.entity.Orders;
 import com.shopme.common.entity.PaymentMethod;
 import com.shopme.common.entity.Product;
@@ -71,5 +72,21 @@ public class OrderRepositoryTest {
 		orders.getOrderDetails().add(orderDetails);
 		
 		orderRepository.save(orders);
+	}
+	
+	@Test
+	public void testTrackingOrder() {
+		Integer order_id=21;
+		Orders order=orderRepository.findById(order_id).get();		
+		OrderTrack orderTrack=new OrderTrack();
+		orderTrack.setOrders(order);
+		orderTrack.setUpdatedTime(new Date());
+		orderTrack.setOrderStatus(OrderStatus.PICKED);
+		orderTrack.setNotes(OrderStatus.PICKED.defaultDescription());
+		
+		List<OrderTrack>orderTracks=order.getOrderTracks();
+		orderTracks.add(orderTrack);
+		
+		Orders updateOrders=orderRepository.save(order);
 	}
 }

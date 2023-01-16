@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.customer.CustomerService;
 import com.shopme.admin.setting.SettingService;
+import com.shopme.common.entity.Country;
 import com.shopme.common.entity.Orders;
 import com.shopme.common.entity.Setting;
 
@@ -104,6 +105,22 @@ public class OrdersController {
 			redirectAttributes.addFlashAttribute("message",e.getMessage());
 			return "redirect:/orders";
 		}
+	}
+	
+	@GetMapping("/orders/edit/{id}")
+	public String editOrder(@PathVariable("id") Integer id,Model model,RedirectAttributes redirectAttributes) {
+		try {
+			Orders orders=orderService.getOrder(id);
+			List<Country>listCountries=orderService.getCountries();
+			model.addAttribute("orders",orders);
+			model.addAttribute("countries",listCountries);
+			model.addAttribute("pageTitle","Edit Order (Id:"+id+")");
+			return "orders/editOrder_form";
+		}catch (OrderNotFoundException e) {
+			redirectAttributes.addFlashAttribute("message",e.getMessage());
+			return "redirect:/orders";
+		}
+		
 	}
 	
 	

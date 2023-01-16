@@ -1,7 +1,9 @@
 package com.shopme.common.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -79,8 +81,11 @@ public class Orders {
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
-	@OneToMany(mappedBy = "orders",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
 	private Set<OrderDetails> orderDetails = new HashSet<>();
+
+	@OneToMany(mappedBy = "orders")
+	private List<OrderTrack> orderTracks = new ArrayList<OrderTrack>();
 
 	public Orders() {
 
@@ -100,6 +105,14 @@ public class Orders {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+
+	public List<OrderTrack> getOrderTracks() {
+		return orderTracks;
+	}
+
+	public void setOrderTracks(List<OrderTrack> orderTracks) {
+		this.orderTracks = orderTracks;
 	}
 
 	public String getLastName() {
@@ -264,12 +277,12 @@ public class Orders {
 
 	@Transient
 	public String getDestination() {
-		String destination=city+", ";
-		if(state!=null && !state.isEmpty()) {
-			destination+=state+", ";
+		String destination = city + ", ";
+		if (state != null && !state.isEmpty()) {
+			destination += state + ", ";
 		}
-		if(country!=null && !country.isEmpty()) {
-			destination+=country+".";
+		if (country != null && !country.isEmpty()) {
+			destination += country + ".";
 		}
 		return destination;
 	}
@@ -283,7 +296,7 @@ public class Orders {
 		setCity(customer.getCity());
 		setCountry(customer.getCountry().getName());
 		setPostalCode(customer.getPostalCode());
-		setState(customer.getState());		
+		setState(customer.getState());
 	}
 
 	public void copyShippingAddress(Address address) {
@@ -295,36 +308,35 @@ public class Orders {
 		setCity(address.getCity());
 		setCountry(address.getCountry().getName());
 		setPostalCode(address.getPostalCode());
-		setState(address.getState());		
+		setState(address.getState());
 	}
 
 	@Transient
 	public String getShippingAddress() {
-		String address=firstName;
-		if(lastName!=null && !lastName.isEmpty()) {
-			address+=" "+lastName;
+		String address = firstName;
+		if (lastName != null && !lastName.isEmpty()) {
+			address += " " + lastName;
 		}
-		if(addressLine1!=null && !addressLine1.isEmpty()) {
-			address+=", "+addressLine1;
+		if (addressLine1 != null && !addressLine1.isEmpty()) {
+			address += ", " + addressLine1;
 		}
-		if(addressLine2!=null && !addressLine2.isEmpty()) {
-			address+=", "+addressLine2;
+		if (addressLine2 != null && !addressLine2.isEmpty()) {
+			address += ", " + addressLine2;
 		}
-		if(city!=null && !city.isEmpty()) {
-			address+=", "+city;
+		if (city != null && !city.isEmpty()) {
+			address += ", " + city;
 		}
-		if(state!=null && !state.isEmpty()) {
-			address+=", "+state;
+		if (state != null && !state.isEmpty()) {
+			address += ", " + state;
 		}
-		address+=", " +country;
-		if(postalCode!=null && !postalCode.isEmpty()) {
-			address+=". Postal Code: "+postalCode;
+		address += ", " + country;
+		if (postalCode != null && !postalCode.isEmpty()) {
+			address += ". Postal Code: " + postalCode;
 		}
-		if(phoneNumber!=null && !phoneNumber.isEmpty()) {
-			address+=". Phone Number: "+phoneNumber;
+		if (phoneNumber != null && !phoneNumber.isEmpty()) {
+			address += ". Phone Number: " + phoneNumber;
 		}
 		return address;
 	}
-	
-	
+
 }
