@@ -84,7 +84,7 @@ public class CheckoutController {
 		}
 		
 		List<CartItem>cartItems=cartService.listItem(customer);			
-		CheckoutInfo checkoutInfo=checkoutService.prepareCheckout(cartItems, rate);		
+		CheckoutInfo checkoutInfo=checkoutService.prepareCheckout(cartItems, rate);			
 		String currencyCode=settingService.getCurrencyCode();
 		PaymentSettingBag paymentSettingBag= settingService.getPaymentSettings();
 		String paypalClientId=paymentSettingBag.getClientId();

@@ -15,12 +15,16 @@ public class CheckoutService {
 
 	public CheckoutInfo prepareCheckout(List<CartItem>cartItems,ShippingRate shippingRate) {
 		CheckoutInfo checkoutInfo=new CheckoutInfo();
+		
 		float productCost=calculateProductCost(cartItems);
 		System.out.println("product cost: "+productCost);
+		
 		float productTotal=calculateProductTotal(cartItems);
 		System.out.println("product total: "+productTotal);
+		
 		float shippingCost=calculateShippingCost(cartItems,shippingRate);
 		System.out.println("shippingCost: "+shippingCost);
+		
 		float paymentTotal=productTotal+shippingCost;
 		System.out.println("paymentTotal: "+paymentTotal);
 		
@@ -52,8 +56,8 @@ public class CheckoutService {
 	private float calculateProductTotal(List<CartItem> cartItems) {
 		float total=0.0f;
 		
-		for(CartItem cartItem:cartItems) {
-			total+=cartItem.getSubTotal();
+		for(CartItem cartItem:cartItems) {			
+			total+=cartItem.getQuantity() * cartItem.getProduct().getDiscountPrize();
 		}
 		return total;
 	}
@@ -61,9 +65,8 @@ public class CheckoutService {
 	private float calculateProductCost(List<CartItem> cartItems) {
 		float cost=0.0f;
 		
-		for(CartItem cartItem:cartItems) {	
-			System.out.println("cart items price: "+cartItem.getSubTotal());
-			cost+=cartItem.getQuantity() * cartItem.getSubTotal();
+		for(CartItem cartItem:cartItems) {			
+			cost+=cartItem.getSubTotal();			
 		}
 		return cost;
 	}

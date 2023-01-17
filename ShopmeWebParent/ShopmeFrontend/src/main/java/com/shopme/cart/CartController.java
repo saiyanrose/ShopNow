@@ -41,8 +41,8 @@ public class CartController {
 		Customer customer=getAuthenticatedCustomer(request);
 		List<CartItem>cartItems=cartService.listItem(customer);
 		float subTotal=0.0F;
-		for(CartItem item:cartItems) {
-			subTotal+=item.getSubTotal();
+		for(CartItem item:cartItems) {			
+			subTotal+=item.getSubTotal();			
 		}
 		
 		boolean useDefaultAddressAsDefault=false;

@@ -27,14 +27,18 @@ public class OrderService {
 	private OrderRepository orderRepository;
 	
 	public Orders createOrder(Customer customer,Address address,List<CartItem>cartItems,
-			PaymentMethod paymentMethod,CheckoutInfo checkoutInfo) {
+			PaymentMethod paymentMethod,CheckoutInfo checkoutInfo) {		
+		
 		Orders orders=new Orders();
+		
 		orders.setOrderTime(new Date());
+		
 		if(paymentMethod.equals(PaymentMethod.PAYPAL)) {
 			orders.setOrderStatus(OrderStatus.PAID);
 		}else {
 			orders.setOrderStatus(OrderStatus.NEW);
-		}		
+		}
+		
 		orders.setCustomer(customer);
 		orders.setProductCost(checkoutInfo.getProductCost());
 		orders.setSubTotal(checkoutInfo.getProductTotal());
@@ -60,10 +64,10 @@ public class OrderService {
 			orderDetails.setOrders(orders);
 			orderDetails.setProduct(product);
 			orderDetails.setQuantity(item.getQuantity());
-			orderDetails.setUnitPrice(product.getDiscountPrice());
+			orderDetails.setUnitPrice(product.getDiscountPrize());
 			orderDetails.setProductCost(item.getSubTotal() * item.getQuantity());
 			orderDetails.setShippingCost(item.getShippingCost());
-			
+			orderDetails.setSubTotal(orderDetails.getProductCost());
 			details.add(orderDetails);
 		}
 		return orderRepository.save(orders);

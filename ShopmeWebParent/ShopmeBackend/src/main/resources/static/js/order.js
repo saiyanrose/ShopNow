@@ -37,10 +37,10 @@ function updateOrderAmount(){
 		subtotalProduct=$(this);
 		rowNumber=subtotalProduct.attr("rowNumber");
 		subtotalEachProduct=$("#subtotal"+rowNumber).val();
-		subtotal+=parseInt(subtotalEachProduct);
+		subtotal+=parseFloat(subtotalEachProduct);
 		overviewSubtotal=$(".over-subtotal").val(subtotal);	
 		overviewShipping=$(".over-ship").val();		
-		total=parseInt(overviewShipping)+subtotal;
+		total=parseFloat(overviewShipping)+subtotal;
 		$(".over-total").val(total);					
 	});	
 }
