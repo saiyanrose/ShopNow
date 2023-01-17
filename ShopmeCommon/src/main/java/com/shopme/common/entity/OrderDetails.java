@@ -79,7 +79,7 @@ public class OrderDetails {
 	}
 
 	public float getSubTotal() {
-		return subTotal;
+		return quantity*productCost;
 	}
 
 	public void setSubTotal(float subTotal) {

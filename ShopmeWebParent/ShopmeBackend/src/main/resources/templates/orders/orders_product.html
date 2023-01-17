@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="orders_product" th:remove="tag">
+		<div id="productList">
+		
+			<th:block th:each="detail,status : ${orders.orderDetails}">
+			<div class="border rounded p-1">
+				<div class="row">
+					<div class="col-1">
+						<div>[[${status.count}]].</div>
+					</div>
+					<div class="col-3">
+						<img th:src="@{${detail.product.mainImagePath}}" class="img-fluid" width="100px"/>
+					</div>
+				</div>
+				
+				<div class="row m-2">
+					<b>[[${detail.product.name}]]</b>
+				</div>
+				
+				<div class="row m-2">
+					<table>
+						<tr>
+							<td>Product Cost:</td>
+							<td>
+								<input type="text" class="form-control m-1 product-input" required
+								 th:value="${detail.productCost}" style="max-width:140px" th:rowNumber="${status.count}" th:id="'price'+${status.count}">
+							</td>
+						</tr>
+						
+						<tr>
+							<td>Quantity:</td>
+							<td>
+								<input type="number" step="1" min="1" max="5" class="form-control m-1 quantity-input" required
+								 th:id="'quantity'+${status.count}" th:rowNumber="${status.count}" th:value="${detail.quantity}" style="max-width:140px">
+							</td>
+						</tr>
+						
+						<!-- <tr>
+							<td>Unit Price:</td>
+							<td>
+								<input type="text" class="form-control m-1 unit-input" required
+								 th:rowNumber="${status.count}" th:id="'unit'+${status.count}" th:value="${detail.unitPrice}" style="max-width:140px">
+							</td>
+						</tr> -->
+						
+						<tr>
+							<td>Subtotal:</td>
+							<td>
+								<input type="text" class="form-control m-1 subtotal-input" required
+								th:rowNumber="${status.count}" th:id="'subtotal'+${status.count}" th:value="${detail.subTotal}" style="max-width:140px">
+							</td>
+						</tr>
+						
+						<tr>
+							<td>Shipping Cost:</td>
+							<td>
+								<input type="text" class="form-control m-1 ship-input" required
+								 th:value="${detail.shippingCost}" style="max-width:140px" readonly="readonly">
+							</td>
+						</tr>
+						
+					</table>
+				</div>
+				
+			</div>
+			
+			<div class="row">&nbsp;</div>
+			
+			</th:block>
+		
+		</div>
+	</div>
+
+</body>
+
+</html>
