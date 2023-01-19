@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header::head">
+<title></title>
+</head>
+
+<body>
+
+<div class="container-fluid">
+	<div>
+		<form th:action="@{/orders/search_product}" method="post" class="form-inline m-2">
+			<input type="search" required class="form-control mr-sm-2" name="keyword" th:value="${keyword}" placeholder="enter product name">
+			<input type="submit" class="btn btn-outline-success" value="Search">
+		</form>	
+	</div>
+	
+	<div class="row">
+		<th:block th:each="product: ${listProducts}">
+			<div class="col">
+				<a href="" class="linkProduct" th:pid="${product.id}">
+					<img th:src="@{${product.mainImagePath}}" height="100px">
+				</a>
+				<br>
+				<b th:id="'pname'+${product.id}">[[${product.name.substring(0,20)}]]</b>
+			</div>						
+		</th:block>		
+	</div>
+	
+	<div th:if="${totalPage > 1}">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/orders/search_product/page/1'+${keyword!=null ? '?keyword=' +keyword : ''}}">First</a></li>
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/orders/search_product/page/' +${pageNum-1} +${keyword!=null ? '?keyword=' +keyword : ''}}">Previous</a></li>
+					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}" th:each="i:${#numbers.sequence(1,totalPage)}">
+					<a class="page-link" th:href="@{'/orders/search_product/page/' +${i} + ${keyword!=null ? '?keyword=' +keyword : ''}}">[[${i}]]</a>
+					</li>					
+				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/orders/search_product/page/' +${pageNum+1} + ${keyword!=null ? '?keyword=' +keyword : ''}}">Next</a></li>
+					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/orders/search_product/page/' +${totalPage} + ${keyword!=null ? '?keyword=' +keyword : ''}}">Last</a></li>
+				</ul>
+			</nav>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		handleLinkProduct();
+	});
+	
+	function handleLinkProduct(){
+		$(".linkProduct").on("click",function(e){
+			e.preventDefault();
+			productId=$(this).attr("pid");
+			productName=$("#pname"+productId).text();			
+		});
+	}
+	
+</script>
+
+</body>
+
+</html>

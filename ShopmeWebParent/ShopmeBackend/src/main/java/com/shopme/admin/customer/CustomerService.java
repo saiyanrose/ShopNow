@@ -28,6 +28,9 @@ public class CustomerService {
 	private CountryRepository countryRepository;
 	
 	@Autowired
+	private CartRepository cartRepository;
+	
+	@Autowired
 	private PasswordEncoder encoder;
 
 	public Page<Customer> findCustomerByPage(int pageNum, String sortField, String sortDir, String keyword) {
@@ -50,6 +53,7 @@ public class CustomerService {
 		if (customerId == null || customerId == 0) {
 			throw new NoCustomerFoundException("No Customer found with id: " + id);
 		}
+		cartRepository.deleteByCustomer(id);
 		customerRepository.deleteById(id);
 	}
 

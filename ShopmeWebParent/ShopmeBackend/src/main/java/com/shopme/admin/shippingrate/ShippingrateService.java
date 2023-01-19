@@ -12,8 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.shopme.admin.products.ProductRepository;
 import com.shopme.admin.setting.CountryRepository;
 import com.shopme.common.entity.Country;
+import com.shopme.common.entity.Product;
 import com.shopme.common.entity.ShippingRate;
 
 @Service
@@ -25,6 +27,11 @@ public class ShippingrateService {
 	
 	@Autowired
 	private CountryRepository countryRepository;
+	
+	@Autowired
+	private ProductRepository productRepository;
+	
+	private static final int DIM_DIVISIOR=139;
 
 	public Page<ShippingRate> listShipping(Integer pageNum, String sortField, String sortDir, String keyword) {		
 		Sort sort=Sort.by(sortField);
@@ -83,6 +90,17 @@ public class ShippingrateService {
 
 	public void save(ShippingRate shippingRate) {		
 		shippingrateRepository.save(shippingRate);
+	}
+	
+	public float calculateShippingRate(Integer productid,Integer countryId,String state) throws ShippingRateNotFoundException {
+		ShippingRate shippingRate= shippingrateRepository.findByCountryAndState(countryId, state);
+		if(shippingRate==null) {
+			throw new ShippingRateNotFoundException("No Shipping rate found!");
+		}
+		Product product=productRepository.findById(productid).get();
+		float dimWeight=(product.getLength() * product.getWidth() * product.getHeigth())/DIM_DIVISIOR;
+		float finalWeight=product.getWeight()>dimWeight ? product.getWeight() : dimWeight;
+		return finalWeight * shippingRate.getRate();
 	}
 	
 }

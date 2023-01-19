@@ -7,6 +7,9 @@ import java.util.NoSuchElementException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.shopme.common.entity.Product;
@@ -15,6 +18,8 @@ import com.shopme.common.entity.Product;
 @Transactional
 public class ProductService {
 
+	private static final int PRODUCT_PER_PAGE = 3;
+	
 	@Autowired
 	private ProductRepository productRepository;
 	
@@ -67,5 +72,11 @@ public class ProductService {
 		}catch(NoSuchElementException e) {
 			throw new ProductNotFoundException("No Product found with Id "+id);
 		}
+	}
+	
+	public Page<Product> searchProducts(Integer pageNum,String keyword) {
+		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCT_PER_PAGE);
+		Page<Product> product= productRepository.searchProductByName(keyword, pageable);
+		return product;
 	}
 }

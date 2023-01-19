@@ -1,5 +1,7 @@
 package com.shopme.admin.products;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -15,4 +17,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product,In
 	public void updateEnabledStatus(Integer id,boolean enabled);
 	
 	public Long countById(Integer id);
+	
+	@Query("SELECT p FROM Product p WHERE p.name LIKE %?1%")
+	public Page<Product> searchProductByName(String keyword,Pageable pageable);
 }
