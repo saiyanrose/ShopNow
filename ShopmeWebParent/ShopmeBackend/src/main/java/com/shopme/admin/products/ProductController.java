@@ -171,7 +171,7 @@ public class ProductController {
 			RedirectAttributes redirectAttributes) {
 		productService.checkEnabledStatus(id, status);
 		String enabled = status ? "Enabled" : "Disabled";
-		String message = "the user id " + id + "has been " + enabled;
+		String message = "the product id " + id + " has been " + enabled;
 		redirectAttributes.addFlashAttribute("message", message);
 		return "redirect:/products";
 	}

@@ -11,7 +11,7 @@ public class BrandRestController {
 	private BrandService brandService;
 
 	@PostMapping("/brands/check_unique")
-	public String brandUnique(@RequestParam("id")int id,@RequestParam("name")String name) {
+	public String brandUnique(@RequestParam(name="id",required = false)int id,@RequestParam("name")String name) {
 		return brandService.checkUnique(id,name);
 	}
 }

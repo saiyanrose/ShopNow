@@ -50,6 +50,7 @@ public class FileUploadUtil {
 		for(File file: dirPath.toFile().listFiles()) {
 			Files.delete(file.toPath());
 		}
-		Files.deleteIfExists(dirPath);		
+		Files.deleteIfExists(dirPath);	
+		System.out.println("folder removed successfully!");
 	}
 }

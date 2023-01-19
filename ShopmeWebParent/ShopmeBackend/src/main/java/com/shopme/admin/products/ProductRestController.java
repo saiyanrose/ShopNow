@@ -42,7 +42,7 @@ public class ProductRestController {
 	}
 	
 	@PostMapping("/products/check_unique")
-	public String checkUnique(@RequestParam("id")Integer id,@RequestParam("name")String name) {
+	public String checkUnique(@RequestParam(name="id",required = false)Integer id,@RequestParam(name="name",required=false)String name) {
 		return productService.checkunique(id, name);
 	}
 	

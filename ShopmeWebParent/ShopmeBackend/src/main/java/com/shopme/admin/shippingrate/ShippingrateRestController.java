@@ -12,7 +12,7 @@ public class ShippingrateRestController {
 	private ShippingrateService shippingrateService;
 	
 	@PostMapping("/shipping/check_unique")
-	public String shippingUnique(@RequestParam(required = false,name="id")Integer id,@RequestParam("country")Integer countryId
+	public String shippingUnique(@RequestParam(required = false,name="id")Integer id,@RequestParam(name="country",required=false)Integer countryId
 			,@RequestParam("states")String state) {		
 		return shippingrateService.shippingUnique(id,countryId,state);
 	}
