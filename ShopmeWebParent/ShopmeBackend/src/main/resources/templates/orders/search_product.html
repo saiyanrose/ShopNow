@@ -52,7 +52,8 @@
 		$(".linkProduct").on("click",function(e){
 			e.preventDefault();
 			productId=$(this).attr("pid");
-			productName=$("#pname"+productId).text();			
+			productName=$("#pname"+productId).text();
+			window.parent.addProduct(productId);
 		});
 	}
 	

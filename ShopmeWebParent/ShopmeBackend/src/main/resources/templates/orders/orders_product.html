@@ -6,6 +6,7 @@
 		
 			<th:block th:each="detail,status : ${orders.orderDetails}">
 			<div class="border rounded p-1">
+				<input type="hidden" name="productId" th:value="${detail.product.id}" class="hiddenProductId">
 				<div class="row">
 					<div class="col-1">
 						<div>[[${status.count}]].</div>

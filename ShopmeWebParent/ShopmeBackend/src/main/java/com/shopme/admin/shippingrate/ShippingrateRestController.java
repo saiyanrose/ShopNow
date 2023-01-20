@@ -13,7 +13,13 @@ public class ShippingrateRestController {
 	
 	@PostMapping("/shipping/check_unique")
 	public String shippingUnique(@RequestParam(required = false,name="id")Integer id,@RequestParam(name="country",required=false)Integer countryId
-			,@RequestParam("states")String state) {		
+			,@RequestParam(name="states",required = false)String state) {		
 		return shippingrateService.shippingUnique(id,countryId,state);
+	}
+	
+	@PostMapping("/get_shipping_cost")
+	public String getShippingCost(Integer productId,Integer countryId,String state)throws ShippingRateNotFoundException {
+		float shippingCost=shippingrateService.calculateShippingRate(productId, countryId, state);
+		return String.valueOf(shippingCost);
 	}
 }
