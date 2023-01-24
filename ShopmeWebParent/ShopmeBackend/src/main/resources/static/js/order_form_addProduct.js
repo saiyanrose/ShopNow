@@ -43,6 +43,7 @@ function getProductInfo(productId,shippingCost){
 		mainImagePath=contextPath.substring(0,contextPath.length-1)+productJSON.imagePath;		
 		htmlCode=insertProduct(productId,productName,mainImagePath,productCost,productPrice,shippingCost);
 		$("#productList").append(htmlCode);
+		updateOrderAmount();
 	}).fail(function(err){
 		alert(err.responseJSON.message);
 	});
@@ -52,13 +53,15 @@ function insertProduct(productId,productName,mainImagePath,productCost,productPr
 	nextCount=$(".hiddenProductId").length+1;
 	quantityId="quantity"+nextCount;
 	subtotalId="subtotal"+nextCount;
+	rowId="row"+nextCount;
 	
 	htmlCode=`
-		<div class="border rounded p-1">
+		<div class="border rounded p-1" id="${rowId}">
 				<input type="hidden" name="productId" th:value="${productId}" class="hiddenProductId">
 				<div class="row">
 					<div class="col-1">
-						<div>${nextCount}.</div>
+						<div class="divCount">${nextCount}.</div>
+						<div><a class="fas fa-trash icon link-remove" href="" rowNumber="${nextCount}"></a></div>
 					</div>
 					<div class="col-3">
 						<img src="${mainImagePath}" class="img-fluid" width="100px"/>
