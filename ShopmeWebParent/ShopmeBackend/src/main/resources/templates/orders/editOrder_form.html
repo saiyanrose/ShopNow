@@ -63,6 +63,10 @@
 						<div th:replace="orders/orders_product :: orders_product"></div>
 					</div>
 					
+					<div class="tab-pane p-3" id="tracking" role="tabpanel">
+						<div th:replace="orders/track_product :: orders_track"></div>
+					</div>
+					
 				</div>
 
 				<div class="text-center">
@@ -110,6 +114,7 @@
 <script type="text/javascript" th:src="@{/js/order.js}"></script>
 <script type="text/javascript" th:src="@{/js/order_form_addProduct.js}"></script>
 <script type="text/javascript" th:src="@{/js/orders_product_remove.js}"></script>
+<script type="text/javascript" th:src="@{/js/orders_track.js}"></script>
 <div th:replace="orders/add_product::content"></div>
 
 <script type="text/javascript">

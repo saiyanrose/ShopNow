@@ -76,7 +76,7 @@ public class OrderRepositoryTest {
 	
 	@Test
 	public void testTrackingOrder() {
-		Integer order_id=21;
+		Integer order_id=25;
 		Orders order=orderRepository.findById(order_id).get();		
 		OrderTrack orderTrack=new OrderTrack();
 		orderTrack.setOrders(order);
@@ -87,6 +87,6 @@ public class OrderRepositoryTest {
 		List<OrderTrack>orderTracks=order.getOrderTracks();
 		orderTracks.add(orderTrack);
 		
-		Orders updateOrders=orderRepository.save(order);
+		orderRepository.save(order);
 	}
 }
