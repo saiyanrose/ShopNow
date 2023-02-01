@@ -3,6 +3,8 @@ package com.shopme.admin.user;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -21,15 +23,14 @@ import com.shopme.common.entity.User;
 
 @Controller
 public class UserController {
-
+	private static final Logger LOGGER=LoggerFactory.getLogger(UserController.class);
+	
 	@Autowired
 	private UserService service;
 
 	@GetMapping("/users")
 	public String listAll(Model model) {
-		//List<User> listUsers = service.listUsers();
-		//model.addAttribute("listUsers", listUsers);
-		//return "users";
+		LOGGER.info("Users In Admin Panel.");
 		return listByPage(1,model,"firstname","asc",null);
 	}
 	
@@ -37,7 +38,7 @@ public class UserController {
 	@GetMapping("/users/page/{pageNum}")
 	public String listByPage(@PathVariable(name="pageNum") int pageNum,Model model,@RequestParam(required=false,name="sortField") String sortField
 			,@RequestParam(required=false,name="sortDir") String sortDir,@RequestParam(required=false,name="keyword") String keyword) {
-		
+		LOGGER.info("Users In Admin Panel");
 		if(sortDir==null) {
 			sortDir="asc";
 		}
@@ -46,6 +47,7 @@ public class UserController {
 		}
 		
 		Page<User>page=service.listByPage(pageNum,sortField,sortDir,keyword);
+		LOGGER.info("Users In Admin Panel: call users by page");
 		List<User>listUsers=page.getContent();		
 		long startCount=(pageNum-1)*UserService.User_Per_Page+1;
 			
@@ -70,6 +72,7 @@ public class UserController {
 
 	@GetMapping("/users/new")
 	public String newUser(Model model) {
+		LOGGER.info("Users In Admin Panel:Create new user from page called.");
 		List<Role> listRole = service.listRole();
 		User user = new User();
 		user.setEnabled(true);
@@ -81,19 +84,26 @@ public class UserController {
 
 	@PostMapping("/users/save")
 	public String saveUser(User user, RedirectAttributes redirectAttributes,@RequestParam("image") MultipartFile multiPartfile) throws IOException {
+		LOGGER.info("Users In Admin Panel:save user");
 		
 		if(!multiPartfile.isEmpty()) {			
-			String filename=StringUtils.cleanPath(multiPartfile.getOriginalFilename()).replace(" ","");
-			//System.out.println(filename);			
+			String filename=StringUtils.cleanPath(multiPartfile.getOriginalFilename()).replace(" ","");			
+			LOGGER.info("Users In Admin Panel:user photo name"+filename);			
+			
 			user.setPhotos(filename);
 			User saveUser=service.save(user);
+			
 			String uploadDir="user-photos/" +saveUser.getId();
+			LOGGER.info("Users In Admin Panel:user photo directory"+uploadDir);
+			
 			FileUploadUtil.cleanDir(uploadDir);
+			LOGGER.info("Users In Admin Panel:clean directory before store user photo.");
+			
 			FileUploadUtil.main(uploadDir, filename, multiPartfile);
+			LOGGER.info("Users In Admin Panel:upload user photo successfully.");
 		}else {			
 			if(user.getPhotos().isEmpty()) {				
-				user.setPhotos(null);	
-				//service.save(user);
+				user.setPhotos(null);				
 			}
 			service.save(user);
 		}
@@ -103,6 +113,7 @@ public class UserController {
 
 	@GetMapping("/users/edit/{id}")
 	public String editUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes, Model model) {
+		LOGGER.info("Users In Admin Panel:update or edit user page");
 		try {
 			User user = service.get(id);
 			List<Role> listRole = service.listRole();
@@ -112,6 +123,7 @@ public class UserController {
 			return "users/user_form";
 		} catch (UserNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
+			LOGGER.info("Users In Admin Panel:update or edit user page"+e.getMessage());
 			return "redirect:/users";
 		}
 
@@ -119,13 +131,21 @@ public class UserController {
 
 	@GetMapping("/users/delete/{id}")
 	public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes,
-			Model model) {
+			Model model) throws IOException {
+		LOGGER.info("Users In Admin Panel:delete user");
 		try {
 			service.delete(id);
+			LOGGER.info("Users In Admin Panel:delete user from db.");
+			
+			String deleteDir="user-photos/" +id;
+			FileUploadUtil.removeDir(deleteDir);
+			LOGGER.info("Users In Admin Panel:delete user directory delete.");
+			
 			redirectAttributes.addFlashAttribute("message", "User Delete Successfully.");
-
+			
 		} catch (UserNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
+			LOGGER.info("Users In Admin Panel:could not delete user."+e.getMessage());
 		}
 		return "redirect:/users";
 	}
@@ -133,10 +153,12 @@ public class UserController {
 	@GetMapping("/users/{id}/enabled/{status}")
 	public String checkEnabledUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes,
 			Model model,@PathVariable(name="status") boolean enabled) {
-		service.checkEnabledStatus(id, enabled);
+		LOGGER.info("Users In Admin Panel:user enable/disable method called.");
+		service.checkEnabledStatus(id, enabled);		
 		String status=enabled ? "Enabled" : "Disabled";
 		String message="the user id " +id+ " has been "+status;
 		redirectAttributes.addFlashAttribute("message",message);
+		LOGGER.info("Users In Admin Panel:user enable/disable: "+message);
 		return "redirect:/users";
 	}	
 	
