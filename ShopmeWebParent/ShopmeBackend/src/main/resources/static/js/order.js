@@ -2,8 +2,10 @@ $(document).ready(function() {
 	dropdownCountries=$("#country");
 	dataListState=$("#state");	
 	dropdownCountries.on("change",function(){
+		setCountryName();
 		loadStateForCountry();		
 	});
+	setCountryName();
 	loadStateForCountry();
 	
 	
@@ -66,3 +68,9 @@ function loadStateForCountry(){
 		});
 	});
 }
+
+function setCountryName() {
+	selectedCountry = $("#country option:selected");
+	countryName = selectedCountry.text();	
+	$("#countryName").val(countryName);
+}  

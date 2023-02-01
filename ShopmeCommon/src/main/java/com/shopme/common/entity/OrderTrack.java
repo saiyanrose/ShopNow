@@ -83,17 +83,17 @@ public class OrderTrack {
 	
 	@Transient
 	public String getUpdatedTimeOnForm() {
-		DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
-		return dateFormat.format(this.updatedTime);
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");		
+		return dateFormatter.format(this.updatedTime);
 	}
 	
-	public void setUpdatedTimeOnForm(String dateString) {
-		DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+	public void setUpdatedTimeOnForm(String dateString) throws ParseException {
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");		
 		try {
-			this.updatedTime=dateFormat.parse(dateString);
-		}catch (ParseException e) {
+			this.updatedTime = dateFormatter.parse(dateString);
+		} catch (ParseException e) {
 			e.printStackTrace();
-		}
-	}
+		} 
+	}	
 
 }

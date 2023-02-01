@@ -50,14 +50,17 @@ function getProductInfo(productId,shippingCost){
 }
 
 function insertProduct(productId,productName,mainImagePath,productCost,productPrice,shippingCost){
-	nextCount=$(".hiddenProductId").length+1;
+	productDetailCount=$(".hiddenProductId").length;
+	nextCount=productDetailCount+1;
+	productDetailCount++;	
 	quantityId="quantity"+nextCount;
 	subtotalId="subtotal"+nextCount;
 	rowId="row"+nextCount;
 	
 	htmlCode=`
 		<div class="border rounded p-1" id="${rowId}">
-				<input type="hidden" name="productId" th:value="${productId}" class="hiddenProductId">
+				<input type="hidden" name="detailId" value="0" />
+				<input type="hidden" name="productId" value="${productId}" class="hiddenProductId">
 				<div class="row">
 					<div class="col-1">
 						<div class="divCount">${nextCount}.</div>
@@ -78,7 +81,7 @@ function insertProduct(productId,productName,mainImagePath,productCost,productPr
 							<td>Product Cost:</td>
 							<td>
 								<input type="text" class="form-control m-1 product-input" required
-								 value="${productCost}" style="max-width:140px" rowNumber="${nextCount}" id="'price'+${nextCount}">
+								 name="productDetailCost" value="${productCost}" style="max-width:140px" rowNumber="${nextCount}" id="'price'+${nextCount}">
 							</td>
 						</tr>
 						
@@ -86,7 +89,7 @@ function insertProduct(productId,productName,mainImagePath,productCost,productPr
 							<td>Quantity:</td>
 							<td>
 								<input type="number" step="1" min="1" max="5" class="form-control m-1 quantity-input" required
-								 id="${quantityId}" rowNumber="${nextCount}" value="1" style="max-width:140px">
+								 name="quantity" id="${quantityId}" rowNumber="${nextCount}" value="1" style="max-width:140px">
 							</td>
 						</tr>						
 						
@@ -94,7 +97,7 @@ function insertProduct(productId,productName,mainImagePath,productCost,productPr
 							<td>Subtotal:</td>
 							<td>
 								<input type="text" class="form-control m-1 subtotal-input" required
-								 rowNumber="${nextCount}" id="${subtotalId}" value="${productPrice}" style="max-width:140px">
+								 name="productSubtotal" rowNumber="${nextCount}" id="${subtotalId}" value="${productPrice}" style="max-width:140px">
 							</td>
 						</tr>
 						
@@ -102,7 +105,7 @@ function insertProduct(productId,productName,mainImagePath,productCost,productPr
 							<td>Shipping Cost:</td>
 							<td>
 								<input type="text" class="form-control m-1 ship-input" required
-								 value="${shippingCost}" style="max-width:140px" readonly="readonly">
+								 name="productShipCost" value="${shippingCost}" style="max-width:140px" readonly="readonly">
 							</td>
 						</tr>
 						

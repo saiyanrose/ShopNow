@@ -6,6 +6,7 @@
 		
 			<th:block th:each="detail,status : ${orders.orderDetails}">
 			<div class="border rounded p-1" th:id="'row'+${status.count}">
+				<input type="hidden" name="detailId" th:value="${detail.id}"/>
 				<input type="hidden" name="productId" th:value="${detail.product.id}" class="hiddenProductId">
 				<div class="row">
 					<div class="col-1">
@@ -27,7 +28,7 @@
 							<td>Product Cost:</td>
 							<td>
 								<input type="text" class="form-control m-1 product-input" required
-								 th:value="${detail.productCost}" style="max-width:140px" th:rowNumber="${status.count}" th:id="'price'+${status.count}">
+								 name="productDetailCost" th:value="${detail.productCost}" style="max-width:140px" th:rowNumber="${status.count}" th:id="'price'+${status.count}">
 							</td>
 						</tr>
 						
@@ -35,7 +36,7 @@
 							<td>Quantity:</td>
 							<td>
 								<input type="number" step="1" min="1" max="5" class="form-control m-1 quantity-input" required
-								 th:id="'quantity'+${status.count}" th:rowNumber="${status.count}" th:value="${detail.quantity}" style="max-width:140px">
+								 name="quantity" th:id="'quantity'+${status.count}" th:rowNumber="${status.count}" th:value="${detail.quantity}" style="max-width:140px">
 							</td>
 						</tr>
 						
@@ -51,7 +52,7 @@
 							<td>Subtotal:</td>
 							<td>
 								<input type="text" class="form-control m-1 subtotal-input" required
-								th:rowNumber="${status.count}" th:id="'subtotal'+${status.count}" th:value="${detail.subTotal}" style="max-width:140px">
+								name="productSubtotal" th:rowNumber="${status.count}" th:id="'subtotal'+${status.count}" th:value="${detail.subTotal}" style="max-width:140px">
 							</td>
 						</tr>
 						
@@ -59,7 +60,7 @@
 							<td>Shipping Cost:</td>
 							<td>
 								<input type="text" class="form-control m-1 ship-input" required
-								 th:value="${detail.shippingCost}" style="max-width:140px" readonly="readonly">
+								 name="productShipCost" th:value="${detail.shippingCost}" style="max-width:140px" readonly="readonly">
 							</td>
 						</tr>
 						

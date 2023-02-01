@@ -11,7 +11,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "order_details")
 public class OrderDetails {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -100,6 +99,5 @@ public class OrderDetails {
 
 	public void setOrders(Orders orders) {
 		this.orders = orders;
-	}
-
+	}	
 }

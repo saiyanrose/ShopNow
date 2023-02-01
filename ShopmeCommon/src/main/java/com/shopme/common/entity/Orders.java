@@ -1,5 +1,8 @@
 package com.shopme.common.entity;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -81,10 +84,10 @@ public class Orders {
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
-	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL,orphanRemoval = true)
 	private Set<OrderDetails> orderDetails = new HashSet<>();
 
-	@OneToMany(mappedBy = "orders")
+	@OneToMany(mappedBy = "orders",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderTrack> orderTracks = new ArrayList<OrderTrack>();
 
 	public Orders() {
@@ -337,6 +340,32 @@ public class Orders {
 			address += ". Phone Number: " + phoneNumber;
 		}
 		return address;
+	}
+	
+	@Transient
+	public String getDeliverDateOnForm() {
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");		
+		return dateFormatter.format(this.deliverDate);
+	}
+	
+	public void setDeliverDateOnForm(String dateString) {
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");		
+		try {
+			this.deliverDate = dateFormatter.parse(dateString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} 		
+	}
+
+	@Override
+	public String toString() {
+		return "Orders [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber="
+				+ phoneNumber + ", addressLine1=" + addressLine1 + ", addressLine2=" + addressLine2 + ", city=" + city
+				+ ", state=" + state + ", postalCode=" + postalCode + ", country=" + country + ", orderTime="
+				+ orderTime + ", shippingCost=" + shippingCost + ", productCost=" + productCost + ", subTotal="
+				+ subTotal + ", tax=" + tax + ", total=" + total + ", deliverDays=" + deliverDays + ", deliverDate="
+				+ deliverDate + ", paymentMethod=" + paymentMethod + ", orderStatus=" + orderStatus + ", customer="
+				+ customer + ", orderDetails=" + orderDetails + ", orderTracks=" + orderTracks + "]";
 	}
 
 }
