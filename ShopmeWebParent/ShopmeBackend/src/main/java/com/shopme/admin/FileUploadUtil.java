@@ -30,24 +30,31 @@ public class FileUploadUtil {
 		}
 	}
 	
-	//clean the directory
+	//remove the directory
 	public static void cleanDir(String dir) {
-		LOGGER.info("FileUploadUtil Clean directory method called.");
-		Path dirPath=Paths.get(dir);
-		LOGGER.info("Directory path."+dirPath);		
-		
+		LOGGER.info("FileUploadUtil | cleanDir is started");		
+		LOGGER.info("FileUploadUtil | cleanDir | dir : " + dir);		
+		Path dirPath = Paths.get(dir);		
+		LOGGER.info("FileUploadUtil | cleanDir | dirPath : " + dirPath);
+
 		try {
-			Files.list(dirPath).forEach(file->{
-				if(!Files.isDirectory(file)) {
+			Files.list(dirPath).forEach(file -> {				
+				LOGGER.info("FileUploadUtil | cleanDir | file : " + file.toString());				
+				LOGGER.info("FileUploadUtil | cleanDir | Files.isDirectory(file) : " + Files.isDirectory(file));
+				
+				if (!Files.isDirectory(file)) {
 					try {
-						Files.delete(file);
-					}catch (IOException e) {
-						LOGGER.info("FileUploadUtil CleanDir method-->could not delete file."+e);
+						Files.delete(file);						
+						LOGGER.info("FileUploadUtil | cleanDir | delete is completed");						
+					} catch (IOException ex) {						
+						LOGGER.error("FileUploadUtil | cleanDir | ex.getMessage() : " + ex.getMessage());
+						LOGGER.error("Could not delete file: " + file);						
 					}
 				}
-			});			
-		}catch (IOException e) {
-			LOGGER.info("FileUploadUtil CleanDir method-->could not list directory."+e);
+			});
+		} catch (IOException ex) {			
+			LOGGER.error("FileUploadUtil | cleanDir | ex.getMessage() : " + ex.getMessage());
+			LOGGER.error("Could not list directory: " + dirPath);			
 		}
 	}
 
