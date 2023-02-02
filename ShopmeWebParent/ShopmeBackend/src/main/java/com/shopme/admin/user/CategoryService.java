@@ -10,6 +10,8 @@ import java.util.TreeSet;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +26,7 @@ import com.shopme.common.entity.Category;
 @Service
 @Transactional
 public class CategoryService {
-
+	private static final Logger LOGGER=LoggerFactory.getLogger(CategoryService.class);
 	private static final int Category_per_page = 1;
 
 	@Autowired
@@ -32,7 +34,7 @@ public class CategoryService {
 
 	public List<Category> findAllCategory(CategoryPageInfo categoryPageInfo, int pageNum, String sortDir,
 			String keyword, String sortField) {
-		
+		LOGGER.info("CategoryService || findAllCategory");
 		Sort sort = Sort.by(sortField);
 		if (sortDir.equals("asc")) {
 			sort = sort.ascending();
@@ -91,6 +93,7 @@ public class CategoryService {
 	}
 
 	public void checkEnabledStatus(Integer id, boolean enabled) {
+		LOGGER.info("CategoryService || checkEnabledStatus");
 		categoryRepository.updateEnabledStatus(id, enabled);
 	}
 
