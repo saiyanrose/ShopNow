@@ -34,30 +34,50 @@
 					class="table table-bordered table-striped table-hover table-responsive-xl">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col"><a th:if="${sortField!='id'}"
-								class="text-white"
+							<th scope="col">
+								<a th:if="${sortField!='id'}" class="text-white"
 								th:href="@{'/customers/page/' +${pageNum} + '?sortField=id&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									Customer ID </a> <a th:if="${sortField=='id'}" class="text-white"
-								th:href="@{'/customers/page/' +${pageNum} + '?sortField=id&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									Customer ID </a></th>
+									Customer ID 
+								</a>
+								<a th:if="${sortField=='id'}" class="text-white" th:href="@{'/customers/page/' +${pageNum} + '?sortField=id&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+									Customer ID 
+								</a>
+								
+								<span th:if="${sortField=='id'}"
+									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+								</span>
+							</th>
 
 							<th scope="col"><a>Customer Email</a></th>
 
-							<th scope="col"><a th:if="${sortField!='firstname'}"
-								class="text-white"
-								th:href="@{'/customers/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									First Name </a> <a th:if="${sortField=='firstname'}"
-								class="text-white"
-								th:href="@{'/customers/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									First Name </a></th>
+							<th scope="col">
+								<a th:if="${sortField!='firstname'}" class="text-white"
+									th:href="@{'/customers/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+									First Name
+								</a>
+								<a th:if="${sortField=='firstname'}" class="text-white"
+									th:href="@{'/customers/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+									First Name
+								</a>
+								<span th:if="${sortField=='firstname'}"
+									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+								</span>
+							
+							</th>
 
-							<th scope="col"><a th:if="${sortField!='lastname'}"
-								class="text-white"
-								th:href="@{'/customers/page/' +${pageNum} + '?sortField=lastname&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									Last Name </a> <a th:if="${sortField=='lastname'}"
-								class="text-white"
-								th:href="@{'/customers/page/' +${pageNum} + '?sortField=lastname&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									Last Name </a></th>
+							<th scope="col">
+								<a th:if="${sortField!='lastname'}"	class="text-white"
+									th:href="@{'/customers/page/' +${pageNum} + '?sortField=lastname&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+									Last Name
+								</a>
+								<a th:if="${sortField=='lastname'}"	class="text-white"
+									th:href="@{'/customers/page/' +${pageNum} + '?sortField=lastname&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+									Last Name
+								</a>
+								<span th:if="${sortField=='lastname'}"
+									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+								</span>
+							</th>
 
 							<th scope="col"><a>Address Line1</a></th>
 

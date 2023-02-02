@@ -2,6 +2,8 @@ package com.shopme.admin.shippingrate;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -17,12 +19,14 @@ import com.shopme.common.entity.ShippingRate;
 
 @Controller
 public class ShippingController {
-
+	private static final Logger LOGGER=LoggerFactory.getLogger(ShippingController.class);
+	
 	@Autowired
 	private ShippingrateService shippingrateService;
 	
 	@GetMapping("/shipping")
 	public String allShippingRates(Model model) {
+		LOGGER.info("Shipping || allShippingRates called.");
 		return shippingRatesByPage(1,"id","asc",model,null);
 	}
 
@@ -63,31 +67,38 @@ public class ShippingController {
 	
 	@GetMapping("/shipping/{id}/enabled/{status}")
 	public String updateCOD(@PathVariable("id") int id,@PathVariable("status")boolean enabled,RedirectAttributes redirectAttributes) {
+		LOGGER.info("Shipping || updateCOD called.");
 		try {
 			shippingrateService.codSupport(id,enabled);
 			String status=enabled==true ? "Enabled" : "Disabled";
 			redirectAttributes.addFlashAttribute("message","shipping rate with id "+id+" "+status);
+			LOGGER.info("shipping rate with id "+id+" "+status);
 			return "redirect:/shipping";
 		}catch (ShippingRateNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message1",e.getMessage());
+			LOGGER.info("Shipping || updateCOD "+e.getMessage());
 			return "redirect:/shipping";
 		}
 	}
 	
 	@GetMapping("/shipping/page/delete/{id}")
 	public String deleteShippingRate(@PathVariable("id")int id,RedirectAttributes redirectAttributes) {
+		LOGGER.info("Shipping || deleteShippingRate called.");
 		try {
 			shippingrateService.deleteShippingRate(id);
 			redirectAttributes.addFlashAttribute("message","shipping rate deleted successfully with id "+id);
+			LOGGER.info("shipping rate deleted successfully with id "+id);
 			return "redirect:/shipping";
 		}catch(ShippingRateNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message1",e.getMessage());
+			LOGGER.info("Shipping || deleteShippingRate "+e.getMessage());
 			return "redirect:/shipping";
 		}		
 	}
 	
 	@GetMapping("/shipping_rates/new")
 	public String newShippingRate(Model model) {
+		LOGGER.info("Shipping || newShippingRate page called.");
 		List<Country>allCountry=shippingrateService.allCountries();
 		model.addAttribute("countries",allCountry);
 		model.addAttribute("shippingRate",new ShippingRate());
@@ -97,6 +108,7 @@ public class ShippingController {
 	
 	@GetMapping("/shipping/page/edit/{id}")
 	public String editShippingRate(Model model,@PathVariable("id")int id,RedirectAttributes redirectAttributes){
+		LOGGER.info("Shipping || editShippingRate page called.");
 		try {
 			ShippingRate shippingRate=shippingrateService.getShippingRate(id);
 			List<Country>allCountry=shippingrateService.allCountries();
@@ -106,14 +118,17 @@ public class ShippingController {
 			return "shipping_rates/shipping_rate_form";
 		}catch (ShippingRateNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message",e.getMessage());
+			LOGGER.info("Shipping || editShippingRate "+e.getMessage());
 			return "redirect:/shipping";
 		}		
 	}
 	
 	@PostMapping("/shipping/save")
 	public String saveShippingRate(RedirectAttributes redirectAttributes,ShippingRate shippingRate) {
+		LOGGER.info("Shipping || saveShippingRate called.");
 		shippingrateService.save(shippingRate);
 		redirectAttributes.addFlashAttribute("message","shipping rate has been save successfully.");
+		LOGGER.info("Shipping || saveShippingRate|| shipping rate has been save successfully");
 		return "redirect:/shipping";
 	}
 }

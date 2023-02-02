@@ -37,7 +37,7 @@ public class CustomerService {
 		Sort sort = Sort.by(sortField);
 		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
 
-		Pageable pageable = PageRequest.of(pageNum - 1, CUSTOMER_PER_PAGE);
+		Pageable pageable = PageRequest.of(pageNum - 1, CUSTOMER_PER_PAGE,sort);
 		if (keyword != null) {
 			return customerRepository.findAll(keyword, pageable);
 		}
