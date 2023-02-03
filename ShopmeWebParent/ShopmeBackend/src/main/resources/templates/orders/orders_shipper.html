@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header::head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+	<div class="container-fluid">
+
+		<div th:replace="navigation :: menu"></div>
+
+		<div>
+			<h1>Manage Orders(Shipper)</h1>
+		</div>
+
+		<div>&nbsp;</div>
+		
+		<div>
+			<form th:action="@{/orders/page/1}" class="form-inline">
+				<input type="hidden" name="sortField" th:value="${sortField}"/>
+				<input type="hidden" name="sortDir" th:value="${sortDir}"/>
+				Filter:&nbsp;
+				<input type="search" id="keyword" name="keyword" placeholder="type #number to search by oder id" th:value="${keyword}" class="form-control" required />
+				&nbsp;&nbsp;
+				<input type="submit" value="Search" class="btn btn-primary" required />
+				&nbsp;&nbsp;
+				<input type="button" value="Clear" class="btn btn-secondary" onclick="clearFilter()"/>			
+			</form>			
+		</div>	
+		
+		<div>&nbsp;</div>
+
+		<div th:if="${message != null}"
+			class="alert alert-success text-center">[[${message}]]</div>
+
+		<div>
+			<th:block th:each="order:${listOrders}">
+				<div class="row m-1">
+					<div class="card">
+						<div class="card-header">
+							<div class="row">
+								<div class="col">
+									<span>Order ID#[[${order.id}]]</span>
+								</div>
+								<div class="col">
+									<div class="float-right">
+										<a class="fas fa-file-alt fa-2x icon-green link-detail"
+											th:href="@{'/orders/detail/'+ ${order.id}}"> </a>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="card-body">
+							<div>
+								<i class="fas fa-user"></i> <b>[[${order.firstName}]] [[${order.lastName}]]</b>
+							</div>
+							
+							<div>
+								<i class="fas fa-home"></i> <span>[[${order.addressLine1}]] [[${order.city}]] [[${order.state}]] [[${order.country}]]</span>
+							</div>
+							
+							<div>
+								<i class="fas fa-phone-alt"></i> <b>[[${order.phoneNumber}]]</b>
+							</div>
+							
+							<div th:if="${order.COD}">
+								<span>COD:
+									<b><span th:if="${CURRENCY_SYMBOL_POSITION=='Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+									[[${#numbers.formatDecimal(order.total,1,THOUSAND_POINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]
+									<span th:if="${CURRENCY_SYMBOL_POSITION=='After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span></b>
+								</span>
+							</div>
+							
+							<div>&nbsp;</div>
+							
+							<div class="row">
+								<div class="col">
+									<th:block th:if="${order.picked}">
+										<i class="fas fa-people-carry fa-2x" style="color:#00b300"></i>
+									</th:block>
+									<th:block th:unless="${order.picked}">
+										<i class="fas fa-people-carry fa-2x"></i>
+									</th:block>
+								</div>
+								
+								<div class="col">
+									<th:block th:if="${order.shipping}">
+										<i class="fas fa-shipping-fast fa-2x" style="color:#00b300"></i>
+									</th:block>
+									<th:block th:unless="${order.shipping}">
+										<i class="fas fa-shipping-fast fa-2x"></i>
+									</th:block>
+								</div>
+								
+								<div class="col">
+									<th:block th:if="${order.delivered}">
+										<i class="fas fa-box-open fa-2x" style="color:#00b300"></i>
+									</th:block>
+									<th:block th:unless="${order.delivered}">
+										<i class="fas fa-box-open fa-2x"></i>
+									</th:block>
+								</div>
+								
+								<div class="col">
+									<th:block th:if="${order.returned}">
+										<i class="fas fa-undo fa-2x" style="color:#00b300"></i>
+									</th:block>
+									<th:block th:unless="${order.returned}">
+										<i class="fas fa-undo fa-2x"></i>
+									</th:block>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				<div>&nbsp;</div>
+			</th:block>
+		</div>
+
+		<div class="text-center m-1" th:if="${totalItems>0}">
+			<span>Showing orders # [[${startCount}]] to [[${endCount}]] of
+				[[${totalItems}]] </span>
+		</div>
+
+		<div class="text-center m-1" th:unless="${totalItems>0}">
+			<span>No Orders Found</span>
+		</div>
+
+		<div th:if="${totalPage > 1}">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a
+						class="page-link"
+						th:href="@{'/orders/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">First</a></li>
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a
+						class="page-link"
+						th:href="@{'/orders/page/' +${pageNum-1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Previous</a></li>
+					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}"
+						th:each="i:${#numbers.sequence(1,totalPage)}"><a
+						class="page-link"
+						th:href="@{'/orders/page/' +${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">[[${i}]]</a>
+					</li>
+					<li
+						th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a
+						class="page-link"
+						th:href="@{'/orders/page/' +${pageNum+1} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Next</a></li>
+					<li
+						th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a
+						class="page-link"
+						th:href="@{'/orders/page/' +${totalPage} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Last</a></li>
+				</ul>
+			</nav>
+		</div>
+
+		<div class="modal fade" id="detailModal">
+			<div class="modal-dialog modal-xl" id="detailModal">
+				<div class="modal-content"></div>
+			</div>
+		</div>
+
+		<div th:replace="footer::foot"></div>
+
+	</div>
+
+
+
+	<div th:replace="script::script"></div>
+
+</body>
+
+<script type="text/javascript">
+	$(".link-detail").on(
+			"click",
+			function(e) {
+				e.preventDefault();
+				linkDetailUrl = $(this).attr("href");
+				$("#detailModal").modal("show").find(".modal-content").load(
+						linkDetailUrl);
+			});
+</script>
+
+</html>

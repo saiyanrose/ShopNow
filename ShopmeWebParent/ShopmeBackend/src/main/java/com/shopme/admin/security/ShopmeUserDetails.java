@@ -65,4 +65,7 @@ public class ShopmeUserDetails implements UserDetails {
 		return user.isEnabled();
 	}
 
+	public boolean hasRole(String roleName) {
+		return user.hasRole(roleName);
+	}
 }

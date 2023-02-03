@@ -55,6 +55,7 @@ function insertProduct(productId,productName,mainImagePath,productCost,productPr
 	productDetailCount++;	
 	quantityId="quantity"+nextCount;
 	subtotalId="subtotal"+nextCount;
+	priceId="price"+nextCount;
 	rowId="row"+nextCount;
 	
 	htmlCode=`
@@ -81,7 +82,7 @@ function insertProduct(productId,productName,mainImagePath,productCost,productPr
 							<td>Product Cost:</td>
 							<td>
 								<input type="text" class="form-control m-1 product-input" required
-								 name="productDetailCost" value="${productCost}" style="max-width:140px" rowNumber="${nextCount}" id="'price'+${nextCount}">
+								 name="productDetailCost" value="${productCost}" style="max-width:140px" rowNumber="${nextCount}" id="${priceId}">
 							</td>
 						</tr>
 						
@@ -114,7 +115,7 @@ function insertProduct(productId,productName,mainImagePath,productCost,productPr
 				
 			</div>
 	
-	`;
+	`;	
 	return htmlCode;
 }
 

@@ -367,5 +367,40 @@ public class Orders {
 				+ deliverDate + ", paymentMethod=" + paymentMethod + ", orderStatus=" + orderStatus + ", customer="
 				+ customer + ", orderDetails=" + orderDetails + ", orderTracks=" + orderTracks + "]";
 	}
+	
+	@Transient
+	public boolean isCOD() {
+		return paymentMethod.equals(PaymentMethod.COD);
+	}
+	
+	@Transient
+	public boolean isPicked() {
+		return hasStatus(OrderStatus.PICKED);
+	}
+	
+	@Transient
+	public boolean isShipping() {
+		return hasStatus(OrderStatus.SHIPPING);
+	}
+	
+	@Transient
+	public boolean isDelivered() {
+		return hasStatus(OrderStatus.DELIVERED);
+	}
+	
+	@Transient
+	public boolean isReturned() {
+		return hasStatus(OrderStatus.RETURNED);
+	}
+	
+	public boolean hasStatus(OrderStatus orderStatus) {
+		for(OrderTrack aTrack:orderTracks) {
+			if(aTrack.getOrderStatus().equals(orderStatus)) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
 
 }
