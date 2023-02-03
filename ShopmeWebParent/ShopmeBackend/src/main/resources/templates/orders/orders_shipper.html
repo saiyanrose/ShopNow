@@ -80,7 +80,11 @@
 										<i class="fas fa-people-carry fa-2x" style="color:#00b300"></i>
 									</th:block>
 									<th:block th:unless="${order.picked}">
-										<i class="fas fa-people-carry fa-2x"></i>
+										<a class="fas fa-people-carry fa-2x linkUpdateStatus"
+										 th:href="@{'/orders_shipper/update/'+${order.id}+'/PICKED'}" 
+										 th:id="'linkPICKED'+${order.id}"	
+										 th:orderId="${order.id}" status="PICKED">
+										</a>
 									</th:block>
 								</div>
 								
@@ -89,7 +93,11 @@
 										<i class="fas fa-shipping-fast fa-2x" style="color:#00b300"></i>
 									</th:block>
 									<th:block th:unless="${order.shipping}">
-										<i class="fas fa-shipping-fast fa-2x"></i>
+										<a class="fas fa-shipping-fast fa-2x linkUpdateStatus"
+										 th:href="@{'/orders_shipper/update/'+${order.id}+'/SHIPPING'}"
+										 th:id="'linkSHIPPING'+${order.id}"	
+										 th:orderId="${order.id}" status="SHIPPING">
+										</a>
 									</th:block>
 								</div>
 								
@@ -98,7 +106,11 @@
 										<i class="fas fa-box-open fa-2x" style="color:#00b300"></i>
 									</th:block>
 									<th:block th:unless="${order.delivered}">
-										<i class="fas fa-box-open fa-2x"></i>
+										<a class="fas fa-box-open fa-2x linkUpdateStatus" 
+											th:href="@{'/orders_shipper/update/'+${order.id}+'/DELIVERED'}" 
+											th:id="'linkDelivered'+${order.id}"
+											th:orderId="${order.id}" status="DELIVERED">
+										</a>
 									</th:block>
 								</div>
 								
@@ -107,7 +119,11 @@
 										<i class="fas fa-undo fa-2x" style="color:#00b300"></i>
 									</th:block>
 									<th:block th:unless="${order.returned}">
-										<i class="fas fa-undo fa-2x"></i>
+										<a class="fas fa-undo fa-2x linkUpdateStatus"
+										 	th:href="@{'/orders_shipper/update/'+${order.id}+'/RETURNED'}"
+											th:id="'linkReturned'+${order.id}"
+										 	th:orderId="${order.id}" status="RETURNED">
+										</a>
 									</th:block>
 								</div>
 							</div>
@@ -118,6 +134,27 @@
 				<div>&nbsp;</div>
 			</th:block>
 		</div>
+		
+			<div class="modal" tabindex="-1" role="dialog" id="confirmModalShipper">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Update Confirmation</h5>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						
+						<div class="modal-body">
+							<span id="confirmTextShipper"></span>
+						</div>
+						
+						<div class="modal-footer">
+							<a class="btn btn-success" href="" id="yesButtonShipper">Yes</a>
+							<button type="button" class="btn btn-danger" id="noButtonShipper" data-dismiss="modal">No</button>
+						</div>
+						
+					</div>
+				</div>
+			</div>
 
 		<div class="text-center m-1" th:if="${totalItems>0}">
 			<span>Showing orders # [[${startCount}]] to [[${endCount}]] of
@@ -171,14 +208,83 @@
 </body>
 
 <script type="text/javascript">
-	$(".link-detail").on(
-			"click",
-			function(e) {
-				e.preventDefault();
-				linkDetailUrl = $(this).attr("href");
-				$("#detailModal").modal("show").find(".modal-content").load(
-						linkDetailUrl);
-			});
+var iconNames={
+		'PICKED':'fa-people-carry',
+		'SHIPPING':'fa-shipping-fast',
+		'Delivered':'fa-open-box',
+		'Returned':'fa-undo'
+}
+var confirmText;
+var modalDialog;
+var yesButton;
+var csrfHeaderName="[[${_csrf.headerName}]]";
+var csrfValue="[[${_csrf.token}]]";
+var noButton;
+
+$(".link-detail").on("click",function(e) {
+	e.preventDefault();
+	linkDetailUrl = $(this).attr("href");
+	$("#detailModal").modal("show").find(".modal-content").load(linkDetailUrl);
+});
+	
+$(document).ready(function(e){
+	confirmText=$("#confirmTextShipper");
+	modalDialog=$("#confirmModalShipper");
+	yesButton=$("#yesButtonShipper");
+	noButton=$("#noButtonShipper");
+	
+	$(".linkUpdateStatus").on("click",function(e){
+		e.preventDefault();
+		link=$(this);
+		showUpdateModal(link);
+	});
+	addEventHandleForYesButton();
+});
+	
+function showUpdateModal(link){
+	noButton.text("No");
+	yesButton.show();
+	id=link.attr("orderId");
+	status=link.attr("status");
+	yesButton.attr("href",link.attr("href"));
+	confirmText.text("Are you sure you want to update status of order id " +id+ " to status "+ status +" ?");
+	modalDialog.modal();
+}
+
+function addEventHandleForYesButton(){
+	yesButton.on("click",function(e){
+		e.preventDefault();
+		sendReqToUpdateOrderStatus($(this));
+	});
+}
+
+function showMessageModal(message){
+	noButton.text("close");
+	yesButton.hide();
+	confirmText.text(message);
+}
+
+function sendReqToUpdateOrderStatus(button){
+	url=button.attr("href");	
+	$.ajax({
+		type:'POST',
+		url:url,
+		beforeSend:function(xhr){
+			xhr.setRequestHeader(csrfHeaderName,csrfValue);
+		},		
+	}).done(function(response){
+		showMessageModal("Order status changes successfully.");
+		updateIconColor(response.orderId,response.status);
+	}).fail(function(err){
+		showMessageModal("Erro updating order status.");	
+	});
+}
+
+function updateIconColor(orderId,status){
+	link=$("#link"+status+orderId);	
+	link.replaceWith("<i class='fas " + iconNames[status] + " fa-2x style=color:#00b300'></i>");
+}
+
 </script>
 
 </html>

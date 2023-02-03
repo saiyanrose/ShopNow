@@ -1,5 +1,6 @@
 package com.shopme.admin.order;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import com.shopme.admin.setting.CountryRepository;
 import com.shopme.common.entity.Country;
+import com.shopme.common.entity.OrderStatus;
+import com.shopme.common.entity.OrderTrack;
 import com.shopme.common.entity.Orders;
 
 @Service
@@ -70,5 +73,21 @@ public class OrderService {
 		orderInForm.setOrderTime(orderInDB.getOrderTime());
 		orderInForm.setCustomer(orderInDB.getCustomer());
 		orderRepository.save(orderInForm);		
+	}
+	
+	public void updateStatus(Integer orderId,String status) {		
+		Orders orderInDb=orderRepository.findById(orderId).get();		
+		OrderStatus orderStatus=OrderStatus.valueOf(status);
+		if(!orderInDb.hasStatus(orderStatus)) {
+			List<OrderTrack>orderTracks=orderInDb.getOrderTracks();
+			OrderTrack orderTrack=new OrderTrack();
+			orderTrack.setOrderStatus(orderStatus);
+			orderTrack.setUpdatedTime(new Date());
+			orderTrack.setNotes(orderStatus.defaultDescription());
+			orderTracks.add(orderTrack);
+			orderTrack.setOrders(orderInDb);
+			orderInDb.setOrderStatus(orderStatus);
+			orderRepository.save(orderInDb);
+		}
 	}
 }
