@@ -88,6 +88,23 @@
 
 <a th:fragment="page_link_customer(pageNum,label)" class="page-link"	th:href="@{'/customers/page/' +${pageNum}+ '?sortField=' +${sortField}+ '&sortDir=' + ${sortField!=fieldName ? sortDir : reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">[[${label}]]
 </a>
+
+<!-- Customer Page  -->	
+<th th:fragment="column_link_orders(fieldName,columnLabel)">
+	
+	<a class="text-white"
+		th:href="@{'/orders/page/' +${pageNum} + '?sortField=' +${fieldName}+ '&sortDir=' + ${sortField!=fieldName ? sortDir : reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
+		[[${columnLabel}]]
+	</a>
+
+	<span th:if="${sortField==fieldName}"
+		th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+	</span>
+	
+</th>	
+
+<a th:fragment="page_link_orders(pageNum,label)" class="page-link"	th:href="@{'/orders/page/' +${pageNum}+ '?sortField=' +${sortField}+ '&sortDir=' + ${sortField!=fieldName ? sortDir : reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">[[${label}]]
+</a>
 </body>
 
 </html>

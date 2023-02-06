@@ -53,7 +53,7 @@ public class OrdersController {
 			@RequestParam(required = false, name = "sortDir") String sortDir,
 			@RequestParam(required = false, name = "keyword") String keyword, HttpServletRequest request,
 			@AuthenticationPrincipal ShopmeUserDetails loggedUser) {
-
+		LOGGER.info("Orders || listByPage called.");
 		if (sortDir == null) {
 			sortDir = "asc";
 		}
@@ -62,6 +62,7 @@ public class OrdersController {
 		}
 
 		Page<Orders> ordersBypage = orderService.allOrders(pageNum, sortField, sortDir, keyword);
+		LOGGER.info("Orders || orderService.allOrders called.");
 		List<Orders> listOrders = ordersBypage.getContent();
 		loadCurrency(request);		
 
@@ -87,13 +88,14 @@ public class OrdersController {
 		model.addAttribute("listOrders", listOrders);
 		if(!loggedUser.hasRole("Admin") && !loggedUser.hasRole("Salesperson") && loggedUser.hasRole("Shipper")) {
 			return "orders/orders_shipper";
-		}
-		
+		}		
 		return "orders/orders";
 	}
 
 	private void loadCurrency(HttpServletRequest request) {
+		LOGGER.info("Orders||loadCurrency called.");
 		List<Setting> currencySetting = settingService.getCurrencySettingBag();
+		LOGGER.info("Orders||settingService.getCurrencySettingBag()");
 		for (Setting setting : currencySetting) {
 			request.setAttribute(setting.getKey(), setting.getValue());
 		}
@@ -102,7 +104,7 @@ public class OrdersController {
 	@GetMapping("/orders/detail/{id}")
 	public String viewOrderDetails(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes, Model model,
 			HttpServletRequest request) {
-
+		LOGGER.info("Orders||viewOrderDetails modal called.");
 		try {
 			Orders orders = orderService.get(id);
 			loadCurrency(request);
@@ -110,24 +112,29 @@ public class OrdersController {
 			return "orders/orders_detail_modal";
 		} catch (OrderNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
+			LOGGER.info("Orders||viewOrderDetails modal "+e.getMessage());
 			return "redirect:/orders";
 		}
 	}
 
 	@GetMapping("/orders/delete/{id}")
 	public String deleteOrder(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+		LOGGER.info("Orders||deleteOrder called");
 		try {
 			orderService.deleteOrder(id);
 			redirectAttributes.addFlashAttribute("message", "Order deleted successfully.");
+			LOGGER.info("Order deleted successfully.");
 			return "redirect:/orders";
 		} catch (OrderNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
+			LOGGER.info("Order deletedOrder "+e.getMessage());
 			return "redirect:/orders";
 		}
 	}
 
 	@GetMapping("/orders/edit/{id}")
 	public String editOrder(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+		LOGGER.info("Orders||editOrder page called.");
 		try {
 			Orders orders = orderService.getOrder(id);
 			List<Country> listCountries = orderService.getCountries();
@@ -137,12 +144,14 @@ public class OrdersController {
 			return "orders/editOrder_form";
 		} catch (OrderNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
+			LOGGER.info("Orders||editOrder called "+e.getMessage());
 			return "redirect:/orders";
 		}
 	}
 
 	@PostMapping("/orders/save")
 	public String saveOrder(Orders order, HttpServletRequest request, RedirectAttributes ra) {
+		LOGGER.info("Orders||saveOrder");
 		String countryName = request.getParameter("countryName");
 		order.setCountry(countryName);
 		updateProductDetails(order, request);
@@ -150,34 +159,35 @@ public class OrdersController {
 
 		orderService.save(order);
 		ra.addFlashAttribute("message", "The order ID " + order.getId() + " has been updated successfully");
+		LOGGER.info("The order ID " + order.getId() + " has been updated successfully");
 		return "redirect:/orders";
 	}
 
 	private void updateOrderTracks(Orders order, HttpServletRequest request) {
-		LOGGER.info("OrderUtil | updateOrderTracks is called");
+		LOGGER.info("updateOrderTracks is called");
 
 		String[] trackIds = request.getParameterValues("trackId");
 		String[] trackStatuses = request.getParameterValues("trackStatus");
 		String[] trackDates = request.getParameterValues("trackDate");
 		String[] trackNotes = request.getParameterValues("trackNotes");
 
-		LOGGER.info("OrderUtil | updateOrderTracks | trackIds : " + trackIds.toString());
-		LOGGER.info("OrderUtil | updateOrderTracks | trackStatuses : " + trackStatuses.toString());
-		LOGGER.info("OrderUtil | updateOrderTracks | trackDates : " + trackDates.toString());
-		LOGGER.info("OrderUtil | updateOrderTracks | trackNotes : " + trackNotes.toString());
+		LOGGER.info("updateOrderTracks | trackIds : " + trackIds.toString());
+		LOGGER.info("updateOrderTracks | trackStatuses : " + trackStatuses.toString());
+		LOGGER.info("updateOrderTracks | trackDates : " + trackDates.toString());
+		LOGGER.info("updateOrderTracks | trackNotes : " + trackNotes.toString());
 
 		List<OrderTrack> orderTracks = order.getOrderTracks();		
 
 		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
-		LOGGER.info("OrderUtil | updateOrderTracks | trackIds.length : " + trackIds.length);
+		LOGGER.info("updateOrderTracks | trackIds.length : " + trackIds.length);
 
 		for (int i = 0; i < trackIds.length; i++) {
 			OrderTrack trackRecord = new OrderTrack();
 
 			Integer trackId = Integer.parseInt(trackIds[i]);
 
-			LOGGER.info("OrderUtil | updateOrderTracks | trackId : " + trackId);
+			LOGGER.info("updateOrderTracks | trackId : " + trackId);
 
 			if (trackId > 0) {
 				trackRecord.setId(trackId);
@@ -191,11 +201,10 @@ public class OrdersController {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			LOGGER.info("OrderUtil | updateOrderTracks | trackRecord : " + trackRecord.toString());
+			LOGGER.info("updateOrderTracks | trackRecord : " + trackRecord.toString());
 
 			orderTracks.add(trackRecord);
 		}
-
 	}
 
 	private void updateProductDetails(Orders order, HttpServletRequest request) {
@@ -209,34 +218,34 @@ public class OrdersController {
 		String[] productSubtotals = request.getParameterValues("productSubtotal");
 		String[] productShipCosts = request.getParameterValues("productShipCost");
 
-		LOGGER.info("OrderUtil | updateOrderTracks | detailIds : " + detailIds.toString());
-		LOGGER.info("OrderUtil | updateOrderTracks | productIds : " + productIds.toString());
+		LOGGER.info("updateOrderTracks | detailIds : " + detailIds.toString());
+		LOGGER.info("updateOrderTracks | productIds : " + productIds.toString());
 		//LOGGER.info("OrderUtil | updateOrderTracks | productPrices : " + productPrices.toString());
-		LOGGER.info("OrderUtil | updateOrderTracks | productDetailCosts : " + productDetailCosts.toString());
-		LOGGER.info("OrderUtil | updateOrderTracks | quantities : " + quantities.toString());
-		LOGGER.info("OrderUtil | updateOrderTracks | productSubtotals : " + productSubtotals.toString());
-		LOGGER.info("OrderUtil | updateOrderTracks | productSubtotals : " + productShipCosts.toString());
+		LOGGER.info("updateOrderTracks | productDetailCosts : " + productDetailCosts.toString());
+		LOGGER.info("updateOrderTracks | quantities : " + quantities.toString());
+		LOGGER.info("updateOrderTracks | productSubtotals : " + productSubtotals.toString());
+		LOGGER.info("updateOrderTracks | productSubtotals : " + productShipCosts.toString());
 
 		Set<OrderDetails> orderDetails = order.getOrderDetails();
 
-		LOGGER.info("OrderUtil | updateOrderTracks | orderDetails : " + orderDetails.toString());
-		LOGGER.info("OrderUtil | updateOrderTracks | orderDetails.size : " + orderDetails.size());
+		LOGGER.info("updateOrderTracks | orderDetails : " + orderDetails.toString());
+		LOGGER.info("updateOrderTracks | orderDetails.size : " + orderDetails.size());
 
-		LOGGER.info("OrderUtil | updateOrderTracks | detailIds : " + detailIds.length);
+		LOGGER.info("updateOrderTracks | detailIds : " + detailIds.length);
 
 		for (int i = 0; i < detailIds.length; i++) {
 
-			LOGGER.info("OrderUtil | updateOrderTracks | Detail ID : " + detailIds[i]);
-			LOGGER.info("OrderUtil | updateOrderTracks | Prodouct ID : " + productIds[i]);
-			LOGGER.info("OrderUtil | updateOrderTracks | Cost : " + productDetailCosts[i]);
-			LOGGER.info("OrderUtil | updateOrderTracks | Quantity : " + quantities[i]);
-			LOGGER.info("OrderUtil | updateOrderTracks | Subtotal : " + productSubtotals[i]);
-			LOGGER.info("OrderUtil | updateOrderTracks | Ship cost : " + productShipCosts[i]);
+			LOGGER.info("updateOrderTracks | Detail ID : " + detailIds[i]);
+			LOGGER.info("updateOrderTracks | Prodouct ID : " + productIds[i]);
+			LOGGER.info("updateOrderTracks | Cost : " + productDetailCosts[i]);
+			LOGGER.info("updateOrderTracks | Quantity : " + quantities[i]);
+			LOGGER.info("updateOrderTracks | Subtotal : " + productSubtotals[i]);
+			LOGGER.info("updateOrderTracks | Ship cost : " + productShipCosts[i]);
 
 			OrderDetails orderDetail = new OrderDetails();
 			Integer detailId = Integer.parseInt(detailIds[i]);
 
-			LOGGER.info("OrderUtil | updateOrderTracks | detailId : " + detailId);
+			LOGGER.info("updateOrderTracks | detailId : " + detailId);
 
 			if (detailId > 0) {
 				orderDetail.setId(detailId);
@@ -250,12 +259,9 @@ public class OrdersController {
 			orderDetail.setQuantity(Integer.parseInt(quantities[i]));
 			//orderDetail.setUnitPrice(Float.parseFloat(productPrices[i]));
 
-			LOGGER.info("OrderUtil | updateOrderTracks | orderDetail : " + orderDetail.toString());
-
+			LOGGER.info("updateOrderTracks | orderDetail : " + orderDetail.toString());
 			orderDetails.add(orderDetail);
-
 		}
-
 	}
 
 }

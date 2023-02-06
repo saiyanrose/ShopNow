@@ -1,24 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript"
-	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-<script type="text/javascript"
-	th:src="@{/richtext/jquery.richtext.min.js}"></script>
-<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}">
-<link rel="stylesheet" type="text/css"
-	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}">
+<head th:replace="common/header::head">
 <title>Settings- Shopnow Admin</title>
 </head>
 <body>
 	<div class="container-fluid">
 		<div>
-			<div th:replace="navigation :: menu"></div>
+			<div th:replace="common/navigation :: menu"></div>
 		</div>
 
 		<div class="text-center">
@@ -26,7 +14,8 @@
 		</div>
 
 		<div th:if="${message != null}"
-			class="alert alert-success text-center">[[${message}]]</div>
+			class="alert alert-success text-center">[[${message}]]
+		</div>
 
 
 		<div>
@@ -78,7 +67,9 @@
 					<div th:replace="setting/payment :: content"></div>
 				</div>
 			</div>
+			
 		</div>
+		
 		<div class="toast justify-content-center d-flex" role="alert" aria-live="assertive"
 			aria-atomic="true">
 			<div class="toast-body">
@@ -86,10 +77,12 @@
 			</div>
 		</div>
 
-
-		<div th:replace="footer::foot"></div>
+		<div th:replace="common/footer::foot"></div>
+		
 	</div>
+	
 </body>
+
 <script th:src="@{/js/countries_settings.js}"></script>
 <script th:src="@{/js/states_setting.js}"></script>
 
@@ -112,16 +105,14 @@
 	});
 
 	function customizeDropdown() {
-		$(".navbar .dropdown").hover(
-				function() {
-					$(this).find('.dropdown-menu').first().stop(true, true)
+		$(".navbar .dropdown").hover(	function() {
+				$(this).find('.dropdown-menu').first().stop(true, true)
 							.delay(250).slideDown();
 				},
 				function() {
 					$(this).find('.dropdown-menu').first().stop(true, true)
 							.delay(100).slideUp();
 				});
-
 		$(".dropdown > a").click(function() {
 			location.href = this.href;
 		});

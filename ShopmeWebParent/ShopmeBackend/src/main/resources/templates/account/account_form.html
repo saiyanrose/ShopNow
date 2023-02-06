@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 <title>Your Account Details</title>
 </head>
 
 <body>
 	<div class="container-fluid">
 	
-		<div th:replace="navigation :: menu"></div>
+		<div th:replace="common/navigation :: menu"></div>
 		
 		<div class="text-center">
 			<h1>Your Account Details</h1>
@@ -84,7 +84,7 @@
 			</div>
 
 		</div>
-		<div th:replace="footer::foot"></div>
+		<div th:replace="common/footer::foot"></div>
 	</div>
 </body>
 <script th:src="@{/js/user_account.js}"></script>

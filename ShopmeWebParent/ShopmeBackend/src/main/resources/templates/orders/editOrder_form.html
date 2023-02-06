@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 
 <title>[[${pageTitle}]]</title>
 </head>
@@ -8,7 +8,7 @@
 	<div class="container-fluid">
 
 		<div>
-			<div th:replace="navigation :: menu"></div>
+			<div th:replace="common/navigation :: menu"></div>
 		</div>
 
 		<div class="text-center">
@@ -104,13 +104,13 @@
 
 		</div>
 
-		<div th:replace="footer::foot"></div>
+		<div th:replace="common/footer::foot"></div>
 
 	</div>
 
 </body>
 
-<div th:replace="script::script"></div>
+<div th:replace="common/script::script"></div>
 <script type="text/javascript" th:src="@{/js/order.js}"></script>
 <script type="text/javascript" th:src="@{/js/order_form_addProduct.js}"></script>
 <script type="text/javascript" th:src="@{/js/orders_product_remove.js}"></script>

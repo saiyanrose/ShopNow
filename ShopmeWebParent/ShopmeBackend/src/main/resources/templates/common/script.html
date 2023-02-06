@@ -27,25 +27,13 @@
 			$(".dropdown > a").click(function() {
 				location.href = this.href;
 			});
-		}		
-		
-		//delete orders		
-		$(document).ready(function() {
-			$(".link-delete").on("click",function(e) {
-				e.preventDefault();
-				link = $(this);
-				orderId = link.attr("orderId");
-				$("#yesButtonOrders").attr("href",link.attr("href"));
-				$("#confirmTextOrders").text("Are you sure want to delete order: "+ orderId + " ?");
-				$("#confirmModalOrders").modal();
-			});
-		});	
+		}	
 			
 		function clearFilter(){
 			document.getElementById("keyword").value = "";	   
 		}	
 	
-	</script>
+</script>
 	
 </div>
 

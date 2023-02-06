@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Orders - Shopme Admin</title>
 </head>
 <body>
 	<div class="container-fluid">
 	
-		<div th:replace="navigation :: menu"></div>
+		<div th:replace="common/navigation :: menu"></div>
 		
 		<div>
 			<h1>Manage Orders</h1>			
@@ -39,94 +39,19 @@
 					class="table table-bordered table-striped table-hover table-responsive-xl">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">
+							<th scope="col" th:replace="common/fragments::column_link_orders('id','ID')"></th>							
 							
-								<a th:if="${sortField!='id'}" class="text-white"
-									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=id&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 		ID
-								</a>
-								
-								<a th:if="${sortField=='id'}" class="text-white"
-									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=id&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 		ID
-								</a>
-								
-								<span th:if="${sortField=='id'}"
-									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>
-							
-							</th>							
-							
-							<th scope="col">
-							
-								<a th:if="${sortField!='customer'}" class="text-white"
-									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=customer&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									 Customer
-								 </a>
-								 
-								 <a th:if="${sortField=='customer'}" class="text-white"
-									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=customer&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 	 Customer
-								 </a>
-								 
-								<span th:if="${sortField=='customer'}"
-									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>
-							
-							</th>
+							<th scope="col" th:replace="common/fragments::column_link_orders('customer','Customer')"></th>
 							
 							<th scope="col">Total</th>
 							
-							<th scope="col">Order Time</th>						
+							<th scope="col">Order Time</th>							
 							
+							<th scope="col">Destination</th>
 							
-							<th scope="col">
-								<a th:if="${sortField!=''}" class="text-white"
-									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=&sortDir=' + ${sortDir}}">
-								 	Destination
-								 </a>
-								 
-								 <a th:if="${sortField==''}" class="text-white"
-								 	th:href="@{'/orders/page/' +${pageNum} + '?sortField=&sortDir=' + ${reverseSort}}">
-								 	Destination
-								 </a>
-								 
-								<span th:if="${sortField==''}"
-									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>							
-							</th>
+							<th scope="col" th:replace="common/fragments::column_link_orders('paymentMethod','Payment Method')"></th>
 							
-							<th scope="col">
-								<a th:if="${sortField!='paymentMethod'}" class="text-white"
-									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=paymentMethod&sortDir=' + ${sortDir}}">
-								 	Payment Method
-								 </a>
-								 
-								 <a th:if="${sortField=='paymentMethod'}" class="text-white"
-								 	th:href="@{'/orders/page/' +${pageNum} + '?sortField=paymentMethod&sortDir=' + ${reverseSort}}">
-								 	Payment Method
-								 </a>
-								 
-								<span th:if="${sortField=='paymentMethod'}"
-									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>							
-							</th>
-							
-							<th scope="col">
-								<a th:if="${sortField!='orderStatus'}" class="text-white"
-									 th:href="@{'/orders/page/' +${pageNum} + '?sortField=orderStatus&sortDir=' + ${sortDir}}">
-								 	Order Status
-								 </a>
-								 
-								 <a th:if="${sortField=='orderStatus'}" class="text-white"
-								 	th:href="@{'/orders/page/' +${pageNum} + '?sortField=orderStatus&sortDir=' + ${reverseSort}}">
-								 	Order Status
-								 </a>
-								 
-								<span th:if="${sortField=='orderStatus'}"
-									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>							
-							</th>
+							<th scope="col" th:replace="common/fragments::column_link_orders('orderStatus','OrderStatus')"></th>
 							
 							<th scope="col">Operations</th>
 							
@@ -217,13 +142,13 @@
 				</div>
 			</div>
 			
-			<div th:replace="footer::foot">	</div>
+			<div th:replace="common/footer::foot">	</div>
 			
 		</div>
 		
 		</div>
 		
-		<div th:replace="script::script"></div>
+		<div th:replace="common/script::script"></div>
 		
 </body>
 
@@ -235,6 +160,18 @@ $(".link-detail").on("click",function(e) {
 	$("#detailModal").modal("show").find(
 	".modal-content").load(linkDetailUrl);
 });
+
+//delete orders		
+$(document).ready(function() {
+	$(".link-delete").on("click",function(e) {
+		e.preventDefault();
+		link = $(this);
+		orderId = link.attr("orderId");
+		$("#yesButtonOrders").attr("href",link.attr("href"));
+		$("#confirmTextOrders").text("Are you sure want to delete order: "+ orderId + " ?");
+		$("#confirmModalOrders").modal();
+	});
+});	
 
 </script>
 
