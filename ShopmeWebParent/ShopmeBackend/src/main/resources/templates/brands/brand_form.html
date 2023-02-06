@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>[[${pageTitle}]]</title>
 </head>
 <body>
 	<div class="container-fluid">
 		<div>
-			<div th:replace="navigation :: menu"></div>
+			<div th:replace="common/navigation :: menu"></div>
 		</div>
 		<div class="text-center">
 			<h1>Manage Brands | [[${pageTitle}]]</h1>
@@ -72,11 +72,12 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
-	<div th:replace="footer::foot"></div>
-	</div>
+	
+	<div th:replace="common/footer::foot"></div>	
+	
 </body>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#buttonCancel").on("click", function() {
@@ -172,4 +173,5 @@
 		$("#modalDialogue").modal();
 	}
 </script>
+
 </html>

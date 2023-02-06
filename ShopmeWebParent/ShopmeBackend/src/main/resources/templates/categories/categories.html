@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Categories - ShopNow Admin</title>
 </head>
 <body>
 	<div class="container-fluid">
-		<div th:replace="navigation :: menu"></div>
+		<div th:replace="common/navigation :: menu"></div>
+		
 		<div>
 			<h1>Manage Categories</h1>
 			<a th:href="@{/new}">Create New Category</a>
 		</div>
+		
 		<div>&nbsp;</div>
+		
 		<div th:if="${message != null}"
-			class="alert alert-success text-center">[[${message}]]</div>
+			class="alert alert-success text-center">[[${message}]]
+		</div>
 
 		<div>
 			<form class="form-inline" th:action="@{/categories/1}">
@@ -36,7 +40,7 @@
 					class="table table-bordered table-striped table-hover table-responsive-xl">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col" th:replace="fragments::column_link_cat('id','ID')"></th>
+							<th scope="col" th:replace="common/fragments::column_link_cat('id','ID')"></th>
 							
 							<th scope="col">Photo</th>
 							
@@ -46,10 +50,8 @@
 							
 							<th scope="col">Enabled</th>
 							
-							<th scope="col">Operations</th>
-							
-						</tr>
-						
+							<th scope="col">Operations</th>							
+						</tr>						
 					</thead>
 					
 					<tbody>
@@ -90,23 +92,23 @@
 					<ul class="pagination justify-content-center">
 						
 						<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
-							<a th:replace="fragments::page_link_cat(1,'First')"></a>
+							<a th:replace="common/fragments::page_link_cat(1,'First')"></a>
 						</li>
 						
 						<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
-							<a th:replace="fragments::page_link_cat(${pageNum-1},'Previous')"></a>
+							<a th:replace="common/fragments::page_link_cat(${pageNum-1},'Previous')"></a>
 						</li>
 						
 						<li th:class="${pageNum != i ? 'page-item' :'page-item active'}" th:each="i:${#numbers.sequence(1,totalPage)}">
-							<a th:replace="fragments::page_link_cat(${i},${i})"></a>
+							<a th:replace="common/fragments::page_link_cat(${i},${i})"></a>
 						</li>
 						
 						<li	th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
-							<a th:replace="fragments::page_link_cat(${pageNum+1},'Next')"></a>
+							<a th:replace="common/fragments::page_link_cat(${pageNum+1},'Next')"></a>
 						</li>
 						
 						<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
-							<a th:replace="fragments::page_link_cat(${totalPage},'Last')"></a>
+							<a th:replace="common/fragments::page_link_cat(${totalPage},'Last')"></a>
 						</li>
 					</ul>
 				</nav>
@@ -130,16 +132,29 @@
 				</div>
 			</div>
 
-			<div th:replace="footer::foot"></div>
+			<div th:replace="common/footer::foot"></div>
 		</div>
 	</div>
-	<div th:replace="script::script"></div>
-	<script type="text/javascript">
+	<div th:replace="common/script::script"></div>
 	
-	function clearFilter(){
-		window.location="[[@{/categories}]]";
-	}	
-	
-	</script>
+<script type="text/javascript">	
+function clearFilter(){
+	window.location="[[@{/categories}]]";
+}
+
+//delete category
+$(document).ready(function() {
+		$(".link-delete").on("click",function(e) {
+			e.preventDefault();
+			link = $(this);
+			catId = link.attr("catId");
+			$("#yesButtonCategory").attr("href",
+			link.attr("href"));
+			$("#confirmTextCategory").text("Are you sure want to delete category with id: "+ catId + " ?");
+			$("#confirmModalCategory").modal();
+		});
+});	
+</script>
+
 </body>
 </html>

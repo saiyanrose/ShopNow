@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Customers - Shopme Admin</title>
 </head>
 <body>
 	<div class="container-fluid">
 
-		<div th:replace="navigation :: menu"></div>
+		<div th:replace="common/navigation :: menu"></div>
 
 		<div>
 			<h1>Manage Customers</h1>
@@ -34,50 +34,13 @@
 					class="table table-bordered table-striped table-hover table-responsive-xl">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">
-								<a th:if="${sortField!='id'}" class="text-white"
-								th:href="@{'/customers/page/' +${pageNum} + '?sortField=id&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									Customer ID 
-								</a>
-								<a th:if="${sortField=='id'}" class="text-white" th:href="@{'/customers/page/' +${pageNum} + '?sortField=id&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									Customer ID 
-								</a>
-								
-								<span th:if="${sortField=='id'}"
-									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>
-							</th>
+							<th scope="col" th:replace="common/fragments::column_link_customer('id','Customer ID')"></th>
 
 							<th scope="col"><a>Customer Email</a></th>
 
-							<th scope="col">
-								<a th:if="${sortField!='firstname'}" class="text-white"
-									th:href="@{'/customers/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									First Name
-								</a>
-								<a th:if="${sortField=='firstname'}" class="text-white"
-									th:href="@{'/customers/page/' +${pageNum} + '?sortField=firstname&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									First Name
-								</a>
-								<span th:if="${sortField=='firstname'}"
-									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>
-							
-							</th>
+							<th scope="col" th:replace="common/fragments::column_link_customer('firstname','First Name')"></th>
 
-							<th scope="col">
-								<a th:if="${sortField!='lastname'}"	class="text-white"
-									th:href="@{'/customers/page/' +${pageNum} + '?sortField=lastname&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									Last Name
-								</a>
-								<a th:if="${sortField=='lastname'}"	class="text-white"
-									th:href="@{'/customers/page/' +${pageNum} + '?sortField=lastname&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-									Last Name
-								</a>
-								<span th:if="${sortField=='lastname'}"
-									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>
-							</th>
+							<th scope="col" th:replace="common/fragments::column_link_customer('lastname','Last Name')"></th>
 
 							<th scope="col"><a>Address Line1</a></th>
 
@@ -143,30 +106,31 @@
 			</div>
 
 			<div th:if="${totalPage > 1}">
-				<nav aria-label="Page navigation example">
-					<ul class="pagination justify-content-center">
-						<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a
-							class="page-link"
-							th:href="@{'/customers/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">First</a></li>
-						<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a
-							class="page-link"
-							th:href="@{'/customers/page/' +${pageNum-1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Previous</a></li>
-						<li th:class="${pageNum != i ? 'page-item' :'page-item active'}"
-							th:each="i:${#numbers.sequence(1,totalPage)}"><a
-							class="page-link"
-							th:href="@{'/customers/page/' +${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">[[${i}]]</a>
-						</li>
-						<li
-							th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a
-							class="page-link"
-							th:href="@{'/customers/page/' +${pageNum+1} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Next</a></li>
-						<li
-							th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a
-							class="page-link"
-							th:href="@{'/customers/page/' +${totalPage} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Last</a></li>
-					</ul>
-				</nav>
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">					
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
+						<a th:replace="common/fragments::page_link_customer(1,'First')"></a>
+					</li>
+					
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
+						<a th:replace="common/fragments::page_link_customer(${pageNum-1},'Previous')"></a>
+					</li>
+					
+					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}" th:each="i:${#numbers.sequence(1,totalPage)}">
+						<a th:replace="common/fragments::page_link_customer(${i},${i})"></a>
+					</li>
+										
+				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
+				    	<a th:replace="common/fragments::page_link_customer(${pageNum+1},'Next')"></a>
+				    </li>
+					
+					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
+						<a th:replace="common/fragments::page_link_customer(${totalPage},'Last')"></a>
+					</li>					
+				</ul>				
+			</nav>
 			</div>
+			
 			<div class="modal" tabindex="-1" role="dialog" id="confirmModal">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -187,47 +151,22 @@
 
 		</div>
 
-
-		<div th:replace="footer::foot"></div>
+		<div th:replace="common/footer::foot"></div>
+		<div th:replace="common/script::script"></div>
+		
 	</div>
 
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#logoutLink").on("click", function(e) {
-				e.preventDefault();
-				document.logoutForm.submit();
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".link-delete-customer").on("click",function(e) {
+			e.preventDefault();
+			link = $(this);
+			userId = link.attr("customerId");
+			$("#yesButton").attr("href",
+			link.attr("href"));
+			$("#confirmText").text("Are you sure want to delete id: "+ userId + " ?");
+			$("#confirmModal").modal();
 			});
-			customizeDropdown();
-		});
-
-		//logout dropdown
-		function customizeDropdown() {
-			$(".navbar .dropdown").hover(
-					function() {
-						$(this).find('.dropdown-menu').first().stop(true, true)
-								.delay(250).slideDown();
-					},
-					function() {
-						$(this).find('.dropdown-menu').first().stop(true, true)
-								.delay(100).slideUp();
-					});
-
-			$(".dropdown > a").click(function() {
-				location.href = this.href;
-			});
-		}
-
-		$(document).ready(
-				function() {
-					$(".link-delete-customer").on("click",function(e) {
-						e.preventDefault();
-						link = $(this);
-						userId = link.attr("customerId");
-						$("#yesButton").attr("href",
-						link.attr("href"));
-						$("#confirmText").text("Are you sure want to delete id: "+ userId + " ?");
-						$("#confirmModal").modal();
-					});
 		});
 		
 		$(".link-detail").on("click",function(e) {
@@ -236,6 +175,8 @@
 			$("#customerModal").modal("show").find(
 			".modal-content").load(linkDetailUrl);
 		});
-	</script>
+</script>
+
 </body>
+
 </html>

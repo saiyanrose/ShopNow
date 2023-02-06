@@ -1,57 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>[[${pageTitle}]]</title>
 </head>
 <body>
 	<div class="container-fluid">
 		<div>
-			<div th:replace="navigation :: menu"></div>
+			<div th:replace="common/navigation :: menu"></div>
 		</div>
+		
 		<div class="text-center">
 			<h1>Manage Categories | [[${pageTitle}]]</h1>
 		</div>
+		
 		<div th:if="${message != null}"
-			class="alert alert-success text-center">[[${message}]]</div>
+			class="alert alert-success text-center">[[${message}]]
+		</div>
 
-
-		<form th:action="@{/categories/save}" method="post"
-			style="max-width: 700px; margin: 0 auto"
-			enctype="multipart/form-data" onsubmit="return checkCategory(this)"
-			th:object="${category}">
+		<form th:action="@{/categories/save}" method="post"	style="max-width: 700px; margin: 0 auto"
+			enctype="multipart/form-data" onsubmit="return checkCategory(this)"	th:object="${category}">
+			
 			<input type="hidden" th:field="*{id}">
+			
 			<div class="form-group">
-				<label for="exampleFormControlInput1">Category Name</label> <input
-					type="text" class="form-control" th:field="*{name}" required>
+				<label for="exampleFormControlInput1">Category Name</label>
+				<input type="text" class="form-control" th:field="*{name}" required>
 			</div>
+			
 			<div class="form-group">
-				<label for="exampleFormControlInput1">Alias</label> <input
-					type="text" class="form-control" th:field="*{alias}" required>
+				<label for="exampleFormControlInput1">Alias</label>
+				<input type="text" class="form-control" th:field="*{alias}" required>
 			</div>
+			
 			<div class="form-group">
-				<label for="exampleFormControlInput1">Parent Category</label> <select
-					class="form-control" th:field="*{parent}">
+				<label for="exampleFormControlInput1">Parent Category</label>
+				<select	class="form-control" th:field="*{parent}">
 					<option value="0">[No Parent]</option>
 					<th:block th:each="list: ${formCategory}">
 						<option th:value="${list.id}">[[${list.name}]]</option>
 					</th:block>
 				</select>
 			</div>
+			
 			<div class="form-group">
-				<label for="exampleFormControlInput1">Image</label> <input
-					type="hidden" th:field="*{image}" /> <input type="file"
-					id="fileImage" name="file" accept="image/png,image/jpeg,image/jpg" /> <img
-					id="thumbnail" th:src="@{${category.imagePath}}" style="width:100px;"/>
+				<label for="exampleFormControlInput1">Image</label>
+				<input type="hidden" th:field="*{image}" /> <input type="file"
+					id="fileImage" name="file" accept="image/png,image/jpeg,image/jpg" />
+				<img id="thumbnail" th:src="@{${category.imagePath}}" style="width:100px;"/>
 			</div>
+			
 			<div class="form-group">
-				<label for="exampleFormControlInput1">Enabled</label> <input
-					type="checkbox" th:field="*{enabled}" />
+				<label for="exampleFormControlInput1">Enabled</label>
+				<input type="checkbox" th:field="*{enabled}" />
 			</div>
+			
 			<div>
-				<input type="submit" value="Save" class="btn btn-primary"> <input
-					type="submit" value="Cancel" class="btn btn-secondary"
-					id="buttonCancel">
+				<input type="submit" value="Save" class="btn btn-primary">
+				<input type="submit" value="Cancel" class="btn btn-secondary" id="buttonCancel">
 			</div>
 
 		</form>
@@ -72,10 +78,14 @@
 				</div>
 			</div>
 		</div>
-		<div th:replace="footer::foot"></div>
-	</div>
+		
+		<div th:replace="common/footer::foot"></div>
+		
+	</div>	
 </body>
-<div th:replace="script::script"></div>
+
+<div th:replace="common/script::script"></div>
+
 <script type="text/javascript">
 	function checkCategory(form) {
 		catId = $("#id").val();
@@ -104,6 +114,7 @@
 		});
 		return false;
 	}
+	
 	function showModalDialogue(title, message) {
 		$("#modalTitle").text(title);
 		$("#modalbody").text(message);
@@ -134,7 +145,7 @@
 			$("#thumbnail").attr("src", e.target.result);
 		};
 		reader.readAsDataURL(file);
-	}
-	
+	}	
 </script>
+
 </html>

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Users - Shopme Admin</title>
+<title>[[${pageTitle}]]</title>
 </head>
 <body>
 	<div class="container-fluid">
 	
-		<div th:replace="navigation :: menu"></div>
+		<div th:replace="common/navigation :: menu"></div>
 		
 		<div>
 			<h1>Manage Users</h1>
@@ -40,19 +40,19 @@
 					class="table table-bordered table-striped table-hover table-responsive-xl">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col" th:replace="fragments::column_link('id','User ID')"></th>
+							<th scope="col" th:replace="common/fragments::column_link('id','User ID')"></th>
 							
 							<th scope="col">Photo</th>
 							
-							<th scope="col" th:replace="fragments::column_link('email','Email')"></th>							
+							<th scope="col" th:replace="common/fragments::column_link('email','Email')"></th>							
 							
-							<th scope="col" th:replace="fragments::column_link('firstname','First Name')"></th>
+							<th scope="col" th:replace="common/fragments::column_link('firstname','First Name')"></th>
 							
-							<th scope="col" th:replace="fragments::column_link('lastname','Last Name')"></th>
+							<th scope="col" th:replace="common/fragments::column_link('lastname','Last Name')"></th>
 							
 							<th scope="col">Roles</th>
 							
-							<th scope="col" th:replace="fragments::column_link('enabled','Enabled')"></th>
+							<th scope="col" th:replace="common/fragments::column_link('enabled','Enabled')"></th>
 							
 							<th scope="col">Operations</th>
 							
@@ -113,23 +113,23 @@
 				<ul class="pagination justify-content-center">
 					
 					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
-						<a th:replace="fragments::page_link(1,'First')"></a>
+						<a th:replace="common/fragments::page_link(1,'First')"></a>
 					</li>
 					
 					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
-						<a th:replace="fragments::page_link(${pageNum-1},'Previous')"></a>
+						<a th:replace="common/fragments::page_link(${pageNum-1},'Previous')"></a>
 					</li>
 					
 					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}" th:each="i:${#numbers.sequence(1,totalPage)}">
-						<a th:replace="fragments::page_link(${i},${i})"></a>
+						<a th:replace="common/fragments::page_link(${i},${i})"></a>
 					</li>
 										
 				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
-				    	<a th:replace="fragments::page_link(${pageNum+1},'Next')"></a>
+				    	<a th:replace="common/fragments::page_link(${pageNum+1},'Next')"></a>
 				    </li>
 					
 					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
-						<a th:replace="fragments::page_link(${totalPage},'Last')"></a>
+						<a th:replace="common/fragments::page_link(${totalPage},'Last')"></a>
 					</li>
 					
 				</ul>
@@ -158,13 +158,13 @@
 				</div>
 			</div>
 			
-			<div th:replace="footer::foot">	</div>
+			<div th:replace="common/footer::foot">	</div>
 			
 		</div>
 		
 		</div>
 		
-		<div th:replace="script::script"></div>
+		<div th:replace="common/script::script"></div>
 		
 </body>
 

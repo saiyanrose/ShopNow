@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
@@ -13,7 +12,7 @@
 <body>
 	<div class="container-fluid">
 	
-		<div th:replace="navigation :: menu"></div>
+		<div th:replace="common/navigation :: menu"></div>
 		
 		<div>
 			<h1>ShopNow Admin Control Panel</h1>
@@ -24,11 +23,11 @@
 			</h3>
 		</div>
 		
-		<div th:replace="footer::foot"></div>
+		<div th:replace="common/footer::foot"></div>
 		
 	</div>
 	
-	<div th:replace="script::script"></div>
+	<div th:replace="common/script::script"></div>
 	
 </body>
 </html>

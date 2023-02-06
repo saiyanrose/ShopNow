@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>[[${pageTitle}]]</title>
 </head>
@@ -8,7 +8,7 @@
 	<div class="container-fluid">
 	
 		<div>
-			<div th:replace="navigation :: menu"></div>
+			<div th:replace="common/navigation :: menu"></div>
 		</div>
 		
 		<div class="text-center">
@@ -79,13 +79,13 @@
 			</div>
 		</div>
 		
-		<div th:replace="footer::foot"></div>
+		<div th:replace="common/footer::foot"></div>
 		
 	</div>
 	
 </body>
 
-<div th:replace="script::script"></div>
+<div th:replace="common/script::script"></div>
 
 <script type="text/javascript">
 

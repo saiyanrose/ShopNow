@@ -35,7 +35,7 @@ public class BrandController {
 	@GetMapping("/brands")
 	public String Brands(Model model) {
 		LOGGER.info("Brand page called.");
-		return brandByPage(1, model, "id","asc", null);		
+		return brandByPage(1, model, "name","asc", null);		
 	}
 	
 	@GetMapping("/brands/new")

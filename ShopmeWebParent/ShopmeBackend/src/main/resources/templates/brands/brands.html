@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Brands - ShopNow Admin</title>
-
 </head>
 
 <body>
 	<div class="container-fluid">
-		<div th:replace="navigation :: menu"></div>
+		<div th:replace="common/navigation :: menu"></div>
+		
 		<div>
 			<h1>Manage Brands</h1>
 			<a th:href="@{/brands/new}">Create New Brand</a>
@@ -17,8 +17,7 @@
 		
 		<div>&nbsp;</div>
 		
-		<div th:if="${message != null}"
-			class="alert alert-success text-center">[[${message}]]</div>
+		<div th:if="${message != null}"	class="alert alert-success text-center">[[${message}]]</div>
 		
 		<div th:if="${message1 != null}"
 			class="alert alert-danger text-center">[[${message1}]]
@@ -26,7 +25,7 @@
 			
 		<div>
 			<form th:action="@{/brands/page/1}" class="form-inline">
-				<input type="hidden" name="sortField" th:value="${sortField}"/>
+				<input type="hidden" name="sortField" th:value="${sortField}"/>				
 				<input type="hidden" name="sortDir" th:value="${sortDir}"/>
 				Filter:&nbsp;
 				<input type="search" name="keyword" th:value="${keyword}" class="form-control" required />
@@ -44,88 +43,74 @@
 				<table	class="table table-bordered table-striped table-hover table-responsive-xl">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">
-							<a th:if="${sortField!='id'}" class="text-white"
-								 th:href="@{'/brands/page/' +${pageNum} + '?sortField=id&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 Brand ID
-								 </a>
-								 <a th:if="${sortField=='id'}" class="text-white"
-								 th:href="@{'/brands/page/' +${pageNum} + '?sortField=id&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 Brand ID
-								 </a>
-								<span th:if="${sortField=='id'}"
-									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>
-							
-							</th>
+							<th scope="col" th:replace="common/fragments::column_link_brand('id','ID')"></th>
 							<th scope="col">Photo</th>
-							<th scope="col">
-							<a th:if="${sortField!='name'}" class="text-white"
-								 th:href="@{'/brands/page/' +${pageNum} + '?sortField=name&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 Brand Name
-								 </a>
-								 <a th:if="${sortField=='name'}" class="text-white"
-								 th:href="@{'/brands/page/' +${pageNum} + '?sortField=name&sortDir=' + ${reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
-								 Brand Name
-								 </a>
-								<span th:if="${sortField=='name'}"
-									th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-								</span>
-							
-							</th>
-							
-							<th scope="col">
-								<a class="text-white">
-								 Categories
-								 </a>								 
-							</th>													
+							<th scope="col" th:replace="common/fragments::column_link_brand('name','Brand Name')"></th>							
+							<th scope="col"><a class="text-white">Categories</a></th>													
 							<th scope="col">Operations</th>
 						</tr>
 					</thead>
+					
 					<tbody>
 						<tr th:each="brnd : ${brands}">
 							<th scope="row">[[${brnd.id}]]</th>
-							<td><span th:if="${brnd.logo==null}"
-								class="fas fa-portrait fa-3x"></span> <img
-								th:if="${brnd.logo!=null}" th:src="@{${brnd.logoPath}}"
-								style="width: 100px" /></td>
+							<td>
+								<span th:if="${brnd.logo==null}" class="fas fa-portrait fa-3x"></span>
+								<img th:if="${brnd.logo!=null}" th:src="@{${brnd.logoPath}}" style="width: 100px" />
+							</td>
 							<td>[[${brnd.name}]]</td>
 							<td>
 								<th:block th:each="cat : ${brnd.categories}">
 								<span class="badge badge-secondary" th:text="${cat.name}"></span>
-								</th:block>
-								
+								</th:block>								
 							</td>							
-							<td><a class="fas fa-edit fa-2x"
-								th:href="@{'/brands/edit/' + ${brnd.id}}" title="Edit this brand"></a>
-								&nbsp; <a class="fas fa-user-times fa-2x link-delete"
-								th:href="@{'/brands/delete/' + ${brnd.id}}"
-								title="Delete this brand" th:brandId="${brnd.id}"></a></td>
+							<td>
+								<a class="fas fa-edit fa-2x" th:href="@{'/brands/edit/' + ${brnd.id}}" title="Edit this brand"></a>
+								&nbsp;
+								<a class="fas fa-user-times fa-2x link-delete" th:href="@{'/brands/delete/' + ${brnd.id}}"
+									title="Delete this brand" th:brandId="${brnd.id}">
+								</a>
+							</td>
 						</tr>
 					</tbody>
+					
 				</table>
 			</div>
+			
 			<div class="text-center m-1" th:if="${totalItems>0}">
-				<span>Showing users # [[${startCount}]] to [[${endCount}]] of
-					[[${totalItems}]]</span>
+				<span>Showing brands # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
 			</div>
+			
 			<div class="text-center m-1" th:unless="${totalItems>0}">
 				<span>No brand Found</span>
 			</div>
+			
 			<div th:if="${totalPage > 1}">
 			<nav aria-label="Page navigation example">
-				<ul class="pagination justify-content-center">
-					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/brands/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">First</a></li>
-					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/brands/page/' +${pageNum-1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Previous</a></li>
-					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}"
-					 th:each="i:${#numbers.sequence(1,totalPage)}">
-					<a class="page-link" th:href="@{'/brands/page/' +${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword!=null ? '&keyword=' +keyword : ''}}">[[${i}]]</a>
+				<ul class="pagination justify-content-center">					
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
+						<a th:replace="common/fragments::page_link_brand(1,'First')"></a>
+					</li>
+					
+					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
+						<a th:replace="common/fragments::page_link_brand(${pageNum-1},'Previous')"></a>
+					</li>
+					
+					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}" th:each="i:${#numbers.sequence(1,totalPage)}">
+						<a th:replace="common/fragments::page_link_brand(${i},${i})"></a>
+					</li>
+										
+				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
+				    	<a th:replace="common/fragments::page_link_brand(${pageNum+1},'Next')"></a>
+				    </li>
+					
+					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
+						<a th:replace="common/fragments::page_link_brand(${totalPage},'Last')"></a>
 					</li>					
-				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/brands/page/' +${pageNum+1} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Next</a></li>
-					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}"><a class="page-link" th:href="@{'/brands/page/' +${totalPage} + ${keyword!=null ? '&keyword=' +keyword : ''}}">Last</a></li>
-				</ul>
+				</ul>				
 			</nav>
 			</div>
+			
 			<div class="modal" tabindex="-1" role="dialog" id="confirmModalBrand">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -143,16 +128,31 @@
 					</div>
 				</div>
 			</div>
-			</div>
-			<div th:replace="footer::foot"></div>
+			
 		</div>
-		<div th:replace="script::script"></div>
-		<script type="text/javascript">
+		
+		<div th:replace="common/footer::foot"></div>
+	</div>
+		
+	<div th:replace="common/script::script"></div>
 	
-	function clearFilter(){
-		window.location="[[@{/brands}]]";
-	}	
-	
-	</script>
+<script type="text/javascript">	
+function clearFilter(){
+	window.location="[[@{/brands}]]";
+}
+//delete brand
+$(document).ready(function() {
+	$(".link-delete").on("click",function(e) {
+		e.preventDefault();
+		link = $(this);
+		brandId = link.attr("brandId");				
+		$("#yesButtonBrand").attr("href",link.attr("href"));
+		$("#confirmTextBrand").text("Are you sure want to delete brand with id: "+ brandId + " ?");
+		$("#confirmModalBrand").modal();
+	});
+});		
+</script>
+
 </body>
+
 </html>

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Products - ShopNow Admin</title>
 </head>
 <body>
 	<div class="container-fluid">
 	
-		<div th:replace="navigation :: menu"></div>
+		<div th:replace="common/navigation :: menu"></div>
 		
 		<div>
 			<h1>Manage Products</h1>
@@ -96,13 +96,13 @@
 				
 			</div>
 			
-			<div th:replace="footer::foot"></div>
+			<div th:replace="common/footer::foot"></div>
 			
 		</div>
 		
 	</div>
 	
-	<div th:replace="script::script"></div>
+	<div th:replace="common/script::script"></div>
 	
 	<script type="text/javascript">
 		function clearFilter() {
@@ -135,6 +135,7 @@
 	
 	<script	src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 	<script	src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+	
 </body>
 
 </html>

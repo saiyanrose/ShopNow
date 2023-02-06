@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header::head">
+<head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>[[${pageTitle}]]</title>
 </head>
@@ -8,7 +8,7 @@
 	<div class="container-fluid">
 	
 		<div>
-			<div th:replace="navigation :: menu"></div>
+			<div th:replace="common/navigation :: menu"></div>
 		</div>
 		
 		<div class="text-center">
@@ -21,69 +21,62 @@
 			<input type="hidden" th:field="*{id}">
 			
 			<div class="form-group">
-				<label for="exampleFormControlInput1">Email address</label> <input
-					type="email" class="form-control" placeholder="name@example.com"
-					th:field="*{email}" required>
+				<label for="exampleFormControlInput1">Email address</label>
+				<input type="email" class="form-control" placeholder="name@example.com"	th:field="*{email}" required>
 			</div>
 			
 			<div class="form-group">
-				<label for="exampleFormControlInput1">First name</label> <input
-					type="text" class="form-control" id="exampleFormControlInput1"
-					placeholder="Enter Your Name" th:field="*{firstname}" required>
+				<label for="exampleFormControlInput1">First name</label>
+				<input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter Your Name" th:field="*{firstname}" required>
 			</div>
 			
 			<div class="form-group">
-				<label for="exampleFormControlInput1">Last Name</label> <input
-					type="text" class="form-control" id="exampleFormControlInput1"
-					placeholder="Enter Your surname" th:field="*{lastname}" required>
+				<label for="exampleFormControlInput1">Last Name</label>
+				<input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter Your surname" th:field="*{lastname}" required>
 			</div>
 			
 			<div class="form-group">
 				<label for="exampleFormControlInput1">Password</label>
-				 <input th:if="${user.id==null}" type="password" class="form-control"
-					id="exampleFormControlInput1" placeholder="your password"
-					th:field="*{password}" required>			
+				<input th:if="${user.id==null}" type="password" class="form-control"
+					id="exampleFormControlInput1" placeholder="your password" th:field="*{password}" required>			
 				
 				 <input	th:if="${user.id!=null}" type="password" class="form-control"
-					id="exampleFormControlInput1" placeholder="your password"
-					th:field="*{password}">
+					id="exampleFormControlInput1" placeholder="your password" th:field="*{password}">
 			</div>
 			
-			<div class="form-group">
-				
+			<div class="form-group">				
 				<label for="exampleFormControlInput1">Roles</label>
 				<div>
 					<th:block th:each="role: ${listRole}">
-						<input type="checkbox" th:field="*{roles}" th:text="${role.name}"
-							th:value="${role.id}" class="m-2" />
-					-<small>[[${role.description}]]</small>
+						<input type="checkbox" th:field="*{roles}" th:text="${role.name}" th:value="${role.id}" class="m-2" />
+						-<small>[[${role.description}]]</small>
 						<br>
 					</th:block>
 				</div>
 			</div>
 			
 			<div class="form-group">
-				<label for="exampleFormControlInput1">Enabled</label> <input
-					type="checkbox" th:field="*{enabled}" />
+				<label for="exampleFormControlInput1">Enabled</label>
+				<input type="checkbox" th:field="*{enabled}" />
 			</div>
 			
 			<div class="form-group">
-				<label for="exampleFormControlInput1">Photo</label> <input
-					type="hidden" th:field="*{photos}" /> <input type="file"
-					id="fileImage" name="image" accept="image/png,image/jpeg" /> <img
-					id="thumbnail" th:src="@{${user.photosImagePath}}" height="150px" />
+				<label for="exampleFormControlInput1">Photo</label>
+				<input type="hidden" th:field="*{photos}" /> <input type="file"
+					id="fileImage" name="image" accept="image/png,image/jpeg" />
+				<img id="thumbnail" th:src="@{${user.photosImagePath}}" height="150px" />
 			</div>
 			
 			<div>
-				<input type="submit" value="Save" class="btn btn-primary"> <input
-					type="submit" value="Cancel" class="btn btn-secondary"
-					id="buttonCancel">
+				<input type="submit" value="Save" class="btn btn-primary">
+				<input type="submit" value="Cancel" class="btn btn-secondary" id="buttonCancel">
 			</div>
 
 		</form>
 
 		<div class="modal" tabindex="-1" role="dialog" id="modalDialogue">
 			<div class="modal-dialog" role="document">
+			
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="modalTitle">Warning</h5>
@@ -96,21 +89,19 @@
 					
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					</div>
-					
+					</div>					
 				</div>
 				
-			</div>
-			
+			</div>			
 		</div>
 		
-		<div th:replace="footer::foot"></div>
+		<div th:replace="common/footer::foot"></div>
 	
 	</div>
 	
 </body>
 
-<div th:replace="script::script"></div>
+<div th:replace="common/script::script"></div>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -168,5 +159,17 @@
 		$("#modalbody").text(message);
 		$("#modalDialogue").modal();
 	}
+	
+	//delete user
+	$(document).ready(function() {
+			$(".link-delete-user").on("click",function(e) {
+				e.preventDefault();
+				link = $(this);
+				userId = link.attr("userId");
+				$("#yesButtonUsers").attr("href",link.attr("href"));
+				$("#confirmTextUsers").text("Are you sure want to delete user with id: "+ userId + " ?");
+				$("#confirmModalUsers").modal();
+			});
+	});	
 </script>
 </html>
