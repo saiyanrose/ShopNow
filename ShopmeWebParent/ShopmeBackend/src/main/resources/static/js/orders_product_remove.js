@@ -1,8 +1,9 @@
 $(document).ready(function(){
 	$("#productList").on("click",".link-remove",function(e){
 		e.preventDefault();
-		if(atleastProduct()){
-			alert("Could not remove: Atleast 1 product is present.");
+		if(atleastProduct()){			
+			$("#confirmTextOrder").text("Could not remove: Atleast 1 product is present.");
+			$("#confirmModalOrder").modal();
 		}else{
 			removeProduct($(this));
 			updateOrderAmount()

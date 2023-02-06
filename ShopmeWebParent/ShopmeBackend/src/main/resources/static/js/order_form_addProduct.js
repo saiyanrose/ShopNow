@@ -14,7 +14,9 @@ $(document).ready(function(){
 
 function addProduct(productId,productName){
 	if(isAlreadyAdded(productId)){
-		alert("Product already present.");
+		//alert("Product already present.");
+		$("#confirmTextOrder").text("Product already present.");
+		$("#confirmModalOrder").modal();
 	}else{
 		getShippingCost(productId);		
 	}
