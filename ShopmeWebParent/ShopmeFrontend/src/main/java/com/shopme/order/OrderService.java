@@ -2,11 +2,16 @@ package com.shopme.order;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.shopme.checkout.CheckoutInfo;
@@ -18,6 +23,7 @@ import com.shopme.common.entity.OrderStatus;
 import com.shopme.common.entity.Orders;
 import com.shopme.common.entity.PaymentMethod;
 import com.shopme.common.entity.Product;
+import com.shopme.controller.OrderNotFoundException;
 
 @Service
 @Transactional
@@ -71,5 +77,25 @@ public class OrderService {
 			details.add(orderDetails);
 		}
 		return orderRepository.save(orders);
+	}
+
+	public Page<Orders> customerOrders(Customer customer, Integer pageNum, String sortDir, String sortField,
+			String keyword) {
+		
+		Sort sort=Sort.by(sortField);
+		sort=sortDir.equals("asc") ? sort.ascending() : sort.descending();
+		Pageable pageable=PageRequest.of(pageNum-1,5,sort);
+		if(keyword!=null) {
+			return orderRepository.findAll(keyword,customer.getId(),pageable);
+		}
+		return orderRepository.findAll(customer.getId(),pageable);			
+	}
+
+	public Orders get(Integer id) throws OrderNotFoundException {	
+		try {
+			return orderRepository.findById(id).get();
+		}catch (NoSuchElementException e) {
+			throw new OrderNotFoundException("Order not found with id "+id);
+		}	
 	}
 }

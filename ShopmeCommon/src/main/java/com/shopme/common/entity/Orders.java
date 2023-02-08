@@ -402,5 +402,16 @@ public class Orders {
 		return false;
 		
 	}
+	
+	@Transient
+	public String getProductNames() {
+		String productNames="";
+		productNames="<ul>";
+		for(OrderDetails details:orderDetails) {
+			productNames+="<li>" + details.getProduct().getName()+"</li>";
+		}
+		productNames+="</ul>";
+		return productNames;
+	}
 
 }
