@@ -6,8 +6,7 @@ $(document).ready(function(){
 
 function addToCart(){
 	quantity=$("#quantity" + productId).val();
-	url=contextPath + "cart/add/"+productId+ "/" +quantity;
-	//alert(url);
+	url=contextPath + "cart/add/"+productId+ "/" +quantity;	
 	$.ajax({
 		type:"POST",
 		url:url,
@@ -15,8 +14,10 @@ function addToCart(){
 			xhr.setRequestHeader(csrfHeaderName,csrfValue);
 		}
 	}).done(function(response){
-		alert(response);
+		$("#cartText").text(response);
+		$("#cartModal").modal();
 	}).fail(function(response){
-		alert("Error while adding product to cart");
+		$("#cartText").text("Error while adding product into cart");
+		$("#cartModal").modal();
 	});
 }

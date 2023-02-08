@@ -52,7 +52,9 @@
 
 							<th scope="col" th:replace="common/fragments::column_link_orders('orderStatus','Order Status')"></th>
 
-							<th scope="col">Operations</th>
+							<th scope="col">Detail</th>
+							
+							<th scope="col">Return</th>
 
 						</tr>
 					</thead>
@@ -67,8 +69,12 @@
 							<td>
 								<a class="fas fa-file-alt fa-2x icon-green link-detail"
 									 th:href="@{'/orders/detail/'+ ${order.id}}">
+								</a>															
+							</td>
+							<td>
+								<a class="fas fa-rotate-left fa-2x link-return"
+									 th:href="@{'/orders/return/'+ ${order.id}}">
 								</a>
-								&nbsp;								
 							</td>
 						</tr>
 					</tbody>				

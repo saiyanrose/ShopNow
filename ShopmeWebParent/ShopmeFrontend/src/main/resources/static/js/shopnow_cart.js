@@ -60,7 +60,8 @@ function updateQuantity(productId,quantity){
 		 updateSubTotal(fomatSubTotal,productId);
 		 updateTotal();
 	}).fail(function(response){
-		alert("Error while updating product to cart");
+		$("#cartDeleteText").text("Error while deleting product from your cart");
+		$("#cartDeleteModal").modal();
 	});
 }
 
@@ -101,9 +102,11 @@ function removeFromCart(link){
 		removeProductCartDiv(rowNumber);
 		updateTotal();
 		updateCountNumber();
-		alert(response);		
-	}).fail(function(response){
-		alert("Error while deleting product from your cart");
+		$("#cartDeleteText").text(response);
+		$("#cartDeleteModal").modal();		
+	}).fail(function(response){		
+		$("#cartDeleteText").text("Error while deleting product from your cart");
+		$("#cartDeleteModal").modal();
 	});
 }
 
