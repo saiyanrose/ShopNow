@@ -389,6 +389,11 @@ public class Orders {
 	}
 	
 	@Transient
+	public boolean isRETURNED_REQUESTED() {
+		return hasStatus(OrderStatus.RETURNED_REQUESTED);
+	}
+	
+	@Transient
 	public boolean isDelivered() {
 		return hasStatus(OrderStatus.DELIVERED);
 	}

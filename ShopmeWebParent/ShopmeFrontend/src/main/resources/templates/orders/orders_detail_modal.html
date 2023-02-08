@@ -276,7 +276,19 @@
 						<span class="fas fa-box-open fa-2x linkUpdateStatus"></span><br>
 						<b>Delivered</b>
 					</th:block>
-				</div>						
+				</div>	
+				
+				<div class="col">
+					<th:block th:if="${order.returned}">
+						<i class="fas fa-rotate-left fa-2x" style="color:#00b300"></i><br>
+						<b>Returned</b>
+					</th:block>
+					
+					<th:block th:unless="${order.returned}">
+						<span class="fas fa-rotate-left fa-2x linkUpdateStatus" th:orderId="${order.id}"></span><br>
+						<b>Returned</b>
+					</th:block>
+				</div>					
 				
 			</div>
 				

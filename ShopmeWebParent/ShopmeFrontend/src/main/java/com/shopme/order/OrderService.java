@@ -19,7 +19,9 @@ import com.shopme.common.entity.Address;
 import com.shopme.common.entity.CartItem;
 import com.shopme.common.entity.Customer;
 import com.shopme.common.entity.OrderDetails;
+import com.shopme.common.entity.OrderReturnRequest;
 import com.shopme.common.entity.OrderStatus;
+import com.shopme.common.entity.OrderTrack;
 import com.shopme.common.entity.Orders;
 import com.shopme.common.entity.PaymentMethod;
 import com.shopme.common.entity.Product;
@@ -97,5 +99,24 @@ public class OrderService {
 		}catch (NoSuchElementException e) {
 			throw new OrderNotFoundException("Order not found with id "+id);
 		}	
+	}
+	
+	public void setOrderReturnRequested(OrderReturnRequest orderReturnRequest,Customer customer) throws OrderNotFoundException {
+		Orders orders=orderRepository.findByIdAndCustomer(orderReturnRequest.getOrderId(),customer.getId());
+		if(orders==null) {
+			throw new OrderNotFoundException("Order not found with id "+orderReturnRequest.getOrderId());
+		}
+		if(orders.isRETURNED_REQUESTED()) return;
+		OrderTrack orderTrack=new OrderTrack();
+		orderTrack.setOrders(orders);
+		orderTrack.setUpdatedTime(new Date());
+		orderTrack.setOrderStatus(OrderStatus.RETURNED_REQUESTED);
+		String notes="Reason: " +orderReturnRequest.getNotes();
+		orderTrack.setNotes(notes);
+		
+		orders.getOrderTracks().add(orderTrack);
+		orders.setOrderStatus(OrderStatus.RETURNED_REQUESTED);
+		
+		orderRepository.save(orders);
 	}
 }

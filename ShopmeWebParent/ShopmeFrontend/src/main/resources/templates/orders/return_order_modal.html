@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="content" class="modal" tabindex="-1" role="dialog" id="confirmRefundModal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="returnOrderTitle">Return Order</h5>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<form onsubmit="return submitReturnForm();">
+			<div class="modal-body">
+				<div id="divReason">
+					<div>Reason:</div>
+					<div>
+						<input type="radio" name="returnReason" value="I bought wrong product" required> I bought wrong product
+					</div>
+					<div>
+						<input type="radio" name="returnReason" value="I received wrong product"> I received wrong product
+					</div>
+					<div>
+						<input type="radio" name="returnReason" value="The product was damaged"> The product was damaged
+					</div>
+					<div>
+						<input type="radio" name="returnReason" value="Product arrive too late"> Product arrive too late
+					</div>
+					<div class="m-1">
+						<textarea class="form-control" id="returnNote" rows="4" maxlength="120" placeholder="Addtional information"></textarea>
+					</div>
+				</div>
+				<div id="divMessage" class="text-center">
+					
+				</div>
+			</div>			
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-danger" id="firstButton">Send</button>
+				<button type="button" class="btn btn-danger" id="secondButton" data-dismiss="modal">Cancel</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>

@@ -65,16 +65,18 @@
 							<td>[[${order.orderTime}]]</td>					
 							<td><span th:utext="${order.productNames}"></span></td>
 							<td>[[${CURRENCY_SYMBOL}]][[${order.total}]]</td>							
-							<td>[[${order.orderStatus}]]</td>								
+							<td><span th:class="'textOrderStatus' +${order.id}">[[${order.orderStatus}]]</span></td>								
 							<td>
 								<a class="fas fa-file-alt fa-2x icon-green link-detail"
 									 th:href="@{'/orders/detail/'+ ${order.id}}">
 								</a>															
 							</td>
 							<td>
-								<a class="fas fa-rotate-left fa-2x link-return"
-									 th:href="@{'/orders/return/'+ ${order.id}}">
-								</a>
+								<th:block th:if="${order.RETURNED_REQUESTED==false && order.delivered==true && order.returned==false}">
+									<a class="fas fa-rotate-left fa-2x link-return" th:href="@{'/orders/return/'+ ${order.id}}"
+										th:classappend="'linkReturn'+${order.id}" th:orderId="${order.id}">
+									</a>
+								</th:block>
 							</td>
 						</tr>
 					</tbody>				
@@ -113,17 +115,99 @@
 		</div>
 		
 		<div th:replace="common/navigation::footer_menu"></div>
+		
+		<div th:replace="orders/return_order_modal::content"></div>
 
 	</div>
 
 </body>
 
 <script type="text/javascript">
+	var returnModalTitle;
+	var returnModal;
+	var orderId;
+	var fieldNote;
+	var divMessage;
+	var divReason;
+	var firstButton;
+	var secondButton;
+	var csrfHeaderName="[[${_csrf.headerName}]]";
+	var csrfValue="[[${_csrf.token}]]";
+	
+	contextPath="[[@{/}]]";	
+	
 	$(".link-detail").on("click",function(e) {
 		e.preventDefault();
 		linkDetailUrl = $(this).attr("href");
 		$("#detailModal").modal("show").find(".modal-content").load(linkDetailUrl);
 	});
+	
+	$(document).ready(function(){	
+		orderId=$(".link-return").attr("orderId");		
+		returnModal=$("#confirmRefundModal");
+		returnModalTitle=$("#returnOrderTitle");	
+		fieldNote=$("#returnNote");
+		divReason=$("#divReason");
+		divMessage=$("#divMessage");
+		firstButton=$("#firstButton");
+		secondButton=$("#secondButton");
+		
+		$(".link-return").on("click",function(e) {
+			e.preventDefault();
+			handleReturnClick($(this));
+			
+		});		
+	});	
+	
+	function handleReturnClick(link){		
+		returnModal.modal("show");
+		returnModalTitle.text("Return Order Id #"+orderId);
+	}
+	
+	function submitReturnForm(){
+		reason=$("input[name='returnReason']:checked").val();
+		note=fieldNote.val();	
+		sendReturnOrderRequest(reason,note);
+		return false;
+	}
+	
+	function sendReturnOrderRequest(reason,note){
+		requestedUrl=contextPath+ "orders/return";
+		requestBody={orderId:orderId,reason:reason,notes:note};
+		
+		$.ajax({
+			type: 'POST',
+			url: requestedUrl,
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader(csrfHeaderName, csrfValue);
+			},
+			data: JSON.stringify(requestBody),
+			contentType: 'application/json'
+		}).done(function(response) {
+			console.log(response);
+			showMessageModal("Return request has been sent.");
+			updateOrderStatus(orderId);
+		}).fail(function(err) {
+			showMessageModal(err.responseText);
+		});
+	}
+	
+	function showMessageModal(message){		
+		divReason.hide();
+		firstButton.hide();
+		secondButton.text("close");
+		divMessage.text(message);
+		divMessage.show();
+	}
+	
+	function updateOrderStatus(orderId){
+		$(".textOrderStatus"+orderId).each(function(index){
+			$(this).text("RETURNED_REQUESTED");
+		});
+		$(".linkReturn"+orderId).each(function(index){
+			$(this).hide();
+		});
+	}
 </script>
 
 </html>
