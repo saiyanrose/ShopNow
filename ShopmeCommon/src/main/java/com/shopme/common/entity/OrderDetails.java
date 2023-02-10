@@ -37,6 +37,23 @@ public class OrderDetails {
 
 	}
 
+	public OrderDetails(String categoryName,int quantity, float productCost, float shippingCost, float subTotal) {
+		this.product=new Product();
+		this.product.setCategory(new Category(categoryName));
+		this.quantity = quantity;
+		this.productCost = productCost;
+		this.shippingCost = shippingCost;
+		this.subTotal = subTotal;
+	}
+	
+	public OrderDetails(int quantity,String productName, float productCost, float shippingCost, float subTotal) {
+		this.product=new Product(productName);		
+		this.quantity = quantity;
+		this.productCost = productCost;
+		this.shippingCost = shippingCost;
+		this.subTotal = subTotal;
+	}
+
 	public Integer getId() {
 		return id;
 	}

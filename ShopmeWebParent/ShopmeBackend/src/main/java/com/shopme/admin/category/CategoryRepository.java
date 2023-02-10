@@ -30,4 +30,5 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	public Category findByAlias(String alias);
 	
 	public Long countById(Integer id);
+	
 }

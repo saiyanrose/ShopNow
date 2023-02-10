@@ -84,14 +84,22 @@ public class Orders {
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
-	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<OrderDetails> orderDetails = new HashSet<>();
 
-	@OneToMany(mappedBy = "orders",cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderTrack> orderTracks = new ArrayList<OrderTrack>();
 
 	public Orders() {
 
+	}
+
+	public Orders(Integer id, Date orderTime, float productCost, float subTotal, float total) {
+		this.id = id;
+		this.orderTime = orderTime;
+		this.productCost = productCost;
+		this.subTotal = subTotal;
+		this.total = total;
 	}
 
 	public Integer getId() {
@@ -341,20 +349,20 @@ public class Orders {
 		}
 		return address;
 	}
-	
+
 	@Transient
 	public String getDeliverDateOnForm() {
-		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");		
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormatter.format(this.deliverDate);
 	}
-	
+
 	public void setDeliverDateOnForm(String dateString) {
-		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");		
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			this.deliverDate = dateFormatter.parse(dateString);
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} 		
+		}
 	}
 
 	@Override
@@ -367,60 +375,60 @@ public class Orders {
 				+ deliverDate + ", paymentMethod=" + paymentMethod + ", orderStatus=" + orderStatus + ", customer="
 				+ customer + ", orderDetails=" + orderDetails + ", orderTracks=" + orderTracks + "]";
 	}
-	
+
 	@Transient
 	public boolean isCOD() {
 		return paymentMethod.equals(PaymentMethod.COD);
 	}
-	
+
 	@Transient
 	public boolean isProcessing() {
 		return hasStatus(OrderStatus.PROCESSING);
 	}
-	
+
 	@Transient
 	public boolean isPicked() {
 		return hasStatus(OrderStatus.PICKED);
 	}
-	
+
 	@Transient
 	public boolean isShipping() {
 		return hasStatus(OrderStatus.SHIPPING);
 	}
-	
+
 	@Transient
 	public boolean isRETURNED_REQUESTED() {
 		return hasStatus(OrderStatus.RETURNED_REQUESTED);
 	}
-	
+
 	@Transient
 	public boolean isDelivered() {
 		return hasStatus(OrderStatus.DELIVERED);
 	}
-	
+
 	@Transient
 	public boolean isReturned() {
 		return hasStatus(OrderStatus.RETURNED);
 	}
-	
+
 	public boolean hasStatus(OrderStatus orderStatus) {
-		for(OrderTrack aTrack:orderTracks) {
-			if(aTrack.getOrderStatus().equals(orderStatus)) {
+		for (OrderTrack aTrack : orderTracks) {
+			if (aTrack.getOrderStatus().equals(orderStatus)) {
 				return true;
 			}
 		}
 		return false;
-		
+
 	}
-	
+
 	@Transient
 	public String getProductNames() {
-		String productNames="";
-		productNames="<ul>";
-		for(OrderDetails details:orderDetails) {
-			productNames+="<li>" + details.getProduct().getName()+"</li>";
+		String productNames = "";
+		productNames = "<ul>";
+		for (OrderDetails details : orderDetails) {
+			productNames += "<li>" + details.getProduct().getName() + "</li>";
 		}
-		productNames+="</ul>";
+		productNames += "</ul>";
 		return productNames;
 	}
 
