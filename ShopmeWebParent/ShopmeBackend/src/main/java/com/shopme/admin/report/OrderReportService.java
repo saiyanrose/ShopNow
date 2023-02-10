@@ -28,9 +28,7 @@ public class OrderReportService {
 		Date endTime=new Date();
 		Calendar cal=Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_MONTH, -(days-1));
-		Date startTime=cal.getTime();
-		
-		System.out.println("startTime " +startTime+" endTime " +endTime);
+		Date startTime=cal.getTime();	
 		
 		dateFormat=new SimpleDateFormat("yyyy-MM-dd");
 		return getReportDataByDateRange(startTime, endTime);
@@ -48,10 +46,12 @@ public class OrderReportService {
 	private void printReportDate(List<ReportItem> rawData) {
 		
 		rawData.forEach(item->{
-			System.out.println(item.getIdentifier());
-			System.out.println(item.getGrossSales());
-			System.out.println(item.getNetSales());
-			System.out.println(item.getOrderCount());
+			/*
+			 * System.out.println(item.getIdentifier());
+			 * System.out.println(item.getGrossSales());
+			 * System.out.println(item.getNetSales());
+			 * System.out.println(item.getOrderCount());
+			 */
 		});
 	}
 
@@ -90,5 +90,9 @@ public class OrderReportService {
 				reportItem.increaseOrderCount();
 			}
 		}
+	}
+
+	public List<ReportItem> getReportDataLast28Days() {
+		return getReportDataLastXDays(28);
 	}
 }

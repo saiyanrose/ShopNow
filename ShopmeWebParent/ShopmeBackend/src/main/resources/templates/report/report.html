@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header::head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>[[${pageTitle}]]</title>
+</head>
+<body>
+	<div class="container-fluid">
+
+		<div th:replace="common/navigation :: menu"></div>
+
+		<div>
+			<h1>Sales Report</h1>
+		</div>
+
+		<div>&nbsp;</div>
+
+		<div>
+
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" data-toggle="tab" href="#date"
+						type="button" role="tab">Sales Report By Date</button>
+				</li>
+
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" data-toggle="tab" href="#catgeory"
+						type="button" role="tab">Sales Report By Category</button>
+				</li>
+
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" data-toggle="tab" href="#product"
+						type="button" role="tab">Sales Report By Product</button>
+				</li>			
+
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+
+				<div class="tab-pane active p-3" id="date" role="tabpanel">
+					<div th:replace="report/report_date :: content"></div>
+				</div>
+
+				<!-- <div class="tab-pane p-3" id="shipping" role="tabpanel">
+					<div th:replace="orders/orders_shipping :: orders_shipping"></div>
+				</div>
+
+				<div class="tab-pane p-3" id="product" role="tabpanel">
+					<div th:replace="orders/orders_product :: orders_product"></div>
+				</div> -->				
+
+			</div>
+			
+			<div th:replace="common/footer::foot"></div>
+
+		</div>
+
+	</div>
+
+	<div th:replace="common/script::script"></div>
+
+</body>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+ 
+<script type="text/javascript">
+contextPath="[[@{/}]]";
+
+$(document).ready(function(){
+	// Load the Visualization API and the corechart package.
+    google.charts.load('current', {'packages':['corechart']});
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(loadSalesReportByDate);
+});
+
+</script>
+
+<script type="text/javascript" th:src="@{/js/sales_report_by_date.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.number.min.js}"></script>
+
+</html>

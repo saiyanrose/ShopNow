@@ -16,7 +16,19 @@ public class OrderReportRestController {
 	
 	@GetMapping("/report/sales/{period}")
 	public List<ReportItem>getReportByDatePeriod(@PathVariable("period")String period){
-		return orderReportService.getReportDataLast7Days();
+		System.out.println(period);
+		
+		switch (period) {
+		case "last_7_days":
+			return orderReportService.getReportDataLast7Days();			
+			
+		case "last_28_days":
+			return orderReportService.getReportDataLast28Days();			
+			
+		default:
+			return orderReportService.getReportDataLast7Days();
+		}
+		
 	}
 	
 	
