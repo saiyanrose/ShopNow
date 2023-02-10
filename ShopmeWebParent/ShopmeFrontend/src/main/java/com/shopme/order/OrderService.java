@@ -38,14 +38,26 @@ public class OrderService {
 			PaymentMethod paymentMethod,CheckoutInfo checkoutInfo) {		
 		
 		Orders orders=new Orders();
+		List<OrderTrack>tracks=orders.getOrderTracks();	
+		
+		OrderTrack orderTrack=new OrderTrack();
 		
 		orders.setOrderTime(new Date());
 		
 		if(paymentMethod.equals(PaymentMethod.PAYPAL)) {
 			orders.setOrderStatus(OrderStatus.PAID);
+			orderTrack.setOrderStatus(OrderStatus.PAID);
+			orderTrack.setUpdatedTime(new Date());
+			orderTrack.setNotes(OrderStatus.PAID.defaultDescription());
+			orderTrack.setOrders(orders);
 		}else {
 			orders.setOrderStatus(OrderStatus.NEW);
+			orderTrack.setOrderStatus(OrderStatus.NEW);
+			orderTrack.setUpdatedTime(new Date());
+			orderTrack.setNotes(OrderStatus.NEW.defaultDescription());
+			orderTrack.setOrders(orders);
 		}
+		tracks.add(orderTrack);
 		
 		orders.setCustomer(customer);
 		orders.setProductCost(checkoutInfo.getProductCost());
@@ -63,12 +75,10 @@ public class OrderService {
 			orders.copyShippingAddress(address);
 		}
 		
-		Set<OrderDetails>details=orders.getOrderDetails();
-		
+		Set<OrderDetails>details=orders.getOrderDetails();			
 		for(CartItem item:cartItems) {
-			Product product=item.getProduct();
-			
-			OrderDetails orderDetails=new OrderDetails();
+			Product product=item.getProduct();			
+			OrderDetails orderDetails=new OrderDetails();			
 			orderDetails.setOrders(orders);
 			orderDetails.setProduct(product);
 			orderDetails.setQuantity(item.getQuantity());
