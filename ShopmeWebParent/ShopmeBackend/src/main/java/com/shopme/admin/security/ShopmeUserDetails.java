@@ -13,11 +13,13 @@ import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 
 public class ShopmeUserDetails implements UserDetails {
-
+	
+	private static final long serialVersionUID = 1L;
+	
 	private User user;
 
 	public ShopmeUserDetails(User user) {
-
+		super();
 		this.user = user;
 	}
 
@@ -67,5 +69,18 @@ public class ShopmeUserDetails implements UserDetails {
 
 	public boolean hasRole(String roleName) {
 		return user.hasRole(roleName);
+	}
+	
+	public String getFullname() {
+		return this.user.getFirstname() + " " + this.user.getLastname();
+	}
+	
+	@Override
+	public String toString() {
+		return "ShopmeUserDetails [user=" + user + "]";
+	}
+	
+	public User getUser() {
+		return user;
 	}
 }

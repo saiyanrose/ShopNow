@@ -18,8 +18,8 @@
 			<h1>ShopNow Admin Control Panel</h1>
 			<br>
 			<h3>
-				Welcome <a sec:authentication="principal.username" th:href="@{/account}"></a>&nbsp;
-				<a sec:authentication="principal.authorities" th:href="@{/account}"></a>
+				Welcome <a sec:authentication="principal.fullname" th:href="@{/account}"></a>&nbsp;
+				<span sec:authentication="principal.authorities" th:href="@{/account}"></span>
 			</h3>
 		</div>
 		
