@@ -1,27 +1,27 @@
 # ShopNow Customer Login Page
-![](output/customerLogin.JPG)
+![](/ShopmeWebParent/ShopmeBackend/output/customerLogin.JPG)
 
 
 #ShopNow Customer Register Page
-![](output/customerReg.JPG)
+![](/ShopmeWebParent/ShopmeBackend/output/customerReg.JPG)
 
 
 #ShopNow Products Category
-![](output/category.JPG)
+![](/ShopmeWebParent/ShopmeBackend/output/category.JPG)
 
 
 #Shopnow Products detail
-![](output/product.JPG)
+![](/ShopmeWebParent/ShopmeBackend/output/product.JPG)
 
 
 #Shopnow Cart
-![](output/cart.JPG)
+![](/ShopmeWebParent/ShopmeBackend/output/cart.JPG)
 
 
 #Shopnow Checkout
-![](output/checkout.JPG)
+![](/ShopmeWebParent/ShopmeBackend/output/checkout.JPG)
 
 #Shopnow Checkout
-![](output/ordertracking.JPG)
+![](/ShopmeWebParent/ShopmeBackend/output/ordertracking.JPG)
 
 
