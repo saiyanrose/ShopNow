@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.currency.CurrencyRepository;
 import com.shopme.admin.order.OrdersController;
+import com.shopme.common.entity.Constants;
 import com.shopme.common.entity.Currency;
 import com.shopme.common.entity.GeneralSettingBag;
 import com.shopme.common.entity.Setting;
@@ -45,7 +46,7 @@ public class SettingController {
 		for (Setting setting : listSettings) {
 			model.addAttribute(setting.getKey(), setting.getValue());
 		}
-
+		model.addAttribute("S3_BASE_URI",Constants.S3_BASE_URI);
 		model.addAttribute("listCurrencies", listCurrencies);
 		return "setting/settings";
 	}

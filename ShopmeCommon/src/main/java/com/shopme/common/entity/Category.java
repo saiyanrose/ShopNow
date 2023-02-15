@@ -148,7 +148,7 @@ public class Category {
 		if (id == null || image == null) {
 			return "/images/default-user.png";
 		} else {
-			return "/category-image/" + this.id + "/" + this.image;
+			return Constants.S3_BASE_URI+ "/category-image/" + this.id + "/" + this.image;
 		}
 	}
 }

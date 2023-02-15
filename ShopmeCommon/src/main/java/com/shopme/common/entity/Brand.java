@@ -82,7 +82,7 @@ public class Brand {
 		if (this.id == 0 || this.logo == null) {
 			return "/images/default-user.png";
 		} else {
-			return "/brand-logos/" + this.id + "/" + this.logo;
+			return Constants.S3_BASE_URI+"/brand-logos/" + this.id + "/" + this.logo;
 		}
 	}
 

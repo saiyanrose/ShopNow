@@ -8,6 +8,14 @@ $(document).ready(function() {
 	});
 });
 
+function checkPasswordMatch(confirmPassword) {
+		if (confirmPassword.value != $("#password").val()) {
+			confirmPassword.setCustomValidity("Password do not match");
+		} else {
+			confirmPassword.setCustomValidity("");
+		}
+	}
+
 function loadStateForCountry(){
 	selectedCountry=$("#country option:selected");
 	countryId=selectedCountry.val();

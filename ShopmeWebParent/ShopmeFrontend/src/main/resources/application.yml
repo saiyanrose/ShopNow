@@ -2,8 +2,10 @@ server:
   port: 90
   servlet:
     context-path: /Shopnow
-spring:
-
+spring:  
+  profiles:
+    active: "dev"
+    
   security:
     oauth2:
       client:

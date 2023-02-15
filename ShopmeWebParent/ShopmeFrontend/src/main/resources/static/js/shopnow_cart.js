@@ -28,7 +28,8 @@ function decreaseQuantity(link) {
 		quantityInput.val(newQuantity);		
 		updateQuantity(productId,newQuantity);
 	} else {
-		alert("Minimum quantity is 1");
+		$("#cartDeleteText").text("Minimum 1 item is required.");
+		$("#cartDeleteModal").modal();
 	}
 }
 
@@ -40,8 +41,9 @@ function increaseQuantity(link) {
 	if (newQuantity <= 5) {
 		quantityInput.val(newQuantity);
 		updateQuantity(productId,newQuantity);
-	} else {
-		alert("Maximum quantity is 5");
+	} else {		
+		$("#cartDeleteText").text("Maximum quantity is 5");
+		$("#cartDeleteModal").modal();
 	}
 }
 
