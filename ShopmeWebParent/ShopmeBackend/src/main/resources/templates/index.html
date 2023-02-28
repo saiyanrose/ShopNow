@@ -1,33 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<link rel="stylesheet" type="text/css"	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 <title>Home - ShopNow Admin</title>
 </head>
 
 <body>
 	<div class="container-fluid">
-	
+
 		<div th:replace="common/navigation :: menu"></div>
-		
+
 		<div>
 			<h1>ShopNow Admin Control Panel</h1>
 			<br>
 			<h3>
-				Welcome <a sec:authentication="principal.fullname" th:href="@{/account}"></a>&nbsp;
-				<span sec:authentication="principal.authorities" th:href="@{/account}"></span>
+				Welcome <a sec:authentication="principal.fullname"
+					th:href="@{/account}"></a>&nbsp; <span
+					sec:authentication="principal.authorities" th:href="@{/account}"></span>
 			</h3>
+
+			<div class="row m-1">
+				<th:block sec:authorize="hasAuthority('Admin')">
+					<div th:replace="dashboard/general_info :: content"></div>
+					<div th:replace="dashboard/user_summary :: content"></div>
+				</th:block>
+
+				<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+					<div th:replace="dashboard/category_summary :: content"></div>
+					<div th:replace="dashboard/brand_summary :: content"></div>
+				</th:block>
+				
+				<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson', 'Shipper')">
+					<div th:replace="dashboard/product_summary :: content"></div>
+				</th:block>
+				
+				<th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson')">
+					<div th:replace="dashboard/customer_summary :: content"></div>
+					<div th:replace="dashboard/shipping_rate_summary :: content"></div>
+				</th:block>	
+				
+				<th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson', 'Shipper')">
+					<div th:replace="dashboard/order_summary :: content"></div>
+				</th:block>			
+			</div>
 		</div>
-		
+
 		<div th:replace="common/footer::foot"></div>
-		
+
 	</div>
-	
+
 	<div th:replace="common/script::script"></div>
-	
+
 </body>
 </html>
