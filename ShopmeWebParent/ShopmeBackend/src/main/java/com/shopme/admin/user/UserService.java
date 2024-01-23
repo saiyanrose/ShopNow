@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.shopme.admin.exceptions.UserNotFoundException;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 
@@ -20,7 +21,7 @@ import com.shopme.common.entity.User;
 @Transactional
 public class UserService {
 	
-	public static final int User_Per_Page=4;
+	public static final int User_Per_Page=10;
 
 	@Autowired
 	private UserRepository repository;
@@ -31,8 +32,7 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder encoder;
 	
-	public List<User> listUsers() {
-		
+	public List<User> listUsers() {		
 		return (List<User>) repository.findAll();
 	}
 	
@@ -46,7 +46,7 @@ public class UserService {
 		return repository.findAll(pageable);
 	}
 	
-	public List<Role>listRole(){
+	public List<Role> listRole(){
 		return (List<Role>) roleRepository.findAll();
 	}
 

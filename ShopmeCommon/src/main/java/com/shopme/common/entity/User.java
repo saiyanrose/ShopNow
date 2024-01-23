@@ -44,9 +44,7 @@ public class User {
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
-	public User() {
-
-	}
+	public User() {}
 
 	public User(String email, String password, String firstname, String lastname) {
 		this.email = email;
@@ -134,7 +132,8 @@ public class User {
 		if(id==null || photos==null) {
 			return "/images/default-user.png";
 		}else {
-			return Constants.S3_BASE_URI+ "/user-photos/" + this.id + "/" + this.photos;
+			//return Constants.S3_BASE_URI+ "/user-photos/" + this.id + "/" + this.photos;
+			return "/user-photos/" + this.id + "/" + this.photos;
 		}
 	}
 	

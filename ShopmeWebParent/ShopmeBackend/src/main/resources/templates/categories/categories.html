@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Categories - ShopNow Admin</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -10,8 +9,10 @@
 		
 		<div>
 			<h1>Manage Categories</h1>
-			<a th:href="@{/new}">Create New Category</a>
+			<a class="btn btn-primary" th:href="@{/new}">Create New Category</a>
 		</div>
+		
+		<hr>
 		
 		<div>&nbsp;</div>
 		
@@ -24,7 +25,7 @@
 				Filter:&nbsp;
 				<input type="hidden" name="sortField" th:value="${sortField}" />
 				<input type="hidden" name="sortDir"	th:value="${sortDir}" />
-				<input type="search" name="keyword"	th:value="${keyword}" class="form-control" required />
+				<input type="search" name="keyword" placeholder="search category..." th:value="${keyword}" class="form-control" required />
 				&nbsp;&nbsp;
 				<input type="submit" value="Search"	class="btn btn-primary" required />
 				&nbsp;&nbsp;

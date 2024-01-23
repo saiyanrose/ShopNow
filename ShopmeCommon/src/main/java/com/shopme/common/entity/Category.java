@@ -37,9 +37,7 @@ public class Category {
 	@OrderBy("name asc")
 	private Set<Category> children = new HashSet<>();
 
-	public Category() {
-
-	}
+	public Category() {}
 
 	public Category(int id) {
 		this.id = id;
@@ -148,7 +146,8 @@ public class Category {
 		if (id == null || image == null) {
 			return "/images/default-user.png";
 		} else {
-			return Constants.S3_BASE_URI+ "/category-image/" + this.id + "/" + this.image;
+			//return Constants.S3_BASE_URI+ "/category-image/" + this.id + "/" + this.image;
+			return "/category-image/"+this.id+"/"+this.image;
 		}
 	}
 }

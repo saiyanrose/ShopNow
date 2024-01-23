@@ -16,21 +16,27 @@ import com.shopme.admin.user.UserController;
 public class FileUploadUtil {
 	private static final Logger LOGGER=LoggerFactory.getLogger(UserController.class);
 	
-	public static void main(String uploadDir,String fileName,MultipartFile multipartFile) throws IOException {
+	public static void main(String uploadDir,String fileName,MultipartFile multipartFile){		
 		LOGGER.info("FileUploadUtil main method called.");
 		Path uploadPath=Paths.get(uploadDir);
+		
 		if(!Files.exists(uploadPath)) {
-			Files.createDirectories(uploadPath);
-		}
+			try {
+				Files.createDirectories(uploadPath);
+			} catch (IOException e) {				
+				e.printStackTrace();
+			}
+		}		
+		
 		try(InputStream inputStream=multipartFile.getInputStream()){
-			Path filePath=uploadPath.resolve(fileName);
+			Path filePath=uploadPath.resolve(fileName);			
 			Files.copy(inputStream,filePath,StandardCopyOption.REPLACE_EXISTING);
 		}catch(IOException ex) {
+			ex.printStackTrace();
 			LOGGER.info("FileUploadUtil main method:could not save file."+ex);
 		}
-	}
+	}	
 	
-	//remove the directory
 	public static void cleanDir(String dir) {
 		LOGGER.info("FileUploadUtil | cleanDir is started");		
 		LOGGER.info("FileUploadUtil | cleanDir | dir : " + dir);		
@@ -39,9 +45,6 @@ public class FileUploadUtil {
 
 		try {
 			Files.list(dirPath).forEach(file -> {				
-				LOGGER.info("FileUploadUtil | cleanDir | file : " + file.toString());				
-				LOGGER.info("FileUploadUtil | cleanDir | Files.isDirectory(file) : " + Files.isDirectory(file));
-				
 				if (!Files.isDirectory(file)) {
 					try {
 						Files.delete(file);						

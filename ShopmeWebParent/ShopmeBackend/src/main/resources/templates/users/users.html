@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>[[${pageTitle}]]</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -11,8 +10,10 @@
 		
 		<div>
 			<h1>Manage Users</h1>
-			<a th:href="@{/users/new}">Create New User</a>
+			<a class="btn btn-primary" th:href="@{/users/new}">Create New User</a>
 		</div>
+		
+		<hr>
 		
 		<div>&nbsp;</div>
 		
@@ -22,11 +23,14 @@
 			<form th:action="@{/users/page/1}" class="form-inline">
 				<input type="hidden" name="sortField" th:value="${sortField}"/>
 				<input type="hidden" name="sortDir" th:value="${sortDir}"/>
-				Filter:&nbsp;
-				<input type="search" id="keyword" name="keyword" th:value="${keyword}" class="form-control" required />
+				&nbsp;
+				
+				<input type="search" placeholder="search user..." id="keyword" name="keyword" th:value="${keyword}" class="form-control" required />
 				&nbsp;&nbsp;
+				
 				<input type="submit" value="Search" class="btn btn-primary" required />
 				&nbsp;&nbsp;
+				
 				<input type="button" value="Clear" class="btn btn-secondary" onclick="clearFilter()"/>			
 			</form>
 			
@@ -81,15 +85,15 @@
 								</a>
 								<a th:if="${user.enabled==false}" class="fas fa-times fa-2x"
 									th:href="@{'/users/' + ${user.id} + '/enabled/true'}" title="Enable this user">
-								</a>
-								
+								</a>								
 							</td>
 							
 							<td>
 								<a class="fas fa-edit fa-2x" href="" th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user"></a>
 								&nbsp;
+								
 								<a class="fas fa-user-times fa-2x link-delete-user"	th:href="@{'/users/delete/' + ${user.id}}"
-									th:userId="${user.id}" title="Delete this user">
+									th:userId="${user.id}"  title="Delete this user">
 								</a>
 							</td>
 							
@@ -109,32 +113,31 @@
 			</div>
 			
 			<div th:if="${totalPage > 1}">
-			<nav aria-label="Page navigation example">
-				<ul class="pagination justify-content-center">
-					
-					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
-						<a th:replace="common/fragments::page_link(1,'First')"></a>
-					</li>
-					
-					<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
-						<a th:replace="common/fragments::page_link(${pageNum-1},'Previous')"></a>
-					</li>
-					
-					<li th:class="${pageNum != i ? 'page-item' :'page-item active'}" th:each="i:${#numbers.sequence(1,totalPage)}">
-						<a th:replace="common/fragments::page_link(${i},${i})"></a>
-					</li>
-										
-				    <li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
-				    	<a th:replace="common/fragments::page_link(${pageNum+1},'Next')"></a>
-				    </li>
-					
-					<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
-						<a th:replace="common/fragments::page_link(${totalPage},'Last')"></a>
-					</li>
-					
-				</ul>
-				
-			</nav>
+				<nav aria-label="Page navigation example">
+					<ul class="pagination justify-content-center">
+			
+						<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
+							<a th:replace="common/fragments::page_link(1,'First')"></a>
+						</li>
+			
+						<li th:class="${pageNum > 1 ? 'page-item' :'page-item disabled'}">
+							<a th:replace="common/fragments::page_link(${pageNum-1},'Previous')"></a>
+						</li>
+			
+						<li th:class="${pageNum != i ? 'page-item' :'page-item active'}"
+							th:each="i:${#numbers.sequence(1,totalPage)}">
+							<a th:replace="common/fragments::page_link(${i},${i})"></a>
+						</li>
+			
+						<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
+							<a th:replace="common/fragments::page_link(${pageNum+1},'Next')"></a>
+						</li>
+			
+						<li th:class="${pageNum < totalPage ? 'page-item' :'page-item disabled'}">
+							<a th:replace="common/fragments::page_link(${totalPage},'Last')"></a>
+						</li>			
+					</ul>			
+				</nav>
 			</div>
 			
 			<div class="modal" tabindex="-1" role="dialog" id="confirmModalUsers">
@@ -152,8 +155,7 @@
 						<div class="modal-footer">
 							<a class="btn btn-success" href="" id="yesButtonUsers">Yes</a>
 							<button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-						</div>
-						
+						</div>						
 					</div>
 				</div>
 			</div>

@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head></head>
-
-
 <body>
 
-<!-- User Page  -->
-<th th:fragment="column_link(fieldName,columnLabel)">
-	
+<th th:fragment="column_link(fieldName,columnLabel)">	
 	<a class="text-white"
 		th:href="@{'/users/page/' +${pageNum} + '?sortField=' +${fieldName}+ '&sortDir=' + ${sortField!=fieldName ? sortDir : reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">
 		[[${columnLabel}]]
@@ -16,10 +11,15 @@
 	<span th:if="${sortField==fieldName}"
 		th:class="${sortDir=='asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
 	</span>
-	
+	<span th:unless="${sortField==fieldName}"
+		th:class="${'fas fa-sort-down'}">
+	</span>	
 </th>	
 
-<a th:fragment="page_link(pageNum,label)" class="page-link"	th:href="@{'/users/page/' +${pageNum}+ '?sortField=' +${sortField}+ '&sortDir=' + ${sortField!=fieldName ? sortDir : reverseSort} + ${keyword!=null ? '&keyword=' +keyword : ''}}">[[${label}]]
+<a th:fragment="page_link(pageNum,label)" class="page-link"
+	th:href="@{'/users/page/' +${pageNum}+ '?sortField=' +${sortField}+
+	'&sortDir=' + ${sortField!=fieldName ? sortDir : reverseSort} + ${keyword!=null ?
+	'&keyword=' +keyword : ''}}">[[${label}]]
 </a>
 
 <!-- Category Page  -->
