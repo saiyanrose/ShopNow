@@ -1,4 +1,4 @@
-package com.shopme.admin.user;
+package com.shopme.admin.category;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,8 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.shopme.admin.category.CategoryPageInfo;
-import com.shopme.admin.category.CategoryRepository;
 import com.shopme.admin.exceptions.CategoryNotFoundException;
 import com.shopme.admin.exceptions.NoCategoryException;
 import com.shopme.common.entity.Category;
