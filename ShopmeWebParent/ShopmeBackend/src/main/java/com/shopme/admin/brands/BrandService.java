@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.shopme.admin.exceptions.BrandNotFoundException;
 import com.shopme.common.entity.Brand;
 
 @Service
@@ -50,7 +51,7 @@ public class BrandService {
 	public Page<Brand> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
 		Sort sort=Sort.by(sortField);
 		sort=sortDir.equals("asc") ? sort.ascending() : sort.descending();
-		Pageable pageable=PageRequest.of(pageNum-1,5,sort);
+		Pageable pageable=PageRequest.of(pageNum-1,10,sort);
 		if(keyword!=null) {
 			return brandsRepository.findAll(keyword, pageable);
 		}

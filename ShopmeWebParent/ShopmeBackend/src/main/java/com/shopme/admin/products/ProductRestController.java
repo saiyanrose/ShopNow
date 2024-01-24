@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopme.admin.brands.BrandService;
+import com.shopme.admin.exceptions.BrandNotFoundRestException;
+import com.shopme.admin.exceptions.ProductNotFoundException;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.Product;

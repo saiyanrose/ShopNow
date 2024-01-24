@@ -23,9 +23,7 @@ public class ProductImages {
 	@JoinColumn(name = "product_id")
 	private Product product;
 
-	public ProductImages() {
-
-	}
+	public ProductImages() {}
 
 	public ProductImages(String name, Product product) {
 		this.name = name;
@@ -63,9 +61,13 @@ public class ProductImages {
 	}
 
 	public String getImagePath() {
-		if (id == null && id == 0)
+		if (id == null && id == 0) {
 			return "/images/image-thumbnail.png";
-		return Constants.S3_BASE_URI+"/product-images/" + product.getId() + "/extras/" + this.name;
+		}else {
+			//return Constants.S3_BASE_URI+"/product-images/" + product.getId() + "/extras/" + this.name;
+			return "/product-images/" + product.getId() + "/extras/" + this.name;
+		}
+		
 	}
 
 }

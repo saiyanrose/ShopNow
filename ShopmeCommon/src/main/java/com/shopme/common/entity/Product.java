@@ -63,12 +63,21 @@ public class Product {
 	@Column(name = "main_image", nullable = false)
 	private String mainImage;
 
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)//key on other side
 	private Set<ProductImages> images = new HashSet<>();
 	
-	public Product() {
-		
-	}
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Category category;
+
+	@ManyToOne
+	@JoinColumn(name = "brand_id")
+	private Brand brand;
+
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)//key on other side
+	private List<ProductDetails> details = new ArrayList<>();
+	
+	public Product() {}
 
 	public Product(String name) {		
 		this.name = name;
@@ -93,17 +102,6 @@ public class Product {
 	public void setMainImage(String mainImage) {
 		this.mainImage = mainImage;
 	}
-
-	@ManyToOne
-	@JoinColumn(name = "category_id")
-	private Category category;
-
-	@ManyToOne
-	@JoinColumn(name = "brand_id")
-	private Brand brand;
-
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ProductDetails> details = new ArrayList<>();
 
 	public Integer getId() {
 		return id;
@@ -257,7 +255,11 @@ public class Product {
 	public String getMainImagePath() {
 		if (id == null || mainImage == null)
 			return "/images/image-thumbnail.png";
-		return Constants.S3_BASE_URI+"/product-images/" + this.id + "/" + this.mainImage;
+		else {
+			//return Constants.S3_BASE_URI+"/product-images/" + this.id + "/" + this.mainImage;
+			return "/product-images/" + this.id + "/" + this.mainImage;
+		}
+		
 	}
 
 	public List<ProductDetails> getDetails() {

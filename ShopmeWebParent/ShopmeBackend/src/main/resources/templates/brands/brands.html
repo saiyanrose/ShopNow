@@ -3,7 +3,6 @@
 
 <head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Brands - ShopNow Admin</title>
 </head>
 
 <body>
@@ -12,8 +11,10 @@
 		
 		<div>
 			<h1>Manage Brands</h1>
-			<a th:href="@{/brands/new}">Create New Brand</a>
+			<a class="btn btn-primary" th:href="@{/brands/new}">Create New Brand</a>
 		</div>
+		
+		<hr>
 		
 		<div>&nbsp;</div>
 		
@@ -55,7 +56,7 @@
 						<tr th:each="brnd : ${brands}">
 							<th scope="row">[[${brnd.id}]]</th>
 							<td>
-								<span th:if="${brnd.logo==null}" class="fas fa-portrait fa-3x"></span>
+								<span th:if="${brnd.logo==null}" class="fa-solid fa-image"></span>
 								<img th:if="${brnd.logo!=null}" th:src="@{${brnd.logoPath}}" style="width: 100px" />
 							</td>
 							<td>[[${brnd.name}]]</td>

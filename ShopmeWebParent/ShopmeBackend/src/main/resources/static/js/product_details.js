@@ -6,6 +6,7 @@ $(document).ready(function(){
 	});
 });
 
+let previousDivDetailSection;
 function addNextDetailSection(){
 	allDivDetail=$("[id^=detailHeader]");
 	divDetailCount=allDivDetail.length;

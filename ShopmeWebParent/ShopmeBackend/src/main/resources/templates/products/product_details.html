@@ -4,7 +4,7 @@
 	<div th:fragment="product_details" id="detailDiv">
 		<th:block th:each="detail,status : ${product.details}">
 		
-			<input type="hidden" name="detailIds" th:value="${detail.id}">			
+			<input type="text" name="detailIds" th:value="${detail.id}">			
 				
 			<div class="form-inline" th:id="'detailHeader' +${status.index}">
 			

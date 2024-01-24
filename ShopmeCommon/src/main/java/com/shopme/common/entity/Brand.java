@@ -23,7 +23,7 @@ public class Brand {
 	private int id;
 	@Column(nullable = false, unique = true, length = 45)
 	private String name;
-	@Column(nullable = false, length = 128)
+	@Column(length = 128)
 	private String logo;
 
 	@ManyToMany()
@@ -79,10 +79,11 @@ public class Brand {
 
 	@Transient
 	public String getLogoPath() {
-		if (this.id == 0 || this.logo == null) {
+		if (this.id == 0 || this.logo == null) {			
 			return "/images/default-user.png";
 		} else {
-			return Constants.S3_BASE_URI+"/brand-logos/" + this.id + "/" + this.logo;
+			//return Constants.S3_BASE_URI+"/brand-logos/" + this.id + "/" + this.logo;
+			return "/brand-logos/" + this.id + "/" + this.logo;
 		}
 	}
 

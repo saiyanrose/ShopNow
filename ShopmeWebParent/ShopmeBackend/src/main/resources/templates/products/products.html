@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="common/header::head">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Products - ShopNow Admin</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -11,8 +10,10 @@
 		
 		<div>
 			<h1>Manage Products</h1>
-			<a th:href="@{/products/new}">Create New Products</a>
+			<a class="btn btn-primary" th:href="@{/products/new}">Create New Products</a>
 		</div>
+		
+		<hr>
 
 		<div th:if="${message != null}"	class="alert alert-success text-center">[[${message}]]</div>
 
@@ -54,7 +55,7 @@
 								class="fas fa-edit fa-2x"
 								th:href="@{'/products/edit/' + ${cat.id}}"></a>&nbsp; <a
 								th:href="@{'/products/delete/' + ${cat.id}}"
-								class="fas fa-user-times fa-2x link-delete"
+								class="fas fa-user-times fa-2x link-delete-product"
 								title="Delete this product" th:productId="${cat.id}"></a>
 							</td>
 
@@ -109,27 +110,23 @@
 			window.location = "[[@{/products}]]";
 		}		
 		
-		//delete product
-		$(document).ready(function() {
-			
+		$(document).ready(function() {			
 			$('#example2').DataTable();
-			
-			$(".link-delete").on("click",function(e) {
+		});
+		
+		$(".link-delete-product").on("click",function(e) {
 				e.preventDefault();
 				link = $(this);
-				productId = link.attr("productId");
-				$("#yesButton").attr("href",
-				link.attr("href"));
+				productId = link.attr("productId");				
+				$("#yesButton").attr("href",link.attr("href"));
 				$("#confirmText").text("Are you sure want to delete product with id: " + productId + " ?");
 				$("#confirmModal").modal();
-			});
 		});
 		
 		$(".link-detail").on("click",function(e) {
 			e.preventDefault();
 			linkDetailUrl = $(this).attr("href");			
-			$("#detailModal").modal("show").find(
-			".modal-content").load(linkDetailUrl);
+			$("#detailModal").modal("show").find(".modal-content").load(linkDetailUrl);
 		});
 	</script>
 	

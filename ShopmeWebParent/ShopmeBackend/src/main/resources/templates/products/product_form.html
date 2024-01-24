@@ -22,6 +22,7 @@
 		<input type="hidden" th:field="*{id}">
 		
 		<input th:if="${product.category!=null}" type="hidden" id="categoryId" th:field="${product.category.id}">
+		
 			<div>
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 				
@@ -129,7 +130,23 @@
 	moduleUrl = "[[@{/brands}]]";
 	var extraImageCount = 0;	
 	
+	//get categories
+	function getCategories() {
+		brandId = dropdownBrands.val();		
+		url = moduleUrl + "/" + brandId + "/categories";
+		
+		$.get(url, function(responseJson) {
+			$.each(responseJson, function(index, category) {				
+				$("<option>").val(category.id).text(category.name).appendTo(dropdowCategories);
+			});
+		});
+	}
+	
 	$(document).ready(function() {		
+		//richtext
+		$("#shortDescription").richText();
+		$("#fullDescription").richText();
+		
 		$("input[name='extraImage']").each(function(index) {			
 			$(this).change(function() {
 				extraImageCount++;
@@ -169,12 +186,7 @@
 		//cancel button
 		$("#buttonCancel").on("click", function() {
 			window.location = "[[@{/products}]]";
-		});
-
-		//richtext
-		$("#shortDescription").richText();
-		$("#fullDescription").richText();
-		
+		});		
 		
 		//getCategories
 		dropdownBrands.change(function() {
@@ -237,16 +249,7 @@
 		$("#extraImageDiv" + index).remove();
 	}
 
-	function getCategories() {
-		brandId = dropdownBrands.val();
-		url = moduleUrl + "/" + brandId + "/categories";
-		
-		$.get(url, function(responseJson) {
-			$.each(responseJson, function(index, category) {				
-				$("<option>").val(category.id).text(category.name).appendTo(dropdowCategories);
-			});
-		});
-	}
+	
 
 	function checkProduct(form) {
 		pId = $("#id").val();

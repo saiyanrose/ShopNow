@@ -9,10 +9,14 @@ import java.nio.file.StandardCopyOption;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.shopme.admin.user.UserController;
+import com.shopme.common.entity.Product;
 
+@Component
 public class FileUploadUtil {
 	private static final Logger LOGGER=LoggerFactory.getLogger(UserController.class);
 	
@@ -73,5 +77,54 @@ public class FileUploadUtil {
 		} catch (IOException e) {
 			LOGGER.error("Could not remove directory: " + brandDir);
 		}
+	}
+	
+	public void deleteExtraImagesRemoveFromForm(Product product) {
+		LOGGER.info("Products || deleteExtraImagesRemoveFromForm called");
+		String extraImageDir = "../product-images/" + product.getId() + "/extras";
+
+		Path dirPath = Paths.get(extraImageDir);
+		try {
+			Files.list(dirPath).forEach(file -> {
+				String filename = file.toFile().getName();
+				if (!product.containsImageName(filename)) {
+					try {
+						Files.delete(file);
+					} catch (IOException e) {
+						LOGGER.error("Colud not delete extra images " + filename);
+					}
+				}
+			});
+		} catch (IOException ex) {
+			LOGGER.error("Colud not list directory " + dirPath);
+		}
+	}
+	
+	public void saveUplodedImage(MultipartFile file, MultipartFile[] img, Product saveProduct) throws IOException {
+		LOGGER.info("Products || saveUplodedImage called");
+		if (!file.isEmpty()) {
+			String filename = StringUtils.cleanPath(file.getOriginalFilename()).replace(" ", "");
+
+			String uploadDir = "../product-images/" + saveProduct.getId();
+
+			FileUploadUtil.cleanDir(uploadDir);
+
+			FileUploadUtil.main(uploadDir, filename, file);
+
+		}
+		if (img.length > 0) {
+			String uploadDir = "../product-images/" + saveProduct.getId() + "/extras";
+			LOGGER.info("Products || saveUplodedImage extra uploadDir " + uploadDir);
+			for (MultipartFile extraFile : img) {
+				if (extraFile.isEmpty())
+					continue;
+
+				String filename = StringUtils.cleanPath(extraFile.getOriginalFilename()).replace(" ", "");
+
+				FileUploadUtil.main(uploadDir, filename, extraFile);
+
+			}
+		}
+
 	}
 }

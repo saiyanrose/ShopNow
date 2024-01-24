@@ -48,9 +48,6 @@ public class UserController {
 			@RequestParam(required = false, name = "sortDir",defaultValue = "asc") String sortDir,
 			@RequestParam(required = false, name = "keyword") String keyword) {
 
-		if (sortDir == null) {sortDir = "asc";}
-		if (sortField == null) {sortField = "id";}
-
 		Page<User> page = service.listByPage(pageNum, sortField, sortDir, keyword);
 
 		List<User> listUsers = page
@@ -94,9 +91,9 @@ public class UserController {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
+		}finally {
+			executorService.shutdown();
 		}
-		executorService.shutdown();
-
 		User user = new User();
 		user.setEnabled(true);
 		model.addAttribute("user", user);

@@ -33,8 +33,8 @@
 			</div>
 			
 			<div class="form-group">
-				<label for="exampleFormControlInput1">Select one or more categories:</label> <select
-					class="form-control" th:field="*{categories}" multiple required id="categories">					
+				<label for="exampleFormControlInput1">Select one or more categories:</label>
+				 <select class="form-control" th:field="*{categories}" multiple required id="categories">					
 					<th:block th:each="list: ${listCategory}">
 						<option th:value="${list.id}">[[${list.name}]]</option>
 					</th:block>
@@ -97,18 +97,31 @@
 		
 		dropdownCategories=$("#categories");
 		choosenCategories=$("#choosenCategories");
+		
 		dropdownCategories.change(function(){
 			showChoosenCategories();
-		});
+		});			
 		
-		function showChoosenCategories(){
+		function showChoosenCategories(){		
+			choosenCategories.html("");	
+			
 			dropdownCategories.children("option:selected").each(function(){
-				selectedCategory=$(this);
-				catId=selectedCategory.val();
-				catName=selectedCategory.text().replace(/-/g,"");				
-				choosenCategories.append("<span class='badge badge-secondary'>" +catName+"</span>");
+				//add
+				let selectedOptionText = $(this).text().replace(/-/g,"");            
+            	let spanElement = $("<span></span>");
+            	spanElement.addClass("badge badge-secondary");
+            	spanElement.text(selectedOptionText);
+            	
+            	//remove
+            	spanElement.click(function () {
+                	$(this).remove();
+                	choosenCategories.find("option:contains('" + selectedOptionText + "')").prop("selected", false);
+            	});
+				choosenCategories.append(spanElement);
 			});
 		}
+		
+		
 	});
 
 	$(document).ready(function() {
